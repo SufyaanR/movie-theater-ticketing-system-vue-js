@@ -1,10 +1,7 @@
 <script setup>
 </script>
-
 <template>
-    <div class="main">
-    </div>
+  <h1>Login</h1>
 </template>
-
 <style scoped>
 </style>

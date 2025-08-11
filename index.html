@@ -1,30 +1,32 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="./src/assets/vue.svg" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Bx3e...YourHash...g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Studio Vista</title>
 </head>
 
 <header>
   <div style="display: flex; flex-direction: row;">
-    <img src="./src/assets/vue.svg" />
+      <div class="logo"></div>
     <h2>Studio Vista</h2>
   </div>
 
   <nav>
-    <a class="nav-elem" href="/">Home</a> | <a class="nav-elem" href="/movies">Browse Movies</a>
+    <a class="nav-elem" href="/movies">Browse Movies</a> | <a class="nav-elem" href="/about-us">About Us</a>
   </nav>
 
   <div>
 
-    <button>Login</button>
+    <a href="/login"><button>Login</button></a>
+    <button>Sign Up</button>
 
     <a href="/user-details">
-      <i class="fas fa-user"></i> Profile
+      <i class="fas fa-user"></i>
     </a>
 
   </div>
@@ -36,10 +38,18 @@
 </body>
 
 <footer>
-  Footer
+    <b>Studio Vista©</b>&nbsp;| 2025 | ADP3 Capstone
 </footer>
 
 <style>
+    .logo{
+        height: 40px;
+        width: 40px;
+        border-radius: 100%;
+        background: radial-gradient( #141414, #141414, #00FF7F, #282828, #282828);
+        margin: 5px;
+    }
+
   body {
     margin: 0;
   }
@@ -54,7 +64,7 @@
     width: 100%;
     height: 10vh;
     background: #141414;
-    border-bottom: 5px solid #213547;
+    border-bottom: 5px solid #00FF7F;
   }
 
   nav {
@@ -77,6 +87,11 @@
     height: 10vh;
     background: #141414;
   }
+
+    .main{
+        min-width: 100%;
+        min-height: 100vh;
+    }
 </style>
 
 </html>

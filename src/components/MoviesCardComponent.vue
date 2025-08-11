@@ -1,4 +1,9 @@
 <script setup>
+import PrimaryButton from '../components/PrimaryButton.vue';
+import PrimaryTag from './PrimaryTag.vue';
+import router from "../router/index.js";
+
+``
 defineProps({
   id: String,
   title: String,
@@ -6,53 +11,48 @@ defineProps({
   imagePath: String,
   genre: String,
   ageRestriction: String,
+  viewType: String,
 })
 
+function redirect(id){
+  router.push(`/movie/${id}`);
+}
 </script>
 
 <template>
-  <div class="card">
-    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-    <h2>{{ title }}</h2>
-    <img :src="imagePath" />
+  <div class="card" style="width: 18rem;">
+
+    <img v-if="imagePath" :src="imagePath" class="card-img-top" alt="...">
+    <img v-else src="/src/assets/no-photo.jpg" class="card-img-top" alt="...">
+
+    <div class="card-body">
+      <div class="my-card-header">
+        <h5 class="card-title">{{ title }}</h5>&nbsp;
+        <PrimaryTag v-if="viewType==='3D'" :label="viewType"/>
+      </div>
+      <p>{{ genre }}</p>
+      <PrimaryButton buttonText="View Now" @click="redirect(id)"/>
     </div>
-    <h4>ID: {{ id }}</h4>
-    <p>Genre: {{ genre }}</p>
-    <p>Description: {{ description }}</p>
-    <p>Age Restriction: <h2>{{ ageRestriction }}</h2></p>
-      <button>View Now</button>
   </div>
 </template>
 
-<style>
-.card {
-  color: black;
-  aspect-ratio: 1/1;
-  min-height: 375px;
-  background-color: aliceblue;
-  border-radius: 50px;
-  border: 5px solid transparent;
-  margin: 10px;
-  transition: ease-in-out 0.2s;
+<style scoped>
+.card{
+  background: #141414;
 }
 
-.card:hover {
-  color: white;
-  background-color: #213547;
-  border: 5px solid white;
+.card-title{
+  font-weight: bolder;
 }
 
-img {
-  align-self: center;
-  width: 25px;
-  aspect-ratio: 1/1;
+.my-card-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
-button {
-  border: 2px solid transparent;
-}
-
-button:hover {
-  border: 2px solid #213547;
+img{
+  aspect-ratio: 2/3;
 }
 </style>
