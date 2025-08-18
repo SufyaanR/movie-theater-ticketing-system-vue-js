@@ -187,19 +187,21 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
     </div>
 
 
-    <div v-if="selectedTicketQuantity" class="checkout-container">
-      <div class="total-price">
+
+
+  </div>
+
+  <div v-if="selectedTicketQuantity" class="checkout-container">
+    <div class="total-price">
       <h5 v-if="selectedTicketQuantity">
         <strong>
           Total: R{{selectedTicketQuantity * movie.price}}
         </strong>
       </h5>
-        <p v-if="selectedTicketQuantity">{{selectedTicketQuantity}} ticket(s)</p>
-      </div>
-
-    <PrimaryButton class="checkout-button" button-text="Checkout"/>
+      <p v-if="selectedTicketQuantity">{{selectedTicketQuantity}} ticket(s)</p>
     </div>
 
+    <PrimaryButton class="checkout-button" button-text="Checkout"/>
   </div>
 </div>
 </template>
@@ -257,7 +259,6 @@ img{
   aspect-ratio: 1/1.3;
   background: #141414;
   border-radius: 25px;
-  height: 460px;
   min-width: 500px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -269,14 +270,16 @@ img{
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 500px;
+  width: 400px;
   height: 100px;
-  background: linear-gradient( #141414, #00FF7F, #00FF7F, #00FF7F, #00FF7F, #00FF7F, #00FF7F, #00FF7F, #00FF7F);
-  position: absolute;
-  bottom: 0;
+  background: #00FF7F;
+  position: fixed;
+  bottom: 20px;
+  right: 10px;
   padding: 20px;
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
+  border-radius: 25px;
+  z-index: 10;
+  opacity: 90%;
 }
 
 .total-price{
