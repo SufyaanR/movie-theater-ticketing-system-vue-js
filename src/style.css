@@ -55,3 +55,11 @@ button:focus-visible {
   padding: 2rem;
   text-align: center;
 }
+
+input:focus{
+    border: 1px solid #00FF7F !important;
+}
+
+select:focus{
+    border: 1px solid #00FF7F !important;
+}

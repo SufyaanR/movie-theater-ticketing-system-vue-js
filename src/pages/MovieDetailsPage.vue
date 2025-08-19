@@ -28,13 +28,32 @@ const selectedTheaterId = ref("Choose a theater");
 const defaultTheaterText = ref("Choose a theater");
 
 const seats = ref([]);
+const seatsSelected = ref([]);
 
-const selectedTicketQuantity = ref();
+const selectedTicketQuantity = ref(null);
+const exceedsTicketLimit = ref(false);
 
 function toggleTicketSummary(){
   viewSummary.value = !viewSummary.value;
-
 }
+
+async function addSeatSelection(id) {
+  const index = seatsSelected.value.indexOf(id);
+
+  if (index === -1) {
+    if (seatsSelected.value.length < selectedTicketQuantity.value) {
+      seatsSelected.value.push(id);
+    }
+  }
+  else {
+    seatsSelected.value.splice(index, 1);
+  }
+}
+
+function isSeatSelected(id){
+  return seatsSelected.value.includes(id);
+}
+
 //makes a request on load
 onBeforeMount(async() => {
    movie.value = await getMovieById(movieId);
@@ -65,9 +84,18 @@ watch(selectedTheaterId, async(newTheaterId)=>{
 })
 
 watch(selectedTicketQuantity, async(ticketQuantity)=>{
+    exceedsTicketLimit.value = false;
+
   if(ticketQuantity < 0){
-    selectedTicketQuantity.value=0;
+    selectedTicketQuantity.value = null;
   }
+
+  if (ticketQuantity > seats.value.length){
+    exceedsTicketLimit.value = true;
+  }
+
+  //reset seat selection
+  seatsSelected.value = [];
 })
 </script>
 
@@ -135,17 +163,18 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
         Enter your ticket quantity
         <PrimaryTag v-if="selectedTicketQuantity" label="✓" />
       </label>
-      <input v-model="selectedTicketQuantity" class="form-control" type="number" id="seatQuantity" placeholder="E.g 1">
+      <input v-model="selectedTicketQuantity" class="form-control" :class="{warningField: exceedsTicketLimit}" type="number" id="seatQuantity" placeholder="E.g 1">
+      <label for="seatQuantity" class="form-label warning" v-if="exceedsTicketLimit">{{seats.length}} seats available</label>
     </div>
 
-    <div v-if="selectedTicketQuantity && !viewSummary" class="seats">
+    <div v-if="selectedTicketQuantity && !viewSummary && !exceedsTicketLimit" class="seats">
       <h6>
-        Select seat(s)
-        <PrimaryTag v-if="selectedTheaterId!==defaultTheaterText" label="✓" />
+        Select {{ selectedTicketQuantity }} seat(s)
+        <PrimaryTag v-if="seatsSelected.length===selectedTicketQuantity" label="✓" />
       </h6>
 
     <div class="seat-container">
-    <SeatComponent v-for="seat in seats" :key="seat.seatId" :label="seat.seatId"/>
+    <SeatComponent v-for="seat in seats" :key="seat.seatId" :label="seat.seatId" :isSelected="isSeatSelected(seat.seatId)" @click="addSeatSelection(seat.seatId)" />
     </div>
     </div>
 
@@ -175,6 +204,10 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
             <p v-if="selectedTicketQuantity">
               <strong>Quantity</strong>: {{ selectedTicketQuantity }}
             </p>
+
+            <p v-if="seatsSelected.length">
+              <strong>Selected seats</strong>: {{ seatsSelected }}
+            </p>
           </div>
 
           <div v-if="selectedTicketQuantity">
@@ -191,7 +224,7 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
 
   </div>
 
-  <div v-if="selectedTicketQuantity" class="checkout-container">
+  <div v-if="seatsSelected.length === selectedTicketQuantity" class="checkout-container">
     <div class="total-price">
       <h5 v-if="selectedTicketQuantity">
         <strong>
@@ -201,7 +234,8 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
       <p v-if="selectedTicketQuantity">{{selectedTicketQuantity}} ticket(s)</p>
     </div>
 
-    <PrimaryButton class="checkout-button" button-text="Checkout"/>
+    <PrimaryButton v-if="!viewSummary" class="checkout-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" @click="toggleTicketSummary()" button-text="Confirm"/>
+    <PrimaryButton v-else class="checkout-button" button-text="Checkout"/>
   </div>
 </div>
 </template>
@@ -277,7 +311,7 @@ img{
   bottom: 20px;
   right: 10px;
   padding: 20px;
-  border-radius: 25px;
+  border-radius: 10px;
   z-index: 10;
   opacity: 90%;
 }
@@ -314,5 +348,17 @@ select{
 
 input{
   width: 320px;
+}
+
+.warning{
+  color: crimson;
+}
+
+.warningField{
+  border: 1px solid crimson !important;
+}
+
+button:focus{
+  border: 1px solid #00FF7F !important;
 }
 </style>

@@ -19,8 +19,8 @@ onBeforeMount(async () => {
 
     <div class="results-header">
       <h1>Movies</h1>
-      <h3 v-if="!movies.length">No results</h3>
-      <h3 v-else >{{movies.length}} results found</h3>
+      <p v-if="!movies.length">No results</p>
+      <p v-else >{{movies.length}} results found</p>
     </div>
 
     <div class="movies-container">
