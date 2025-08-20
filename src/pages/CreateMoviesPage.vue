@@ -119,7 +119,8 @@ function onFileChange(event: Event) {
 .main-container{
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
   gap: 50px;
 }
 
