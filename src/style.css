@@ -63,3 +63,15 @@ input:focus{
 select:focus{
     border: 1px solid #00FF7F !important;
 }
+
+.warning{
+    color: crimson;
+}
+
+.warningField{
+    border: 1px solid crimson !important;
+}
+
+button:focus{
+    border: 1px solid #00FF7F !important;
+}

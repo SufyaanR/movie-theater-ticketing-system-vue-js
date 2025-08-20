@@ -12,6 +12,7 @@ defineProps({
   genre: String,
   ageRestriction: String,
   viewType: String,
+  disableButton: Boolean,
 })
 
 function redirect(id){
@@ -31,7 +32,7 @@ function redirect(id){
         <PrimaryTag v-if="viewType==='3D'" :label="viewType"/>
       </div>
       <p>{{ genre }}</p>
-      <PrimaryButton buttonText="View Now" @click="redirect(id)"/>
+      <PrimaryButton v-if="!disableButton" buttonText="View Now" @click="redirect(id)"/>
     </div>
   </div>
 </template>

@@ -2,6 +2,7 @@
 import { ref,onBeforeMount } from 'vue';
 import MoviesCardComponent from '../components/MoviesCardComponent.vue';
 import { getAllMovies } from "../routes/routes.js";
+import AdminControlsComponent from "../components/AdminControlsComponent.vue";
 
 const movies = ref([]);
 
@@ -34,6 +35,8 @@ onBeforeMount(async () => {
       :view-type="movie.viewType"/>
     </div>
   </div>
+
+    <AdminControlsComponent button-text="Add Movies" button-link="/movie/create"/>
   </div>
 </template>
 

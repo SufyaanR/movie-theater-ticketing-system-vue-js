@@ -256,6 +256,7 @@ img{
 .movie-details-container{
   display: flex;
   flex-direction: row;
+  max-height: 650px;
 }
 
 .movie-details{
@@ -270,7 +271,7 @@ img{
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  bottom: 0;
+  bottom: 10vh;
   position: absolute;
 }
 
@@ -283,7 +284,6 @@ img{
   border-radius: 25px;
   height: 650px;
   min-width: 500px;
-  margin-bottom: 50px;
 }
 
 .form-fields{
@@ -348,17 +348,5 @@ select{
 
 input{
   width: 320px;
-}
-
-.warning{
-  color: crimson;
-}
-
-.warningField{
-  border: 1px solid crimson !important;
-}
-
-button:focus{
-  border: 1px solid #00FF7F !important;
 }
 </style>
