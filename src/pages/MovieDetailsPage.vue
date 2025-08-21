@@ -309,7 +309,6 @@ img{
   background: #00FF7F;
   position: fixed;
   bottom: 20px;
-  right: 10px;
   padding: 20px;
   border-radius: 10px;
   z-index: 10;

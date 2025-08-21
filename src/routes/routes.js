@@ -11,6 +11,15 @@ export async function getMovieById(id) {
   return data;
 }
 
+export async function createMovie(movie) {
+    const res = await fetch("http://localhost:8080/Movie/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(movie)
+    });
+    return await res.json();
+}
+
 //BRANCHES
 export async function getAllBranches() {
     const res = await fetch('http://localhost:8080/branch/getAll');

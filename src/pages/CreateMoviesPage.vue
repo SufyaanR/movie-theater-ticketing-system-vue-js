@@ -2,11 +2,15 @@
 import {ref} from "vue";
 import MoviesCardComponent from "../components/MoviesCardComponent.vue";
 import PrimaryTag from "../components/PrimaryTag.vue";
-import AdminControlsComponent from "../components/AdminControlsComponent.vue";
 import PrimaryButton from "../components/PrimaryButton.vue";
+import {createMovie} from "../routes/routes";
+import router from "../router";
 
 const movieTitle = ref();
 const movieGenre = ref();
+const movieDuration = ref();
+const moviePrice = ref();
+const movieDistributor = ref();
 const movieImage = ref();
 const movieDescription = ref();
 const ageRestriction = ref();
@@ -17,6 +21,28 @@ function onFileChange(event: Event) {
   const file = target.files?.[0];
   if (file) {
     movieImage.value = URL.createObjectURL(file);
+  }
+}
+
+async function onSubmit() {
+  const movie = {
+    movieId: '111111',
+    title: movieTitle.value,
+    genre: movieGenre.value,
+    description: movieDescription.value,
+    ageRestriction: ageRestriction.value,
+    viewType: viewType.value,
+    durationMinutes: movieDuration.value,
+    price: moviePrice.value,
+    distributor: movieDistributor.value,
+  };
+
+  try {
+    const data = await createMovie(movie);
+    alert("Movie created!");
+    router.push(`/movie/111111`);
+  } catch (err) {
+    console.error("Failed to create movie:", err);
   }
 }
 </script>
@@ -40,10 +66,15 @@ function onFileChange(event: Event) {
         </label>
         <input class="form-control" v-model="movieGenre" :class="{warningField: null}" id="movieGenre" placeholder="E.g Comedy">
 
+        <label for="movieDistributor" class="form-label">
+          Enter the distributor
+        </label>
+        <input class="form-control" v-model="movieDistributor" :class="{warningField: null}" id="movieDistributor" placeholder="E.g Marvel Studios">
+
         <label for="movieDuration" class="form-label">
           Movie duration
         </label>
-        <input class="form-control" :class="{warningField: null}" id="movieDuration" type="number" placeholder="E.g 90 mins">
+        <input class="form-control" :class="{warningField: null}" v-model="movieDuration" id="movieDuration" type="number" placeholder="E.g 90 mins">
 
         <label for="movieDescription" class="form-label">
           Enter the description
@@ -54,6 +85,11 @@ function onFileChange(event: Event) {
           Age restriction
         </label>
         <input class="form-control" :class="{warningField: null}" v-model="ageRestriction" id="ageRestriction" type="number" placeholder="E.g 18">
+
+        <label for="moviePrice" class="form-label">
+          Price
+        </label>
+        <input class="form-control" :class="{warningField: null}" v-model="moviePrice" id="moviePrice" type="number" placeholder="E.g R180">
 
         <label class="form-label">Select the view type</label>
 
@@ -112,7 +148,7 @@ function onFileChange(event: Event) {
       />
   </div>
   </div>
-    <PrimaryButton v-if="movieTitle" :button-text="'Create ' + movieTitle"/>
+    <PrimaryButton v-if="movieTitle" :button-text="'Create ' + movieTitle" @click="onSubmit"/>
   </div>
 </template>
 <style scoped>
