@@ -1,5 +1,5 @@
 <script setup>
-
+import primaryButton from "../components/PrimaryButton.vue";
 </script>
 
 <template>
@@ -7,7 +7,7 @@
     <div class="paywall-header">
       <H1>Paywall</H1>
       <span>3 x Tickets for Mission Impossible @ R300</span>
-      <button class="close-btn" @click="$emit('close')">X</button>
+      <primaryButton @click="$emit('close')">X</primaryButton>
     </div>
 
     <input type="text" class="input-field" placeholder="Cardholder Name">
@@ -18,7 +18,8 @@
       <input type="text" class="input-field inline-inputs" placeholder="CVV">
     </div>
 
-    <button class="pay-button">Pay Now</button>
+
+    <primaryButton class="pay-button">Pay Now</primaryButton>
 
     <div class="card-icons">
       <img src="https://img.icons8.com/color/48/visa.png" alt="Visa">
@@ -76,15 +77,7 @@
 .pay-button {
   width: 50%;
   padding: 15px;
-  border-radius: 25px;
-  background: #00FF7F;
-  color: black;
   font-weight: bold;
-  transition: 0.3s;
-}
-
-.pay-button:hover {
-  background: #00cc66;
 }
 
 .card-icons {
