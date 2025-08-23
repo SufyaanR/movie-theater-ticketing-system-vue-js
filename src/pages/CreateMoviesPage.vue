@@ -16,12 +16,15 @@ const movieDescription = ref();
 const ageRestriction = ref();
 const viewType = ref();
 
-function onFileChange(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
-  if (file) {
-    movieImage.value = URL.createObjectURL(file);
-  }
+function onFileChange(e) {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.onload = () => {
+    // reader.result will look like "data:image/png;base64,iVBORw0..."
+    // We only want the Base64 part after the comma
+    movieImage.value = reader.result.split(",")[1];
+  };
+  reader.readAsDataURL(file);
 }
 
 async function onSubmit() {
@@ -35,6 +38,7 @@ async function onSubmit() {
     durationMinutes: movieDuration.value,
     price: moviePrice.value,
     distributor: movieDistributor.value,
+    image: movieImage.value,
   };
 
   try {
@@ -120,7 +124,7 @@ async function onSubmit() {
       </div>
 
       <div class="form">
-        <img v-if="movieImage" :src="movieImage" />
+        <img v-if="movieImage" :src="'data:image/jpeg;base64,' + movieImage" />
         <img v-else src="/src/assets/no-photo.jpg" />
 
         <label for="movieImage" class="form-label">
@@ -140,7 +144,7 @@ async function onSubmit() {
       <div class="preview">
         <h3><strong>Preview</strong></h3>
       <MoviesCardComponent
-          :image-path="movieImage"
+          :image="movieImage"
           :title="movieTitle"
           :genre="movieGenre"
           :view-type="viewType"

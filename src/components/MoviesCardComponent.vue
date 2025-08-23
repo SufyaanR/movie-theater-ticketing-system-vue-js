@@ -8,7 +8,7 @@ defineProps({
   id: String,
   title: String,
   description: String,
-  imagePath: String,
+  image: Blob,
   genre: String,
   ageRestriction: String,
   viewType: String,
@@ -23,7 +23,7 @@ function redirect(id){
 <template>
   <div class="card" style="width: 18rem;">
 
-    <img v-if="imagePath" :src="imagePath" class="card-img-top" alt="...">
+    <img v-if="image" :src="'data:image/jpeg;base64,' + image" class="card-img-top" alt="...">
     <img v-else src="/src/assets/no-photo.jpg" class="card-img-top" alt="...">
 
     <div class="card-body">

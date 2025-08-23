@@ -32,7 +32,8 @@ onBeforeMount(async () => {
       :id="movie.movieId"
       :genre="movie.genre"
       :age-restriction="movie.ageRestriction"
-      :view-type="movie.viewType"/>
+      :view-type="movie.viewType"
+      :image="movie.image"/>
     </div>
   </div>
 

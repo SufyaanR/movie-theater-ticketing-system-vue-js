@@ -103,7 +103,7 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
 <div class="main">
 
   <div class="movie-details-container">
-    <img v-if="movie.image" :src= movie.image>
+    <img v-if="movie.image" :src="'data:image/jpeg;base64,' + movie.image" alt="Movie poster" />
     <img v-else src= '/src/assets/no-photo.jpg'>
 
     <!--MOVIE DETAILS-->
@@ -191,7 +191,7 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#ticketSummary">
           <div class="accordion-body">
-            <img style="height: 100px; aspect-ratio: 1/1.3; border-radius: 0;" v-if="movie.image" :src= movie.image>
+            <img style="height: 100px; aspect-ratio: 1/1.3; border-radius: 0;" v-if="movie.image" :src= "'data:image/jpeg;base64,'+ movie.image">
             <img style="height: 100px; aspect-ratio: 1/1.3; border-radius: 0;" v-else src= '/src/assets/no-photo.jpg'>
 
             <h3><strong>{{movie.title}}</strong></h3>
