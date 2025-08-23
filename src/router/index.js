@@ -5,6 +5,7 @@ import MovieDetailsPage from "../pages/MovieDetailsPage.vue";
 import LoginPage from "../pages/LoginPage.vue";
 import PageNotFound from "../pages/PageNotFound.vue";
 import CreateMoviesPage from "../pages/CreateMoviesPage.vue";
+import PaywallPage from "../pages/PaywallPage.vue";
 
 //Renders page components when user navigates
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
     { path: '/movie/:id', name: 'MovieDetailsPage', component: MovieDetailsPage},
     {path: '/login', name: "LoginPage", component: LoginPage},
     {path: '/movie/create', name: "CreateMoviesPage", component: CreateMoviesPage},
+    {path: '/paywall', name: "PaywallPage", component: PaywallPage},
     { path: '/:catchAll(.*)*', name: "PageNotFound", component: PageNotFound} //This catches our error page not found
 ];
 
