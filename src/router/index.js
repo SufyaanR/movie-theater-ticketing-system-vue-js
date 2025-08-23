@@ -4,7 +4,8 @@ import UserDetailsPage from '../pages/UserDetailsPage.vue';
 import MovieDetailsPage from "../pages/MovieDetailsPage.vue";
 import LoginPage from "../pages/LoginPage.vue";
 import PageNotFound from "../pages/PageNotFound.vue";
-import CreateMoviesPage from "../pages/CreateMoviesPage.vue";
+import CreateMoviePage from "../pages/CreateMoviePage.vue";
+import EditMoviePage from "../pages/EditMoviePage.vue";
 import PaywallPage from "../pages/PaywallPage.vue";
 
 //Renders page components when user navigates
@@ -14,7 +15,8 @@ const routes = [
     { path: '/user-details', name: 'UserDetailsPage', component: UserDetailsPage },
     { path: '/movie/:id', name: 'MovieDetailsPage', component: MovieDetailsPage},
     {path: '/login', name: "LoginPage", component: LoginPage},
-    {path: '/movie/create', name: "CreateMoviesPage", component: CreateMoviesPage},
+    {path: '/movie/create', name: "CreateMoviePage", component: CreateMoviePage},
+    {path: '/movie/edit/:id', name: "EditMoviePage", component: EditMoviePage},
     {path: '/paywall', name: "PaywallPage", component: PaywallPage},
     { path: '/:catchAll(.*)*', name: "PageNotFound", component: PageNotFound} //This catches our error page not found
 ];

@@ -1,27 +1,45 @@
-<script setup lang="ts">
-import {ref} from "vue";
-import MoviesCardComponent from "../components/MoviesCardComponent.vue";
+<script setup>
+import { onBeforeMount, ref } from "vue";
+import MovieCardComponent from "../components/MovieCardComponent.vue";
 import PrimaryTag from "../components/PrimaryTag.vue";
 import PrimaryButton from "../components/PrimaryButton.vue";
-import {createMovie} from "../routes/routes";
+import { getMovieById, updateMovie } from "../routes/routes";
 import router from "../router";
+import { useRoute } from "vue-router";
 
-const movieTitle = ref();
-const movieGenre = ref();
-const movieDuration = ref();
-const moviePrice = ref();
-const movieDistributor = ref();
-const movieImage = ref();
-const movieDescription = ref();
-const ageRestriction = ref();
-const viewType = ref();
+const route = useRoute();
+const movieId = route.params.id;
+
+const movie = ref(null);
+
+const movieTitle = ref("");
+const movieGenre = ref("");
+const movieDuration = ref(0);
+const moviePrice = ref(0);
+const movieDistributor = ref("");
+const movieImage = ref("");
+const movieDescription = ref("");
+const ageRestriction = ref(0);
+const viewType = ref("");
+
+onBeforeMount(async () => {
+  const fetchedMovie = await getMovieById(movieId);
+  movie.value = fetchedMovie;
+  movieTitle.value = fetchedMovie.title;
+  movieGenre.value = fetchedMovie.genre;
+  movieDuration.value = fetchedMovie.durationMinutes;
+  moviePrice.value = fetchedMovie.price;
+  movieDistributor.value = fetchedMovie.distributor;
+  movieImage.value = fetchedMovie.image;
+  movieDescription.value = fetchedMovie.description;
+  ageRestriction.value = fetchedMovie.ageRestriction;
+  viewType.value = fetchedMovie.viewType;
+});
 
 function onFileChange(e) {
   const file = e.target.files[0];
   const reader = new FileReader();
   reader.onload = () => {
-    // reader.result will look like "data:image/png;base64,iVBORw0..."
-    // We only want the Base64 part after the comma
     movieImage.value = reader.result.split(",")[1];
   };
   reader.readAsDataURL(file);
@@ -29,7 +47,7 @@ function onFileChange(e) {
 
 async function onSubmit() {
   const movie = {
-    movieId: '111111',
+    movieId: movieId,
     title: movieTitle.value,
     genre: movieGenre.value,
     description: movieDescription.value,
@@ -42,11 +60,11 @@ async function onSubmit() {
   };
 
   try {
-    const data = await createMovie(movie);
-    alert("Movie created!");
-    router.push(`/movie/111111`);
+    await updateMovie(movie);
+    alert("Movie updated!");
+    router.push(`/movie/${movieId}`);
   } catch (err) {
-    console.error("Failed to create movie:", err);
+    console.error("Failed to update movie:", err);
   }
 }
 </script>
@@ -57,8 +75,8 @@ async function onSubmit() {
 
 
       <div class="form">
-        <h1 v-if="!movieTitle"><strong>Create Movie</strong></h1>
-        <h1 v-else><strong>Create Movie</strong>: {{movieTitle}}</h1>
+        <h1 v-if="!movieTitle"><strong>Edit Movie</strong></h1>
+        <h1 v-else><strong>Edit Movie</strong>: {{movie.title}}</h1>
 
         <label for="movieTitle" class="form-label">
           Enter the title
@@ -143,7 +161,7 @@ async function onSubmit() {
 
       <div class="preview">
         <h3><strong>Preview</strong></h3>
-      <MoviesCardComponent
+      <MovieCardComponent
           :image="movieImage"
           :title="movieTitle"
           :genre="movieGenre"
@@ -152,7 +170,7 @@ async function onSubmit() {
       />
   </div>
   </div>
-    <PrimaryButton v-if="movieTitle" :button-text="'Create ' + movieTitle" @click="onSubmit"/>
+    <PrimaryButton v-if="movieTitle" :button-text="'Save ' + movieTitle" @click="onSubmit"/>
   </div>
 </template>
 <style scoped>

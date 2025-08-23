@@ -20,6 +20,15 @@ export async function createMovie(movie) {
     return await res.json();
 }
 
+export async function updateMovie(movie) {
+    const res = await fetch("http://localhost:8080/Movie/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(movie)
+    });
+    return await res.json();
+}
+
 //BRANCHES
 export async function getAllBranches() {
     const res = await fetch('http://localhost:8080/branch/getAll');

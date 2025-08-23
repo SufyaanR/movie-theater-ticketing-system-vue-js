@@ -11,6 +11,8 @@ import PrimaryTag from "../components/PrimaryTag.vue";
 import SecondaryTag from "../components/SecondaryTag.vue";
 import PrimaryButton from "../components/PrimaryButton.vue";
 import SeatComponent from "../components/SeatComponent.vue";
+import AdminControlsComponent from "../components/AdminControlsComponent.vue";
+import router from "../router/index.js";
 
 const route = useRoute(); //gets the route path
 
@@ -97,6 +99,10 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
   //reset seat selection
   seatsSelected.value = [];
 })
+
+function redirect(id){
+  router.push(`/movie/edit/${id}`);
+}
 </script>
 
 <template>
@@ -240,6 +246,7 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
     <PrimaryButton v-if="!viewSummary" class="checkout-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" @click="toggleTicketSummary()" button-text="Confirm"/>
     <PrimaryButton v-else class="checkout-button" button-text="Checkout" link="/paywall"/>
   </div>
+  <AdminControlsComponent button-text="Edit Movie" @click="redirect(movieId)"/>
 </div>
 </template>
 

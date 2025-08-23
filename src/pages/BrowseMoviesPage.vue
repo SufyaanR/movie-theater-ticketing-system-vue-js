@@ -1,6 +1,6 @@
 <script setup>
 import { ref,onBeforeMount } from 'vue';
-import MoviesCardComponent from '../components/MoviesCardComponent.vue';
+import MovieCardComponent from '../components/MovieCardComponent.vue';
 import { getAllMovies } from "../routes/routes.js";
 import AdminControlsComponent from "../components/AdminControlsComponent.vue";
 
@@ -25,7 +25,7 @@ onBeforeMount(async () => {
     </div>
 
     <div class="movies-container">
-      <MoviesCardComponent v-for="(movie, index) in movies"
+      <MovieCardComponent v-for="(movie, index) in movies"
       :key="index"
       :title="movie.title"
       :description="movie.description"
