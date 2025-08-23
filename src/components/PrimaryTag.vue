@@ -1,5 +1,8 @@
 <template>
-  <span class="badge text-bg-secondary">{{ label }} <slot/></span>
+  <span class="badge text-bg-secondary">
+    <p>{{ label }}</p>
+    <slot/>
+  </span>
 </template>
 <script setup>
 defineProps({
@@ -11,9 +14,12 @@ defineProps({
 .badge{
   color: #141414 !important;
   background: #00FF7F !important;
-  font-weight: bolder;
   min-width: 40px;
   height: 20px;
   margin: 2px;
+}
+
+p{
+  font-weight: bolder;
 }
 </style>

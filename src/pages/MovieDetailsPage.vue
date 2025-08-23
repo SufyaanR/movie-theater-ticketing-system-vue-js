@@ -111,7 +111,10 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
       <h1><strong>{{ movie.title }}</strong></h1>
 
       <PrimaryTag v-if="movie.viewType==='3D'" :label="movie.viewType"/>
+      <div>
       <SecondaryTag v-if="movie.genre" :label="movie.genre"/>
+      <SecondaryTag v-if="movie.distributor" :label="movie.distributor"/>
+      </div>
 
       <p>{{ movie.description }}</p>
 
@@ -235,7 +238,7 @@ watch(selectedTicketQuantity, async(ticketQuantity)=>{
     </div>
 
     <PrimaryButton v-if="!viewSummary" class="checkout-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" @click="toggleTicketSummary()" button-text="Confirm"/>
-    <PrimaryButton v-else class="checkout-button" button-text="Checkout"/>
+    <PrimaryButton v-else class="checkout-button" button-text="Checkout" link="/paywall"/>
   </div>
 </div>
 </template>

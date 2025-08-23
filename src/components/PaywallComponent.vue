@@ -10,12 +10,12 @@ import primaryButton from "../components/PrimaryButton.vue";
       <primaryButton @click="$emit('close')">X</primaryButton>
     </div>
 
-    <input type="text" class="input-field" placeholder="Cardholder Name">
-    <input type="text" class="input-field" placeholder="Card Number">
+    <input type="text" class="form-control" placeholder="Cardholder Name">
+    <input type="text" class="form-control" placeholder="Card Number">
 
     <div class="inline-fields">
-      <input type="date" class="input-field inline-inputs" placeholder="Expiry Date">
-      <input type="text" class="input-field inline-inputs" placeholder="CVV">
+      <input type="date" class="form-control inline-inputs" placeholder="Expiry Date">
+      <input type="text" class="form-control inline-inputs" placeholder="CVV">
     </div>
 
 
@@ -51,14 +51,10 @@ import primaryButton from "../components/PrimaryButton.vue";
   font-weight: bold;
 }
 
-.input-field {
+.form-control {
   width: 100%;
   padding: 12px 15px;
   margin-bottom: 15px;
-  border-radius: 25px;
-  border: none;
-  background: white;
-  color: #1a1a1a;
 }
 
 .inline-inputs{
