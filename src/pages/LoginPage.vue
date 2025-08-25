@@ -1,7 +1,15 @@
 <script setup>
+import LoginComponent from "../components/LoginComponent.vue";
+import SignUpComponent from "../components/SignUpComponent.vue";
+
+defineProps({
+  isUserLoggedIn: Boolean,
+})
+
 </script>
 <template>
-  <h1>Login</h1>
+  <LoginComponent v-if="isUserLoggedIn" />
+  <SignUpComponent v-else />
 </template>
 <style scoped>
 </style>
