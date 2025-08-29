@@ -67,6 +67,10 @@ input:focus{
     border: 1px solid #00FF7F !important;
 }
 
+textarea:focus{
+    border: 1px solid #00FF7F !important;
+}
+
 select:focus{
     border: 1px solid #00FF7F !important;
 }

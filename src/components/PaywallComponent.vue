@@ -1,5 +1,19 @@
 <script setup>
 import primaryButton from "../components/PrimaryButton.vue";
+import {ref} from "vue";
+import {createMovie} from "../routes/routes.js";
+
+
+const cardholderName = ref();
+
+async function onPaymentConfirmation(){
+  const payment = {
+    paymentId: "id",
+    amount: amount.value,
+  }
+
+  const dataReturned = await createMovie(payment)
+}
 </script>
 
 <template>
@@ -10,7 +24,7 @@ import primaryButton from "../components/PrimaryButton.vue";
       <primaryButton @click="$emit('close')">X</primaryButton>
     </div>
 
-    <input type="text" class="form-control" placeholder="Cardholder Name">
+    <input type="text" class="form-control" placeholder="Cardholder Name" v-model="cardholderName">
     <input type="text" class="form-control" placeholder="Card Number">
 
     <div class="inline-fields">
@@ -19,7 +33,7 @@ import primaryButton from "../components/PrimaryButton.vue";
     </div>
 
 
-    <primaryButton class="pay-button">Pay Now</primaryButton>
+    <primaryButton class="pay-button" @click="onPaymentConfirmation()">Pay Now</primaryButton>
 
     <div class="card-icons">
       <img src="https://img.icons8.com/color/48/visa.png" alt="Visa">

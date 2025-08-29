@@ -1,21 +1,38 @@
 <script setup>
 import { ref } from 'vue';
 import PrimaryButton from "../components/PrimaryButton.vue";
+import {getAllUsersByEmail, getUserDetails} from "../routes/routes.js";
 
 const email = ref("");
 const password = ref("");
 
+const user = ref([]);
+
+//TODO: refactor email to userID (On UI as well)
+//TODO: authenticate user password with user input for password
+//TODO: if authenticated, route user to profile page. Reference EditMovieDetailsPage:onSubmit() 'router.push'. route to "/movies"
+
+async function validateUser(){
+  user.value = await getUserDetails(email.value);
+
+  authenticateUser();
+}
+
+function authenticateUser(){
+  user.value.password;
+}
 
 </script>
 
 <template>
-  <div class="login-page">
+  <div class="login-page main">
     <div class="login-container">
       <h2>Login</h2>
 
       <form @submit.prevent="handleLogin" class="login-form">
-        <label for="email">Email address or username</label>
+        <label for="email">User ID</label>
         <input
+            class="form-control"
             id="email"
             v-model="email"
             type="text"
@@ -24,6 +41,7 @@ const password = ref("");
 
         <label for="password">Password</label>
         <input
+            class="form-control"
             id="password"
             v-model="password"
             type="password"
@@ -38,7 +56,7 @@ const password = ref("");
 
         <PrimaryButton
             button-text="Login"
-            @click="handleLogin"
+            @click="validateUser"
         />
 
         <p class="signup-text">
@@ -55,8 +73,6 @@ const password = ref("");
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-
 }
 
 .login-container {
