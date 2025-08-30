@@ -39,6 +39,7 @@ function redirect(id){
 
 <style scoped>
 .card{
+  width: 18rem;
   background: #141414;
   margin: 10px;
   border-radius: 8px;
