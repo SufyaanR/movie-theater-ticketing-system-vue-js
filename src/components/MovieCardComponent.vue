@@ -21,7 +21,7 @@ function redirect(id){
 </script>
 
 <template>
-  <div class="card" style="width: 18rem;">
+  <div class="card">
 
     <img v-if="image" :src="'data:image/jpeg;base64,' + image" class="card-img-top" alt="...">
     <img v-else src="/src/assets/no-photo.jpg" class="card-img-top" alt="...">
@@ -40,6 +40,8 @@ function redirect(id){
 <style scoped>
 .card{
   background: #141414;
+  margin: 10px;
+  border-radius: 8px;
 }
 
 .card-title{

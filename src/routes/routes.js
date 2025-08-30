@@ -29,6 +29,18 @@ export async function updateMovie(movie) {
     return await res.json();
 }
 
+export async function findByGenre(genre){
+    const res = await fetch(`http://localhost:8080/Movie/genre/${genre}`);
+    const data = await res.json();
+    return data;
+}
+
+export async function findByTitle(title){
+    const res = await fetch(`http://localhost:8080/Movie/title/${title}`);
+    const data = await res.json();
+    return data;
+}
+
 //BRANCHES
 export async function getAllBranches() {
     const res = await fetch('http://localhost:8080/branch/getAll');

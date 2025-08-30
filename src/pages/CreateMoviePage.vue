@@ -3,7 +3,7 @@ import {ref} from "vue";
 import MovieCardComponent from "../components/MovieCardComponent.vue";
 import PrimaryTag from "../components/PrimaryTag.vue";
 import PrimaryButton from "../components/PrimaryButton.vue";
-import {createMovie} from "../routes/routes";
+import {createMovie, getAllMovies} from "../routes/routes";
 import router from "../router";
 
 const movieTitle = ref();
@@ -29,7 +29,6 @@ function onFileChange(e) {
 
 async function onSubmit() {
   const movie = {
-    movieId: '111111',
     title: movieTitle.value,
     genre: movieGenre.value,
     description: movieDescription.value,
@@ -44,9 +43,21 @@ async function onSubmit() {
   try {
     const data = await createMovie(movie);
     alert("Movie created!");
-    router.push(`/movie/111111`);
+    await getAllMovies();
+    router.push(`/movie/${data.movieId}`);
+
+    movieTitle.value = '';
+    movieGenre.value = '';
+    movieDuration.value = '';
+    moviePrice.value = '';
+    movieDistributor.value = '';
+    movieImage.value = '';
+    movieDescription.value = '';
+    ageRestriction.value = '';
+    viewType.value = '';
   } catch (err) {
     console.error("Failed to create movie:", err);
+    alert("Failed to create movie: " + err.message);
   }
 }
 </script>
