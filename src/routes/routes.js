@@ -55,15 +55,22 @@ export async function getAllTheatersByBranchId(id) {
     return data;
 }
 
-export async function getUserDetails(userId) {
-  const res = await fetch(`http://localhost:8080/admin/read/${userId}`);
-  const data = await res.json();
-  return data;
-}
-
 //SEATS
 export async function getAllSeatsByTheaterRoomId(id) {
     const res = await fetch(`http://localhost:8080/seat/getAll/${id}`);
+    const data = await res.json();
+    return data;
+}
+
+//ADMINS
+export async function getUserDetails(userId) {
+    const res = await fetch(`http://localhost:8080/admin/read/${userId}`);
+    const data = await res.json();
+    return data;
+}
+
+export async function getAllUsersByEmail(email) {
+    const res = await fetch(`http://localhost:8080/admin/readByEmail/${encodeURIComponent(email)}`);
     const data = await res.json();
     return data;
 }

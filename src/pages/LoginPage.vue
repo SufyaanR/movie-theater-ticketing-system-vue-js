@@ -8,8 +8,7 @@ defineProps({
 
 </script>
 <template>
-  <LoginComponent v-if="isUserLoggedIn" />
-  <SignUpComponent v-else />
+  <LoginComponent />
 </template>
 <style scoped>
 </style>

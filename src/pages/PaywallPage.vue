@@ -15,7 +15,7 @@ export default {
 <template>
   <div class="main">
     <primaryButton @click="showPopup = true">Open Popup</primaryButton>
-    <paywall-component v-if="showPopup" @close="showPopup = false"/>
+    <paywall-component v-if="showPopup" @close="showPopup = false" cardholder-name="Sufyaan"/>
   </div>
 </template>
 
