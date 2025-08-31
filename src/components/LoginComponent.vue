@@ -4,7 +4,7 @@ import PrimaryButton from "../components/PrimaryButton.vue";
 import { getUserDetails } from "../routes/routes.js";
 import router from "../router";
 
-const userId = ref(""); // keep as string
+const userId = ref("");
 const password = ref("");
 const user = ref(null);
 
@@ -15,7 +15,7 @@ async function validateUser() {
       return;
     }
 
-    // Convert to number before sending to API
+
     const id = Number(userId.value);
     if (isNaN(id)) {
       alert("User ID must be a number");
@@ -70,8 +70,8 @@ function authenticateUser() {
         />
 
         <p class="terms">
-          By continuing, you agree to the <a href="#">Terms of Use</a> and
-          <a href="#">Privacy Policy</a>.
+          By continuing, you agree to the <a href="/terms-and-conditions">Terms and Conditions</a> and
+          <a href="/privacy-policy">Privacy Policy</a>.
         </p>
 
         <PrimaryButton button-text="Login" @click="validateUser" />
@@ -120,6 +120,7 @@ label {
 
 input {
   background: white;
+  color:black;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
@@ -129,8 +130,16 @@ input {
 
 input:focus {
   border-color: #00FF7F;
+  color: black;
+}
+input:focus {
+  border-color: #00FF7F;
+  color: black;
 }
 
+input::placeholder {
+  color: #666;
+}
 .terms {
   font-size: 0.8rem;
   color: white;

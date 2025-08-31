@@ -7,6 +7,7 @@ const lastName = ref("");
 const username = ref("");
 const email = ref("");
 const password = ref("");
+
 </script>
 
 <template>
@@ -69,7 +70,7 @@ const password = ref("");
 
         <p class="terms">
           By creating an account, you agree to the
-          <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
+          <a href="/terms-and-conditions">Terms and Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>.
         </p>
 
         <PrimaryButton button-text="Create an account" />
@@ -84,7 +85,6 @@ const password = ref("");
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-
 }
 
 .signup-container {
@@ -139,6 +139,7 @@ label {
 
 input {
   background: white;
+  color: black;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
