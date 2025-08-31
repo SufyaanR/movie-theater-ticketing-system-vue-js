@@ -8,6 +8,11 @@ import CreateMoviePage from "../pages/CreateMoviePage.vue";
 import EditMoviePage from "../pages/EditMoviePage.vue";
 import PaywallPage from "../pages/PaywallPage.vue";
 import SignUpPage from "../pages/SignUpPage.vue";
+import PrivacyPolicyPage from "../pages/PrivacyPolicyPage.vue";
+import TermsAndConditionsPage from "../pages/TermsAndConditionsPage.vue";
+import AboutUsPage from "../pages/AboutUsPage.vue";
+
+
 
 //Renders page components when user navigates
 const routes = [
@@ -20,6 +25,9 @@ const routes = [
     {path: '/movie/edit/:id', name: "EditMoviePage", component: EditMoviePage},
     {path: '/paywall', name: "PaywallPage", component: PaywallPage},
     { path: '/signup', name: "SignUpPage", component: SignUpPage },
+    { path: '/privacy-policy', name: "PrivacyPolicyPage", component: PrivacyPolicyPage },
+    { path: '/terms-and-conditions', name: "TermsAndConditionsPage", component: TermsAndConditionsPage },
+    {path: '/about-us',name:"AboutUsPage",component: AboutUsPage},
     { path: '/:catchAll(.*)*', name: "PageNotFound", component: PageNotFound}, //This catches our error page not found
 
 ];
