@@ -1,57 +1,107 @@
 <script setup>
 import primaryButton from "../components/PrimaryButton.vue";
 import {ref} from "vue";
-import {createMovie} from "../routes/routes.js";
+import { addCard, createPayment } from "../routes/routes.js";
 
+const props = defineProps({
+  totalAmount: Number,
+  numberOfTickets: Number,
+  movieTitle: String
+});
 
-const cardholderName = ref();
+const cardHolderName = ref();
+const cardNumber = ref();
+const cvv = ref();
+const expiryDate = ref();
+
+async function onPayNow(){
+  const payload = {
+    card: {
+      cardHolderName: cardHolderName.value,
+      cardNumber: cardNumber.value,
+      cvv: cvv.value,
+      expiryDate: expiryDate.value,
+    },
+    payment: {
+      amount: props.totalAmount,
+    }
+  };
+
+  try{
+    const savedCard = await addCard(payload.card);
+    console.log("Card Created: ", savedCard);
+
+    const savedPayment = await createPayment(payload.payment);
+    console.log("Payment created:", savedPayment);
+
+    alert("Payment processed successfully!");
+  } catch (err) {
+    console.error("Error:", err);
+    alert("Something went wrong with payment.");
+  }
+}
 
 async function onPaymentConfirmation(){
   const payment = {
     paymentId: "id",
     amount: amount.value,
   }
-
   const dataReturned = await createMovie(payment)
 }
 </script>
 
 <template>
-  <div class="paywall-container">
-    <div class="paywall-header">
-      <H1>Paywall</H1>
-      <span>3 x Tickets for Mission Impossible @ R300</span>
-      <primaryButton @click="$emit('close')">X</primaryButton>
-    </div>
+  <div class="overlay">
+    <div class="paywall-container">
+      <div class="paywall-header">
+        <h1>Paywall</h1>
+        <span>{{numberOfTickets}} x Tickets for {{movieTitle}} @ R{{totalAmount}}</span>
+        <primaryButton @click="$emit('close')">X</primaryButton>
+      </div>
 
-    <input type="text" class="form-control" placeholder="Cardholder Name" v-model="cardholderName">
-    <input type="text" class="form-control" placeholder="Card Number">
+      <input type="text" class="form-control" placeholder="Cardholder Name" v-model="cardHolderName">
+      <input type="text" class="form-control" placeholder="Card Number" v-model="cardNumber">
 
-    <div class="inline-fields">
-      <input type="date" class="form-control inline-inputs" placeholder="Expiry Date">
-      <input type="text" class="form-control inline-inputs" placeholder="CVV">
-    </div>
+      <div class="inline-fields">
+        <input type="date" class="form-control inline-inputs" placeholder="Expiry Date" v-model="expiryDate">
+        <input type="text" class="form-control inline-inputs" placeholder="CVV" v-model="cvv">
+      </div>
 
+      <primaryButton class="pay-button" @click="onPayNow()">Pay Now</primaryButton>
 
-    <primaryButton class="pay-button" @click="onPaymentConfirmation()">Pay Now</primaryButton>
-
-    <div class="card-icons">
-      <img src="https://img.icons8.com/color/48/visa.png" alt="Visa">
-      <img src="https://img.icons8.com/color/48/amex.png" alt="Amex">
-      <img src="https://img.icons8.com/color/48/mastercard.png" alt="MasterCard">
-      <img src="https://img.icons8.com/color/48/discover.png" alt="Discover">
+      <div class="card-icons">
+        <img src="https://img.icons8.com/color/48/visa.png" alt="Visa">
+        <img src="https://img.icons8.com/color/48/amex.png" alt="Amex">
+        <img src="https://img.icons8.com/color/48/mastercard.png" alt="MasterCard">
+        <img src="https://img.icons8.com/color/48/discover.png" alt="Discover">
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
 .paywall-container {
+  background-color: #141414;
   border: 2px solid #00FF7F;
   border-radius: 5px;
   padding: 20px;
-  width: 80%;
+  width: 60%;
   height: 50vh;
+  box-shadow: 0 0 20px rgba(0,0,0,0.7);
 }
 
 .paywall-header {
