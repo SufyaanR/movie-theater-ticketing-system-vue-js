@@ -2,6 +2,7 @@
 import primaryButton from "../components/PrimaryButton.vue";
 import {ref} from "vue";
 import { addCard, createPayment } from "../routes/routes.js";
+import router from "../router/index.js";
 
 const props = defineProps({
   totalAmount: Number,
@@ -35,19 +36,13 @@ async function onPayNow(){
     console.log("Payment created:", savedPayment);
 
     alert("Payment processed successfully!");
+    router.push("/movies");
   } catch (err) {
     console.error("Error:", err);
     alert("Something went wrong with payment.");
   }
 }
 
-async function onPaymentConfirmation(){
-  const payment = {
-    paymentId: "id",
-    amount: amount.value,
-  }
-  const dataReturned = await createMovie(payment)
-}
 </script>
 
 <template>

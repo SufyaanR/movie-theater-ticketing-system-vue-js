@@ -4,15 +4,25 @@ import PrimaryButton from "../components/PrimaryButton.vue";
 import { getUserDetails } from "../routes/routes.js";
 import router from "../router";
 
-const userId = ref("");
+const userId = ref(""); // keep as string
 const password = ref("");
-
 const user = ref(null);
 
 async function validateUser() {
   try {
+    if (!userId.value) {
+      alert("Please enter your User ID");
+      return;
+    }
 
-    user.value = await getUserDetails(userId.value);
+    // Convert to number before sending to API
+    const id = Number(userId.value);
+    if (isNaN(id)) {
+      alert("User ID must be a number");
+      return;
+    }
+
+    user.value = await getUserDetails(id);
 
     if (!user.value) {
       alert("User not found");
@@ -28,7 +38,6 @@ async function validateUser() {
 
 function authenticateUser() {
   if (user.value.password === password.value) {
-
     router.push("/user-details");
   } else {
     alert("Invalid password, please try again.");

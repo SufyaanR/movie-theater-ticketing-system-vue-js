@@ -7,11 +7,6 @@
   </h1>
   <p>Page Not Found</p>
     <PrimaryButton button-text="Go To 'Browse Movies'" link="/movies"/>
-    <p style="font-size: 18px; width: 500px;">
-      If you're part of the ADP3 Capstone team, attempting to navigate to a page.
-      Please add it to the 'src/router/index.js'.
-      Follow the way it's done in the file.
-    </p>
   </div>
 </template>
 <style scoped>
