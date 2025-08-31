@@ -12,6 +12,7 @@ import SecondaryTag from "../components/SecondaryTag.vue";
 import PrimaryButton from "../components/PrimaryButton.vue";
 import SeatComponent from "../components/SeatComponent.vue";
 import AdminControlsComponent from "../components/AdminControlsComponent.vue";
+import PaywallComponent from "../components/PaywallComponent.vue";
 import router from "../router/index.js";
 
 const route = useRoute(); //gets the route path
@@ -34,6 +35,16 @@ const seatsSelected = ref([]);
 
 const selectedTicketQuantity = ref(null);
 const exceedsTicketLimit = ref(false);
+
+const showPaywall = ref(false);
+
+function openPaywall(){
+  showPaywall.value = true;
+}
+
+function closePaywall(){
+  showPaywall.value = false;
+}
 
 function toggleTicketSummary(){
   viewSummary.value = !viewSummary.value;
@@ -244,10 +255,18 @@ function redirect(id){
     </div>
 
     <PrimaryButton v-if="!viewSummary" class="checkout-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" @click="toggleTicketSummary()" button-text="Confirm"/>
-    <PrimaryButton v-else class="checkout-button" button-text="Checkout" link="/paywall"/>
+    <PrimaryButton v-else class="checkout-button" button-text="Checkout" @click="openPaywall"/>
   </div>
   <AdminControlsComponent button-text="Edit Movie" @click="redirect(movieId)"/>
 </div>
+
+  <PaywallComponent
+      v-if="showPaywall"
+      @close="closePaywall"
+      :total-amount="selectedTicketQuantity * movie.price"
+      :number-of-tickets="selectedTicketQuantity"
+      :movie-title="movie.title"
+  />
 </template>
 
 <style scoped>

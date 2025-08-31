@@ -74,3 +74,23 @@ export async function getAllUsersByEmail(email) {
     const data = await res.json();
     return data;
 }
+
+//Card
+export async function addCard(card) {
+    const res = await fetch("http://localhost:8080/Card/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(card)
+    });
+    return await res.json();
+}
+
+//Payment
+export async function createPayment(payment){
+    const res = await fetch("http://localhost:8080/payment/create", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payment)
+    });
+    return await res.json();
+}
