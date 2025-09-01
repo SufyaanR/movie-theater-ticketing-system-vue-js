@@ -1,7 +1,7 @@
 <script setup>
 import { ref,onBeforeMount, watch } from 'vue';
 import MovieCardComponent from '../components/MovieCardComponent.vue';
-import { getAllMovies } from "../routes/routes.js";
+import {getAllMovies, getUserDetails} from "../routes/routes.js";
 import AdminControlsComponent from "../components/AdminControlsComponent.vue";
 
 const movies = ref([]);
@@ -9,9 +9,11 @@ const filteredMovies = ref([]);
 const searchQuery = ref("");
 const selectedGenre = ref("");
 const genres = ref(["Action", "Comedy", "Drama", "Horror", "Sci-Fi", "Romance", "Sports", "Documentary", "Thriller", "Animation", "Fantasy", "Mystery", "Crime", "Adventure", "Musical"]);
-
+const authenticatedUserId = localStorage.getItem("authenticatedUserId");
+const user = ref();
 //Makes a request on the first load
 onBeforeMount(async () => {
+  user.value = await getUserDetails(authenticatedUserId);
   movies.value = await getAllMovies();
   filteredMovies.value = movies.value;
 });
@@ -62,7 +64,7 @@ watch([searchQuery, selectedGenre], () => {
     </div>
   </div>
 
-    <AdminControlsComponent button-text="Add Movies" button-link="/movie/create"/>
+    <AdminControlsComponent v-if="user.admin" button-text="Add Movies" button-link="/movie/create"/>
   </div>
 </template>
 
