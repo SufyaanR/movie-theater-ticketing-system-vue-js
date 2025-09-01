@@ -231,8 +231,8 @@ function redirect(id){
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#ticketSummary">
           <div class="accordion-body">
-            <img style="height: 100px; aspect-ratio: 1/1.3; border-radius: 0;" v-if="movie.image" :src= "'data:image/jpeg;base64,'+ movie.image">
-            <img style="height: 100px; aspect-ratio: 1/1.3; border-radius: 0;" v-else src= '/src/assets/no-photo.jpg'>
+            <img v-if="movie.image" :src= "'data:image/jpeg;base64,'+ movie.image"/>
+            <img v-else src= '/src/assets/no-photo.jpg'/>
 
             <h3><strong>{{movie.title}}</strong></h3>
 
@@ -308,116 +308,209 @@ function redirect(id){
 </template>
 
 <style scoped>
-.main{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+@media(min-width:481px) {
+  .main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  img {
+    aspect-ratio: 2/3;
+    height: 650px;
+    border-radius: 25px;
+  }
+
+  .movie-details-container {
+    display: flex;
+    flex-direction: row;
+    max-height: 650px;
+  }
+
+  .movie-details-pricing {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    bottom: 10vh;
+    position: absolute;
+  }
+
+  .movie-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    padding: 20px;
+  }
+
+  .related-movies {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .book-now-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    aspect-ratio: 1/1.3;
+    background: #141414;
+    border-radius: 25px;
+    height: 650px;
+    min-width: 500px;
+  }
+
+  .form-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    aspect-ratio: 1/1.3;
+    background: #141414;
+    border-radius: 25px;
+    min-width: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  select {
+    width: 320px;
+  }
+
+  input {
+    width: 320px;
+  }
+
+  .accordion {
+    width: 320px;
+  }
+
+  .accordion button {
+    color: white;
+    background: #141414;
+  }
+
+  .accordion-body p {
+    text-align: left;
+  }
+
+  .accordion img{
+    height: 100px;
+    aspect-ratio: 1/1.3;
+    border-radius: 0;
+  }
 }
 
-img{
-  aspect-ratio: 2/3;
-  height: 650px;
-  border-radius: 25px;
-}
-.movie-details-container{
-  display: flex;
-  flex-direction: row;
-  max-height: 650px;
-}
 
-.related-movies{
-  display: flex;
-  flex-direction: row;
-}
 
-.movie-details{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 500px;
-  padding: 20px;
-}
+  .checkout-container {
+    color: #141414;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 100px;
+    background: #00FF7F;
+    position: fixed;
+    bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 10;
+    opacity: 90%;
+  }
 
-.movie-details-pricing{
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  bottom: 10vh;
-  position: absolute;
-}
+  .total-price {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
 
-.book-now-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  aspect-ratio: 1/1.3;
-  background: #141414;
-  border-radius: 25px;
-  height: 650px;
-  min-width: 500px;
-}
+  .seat-container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    width: 400px;
+  }
 
-.form-fields{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  aspect-ratio: 1/1.3;
-  background: #141414;
-  border-radius: 25px;
-  min-width: 500px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
+@media(max-width: 480px){
+  img {
+    aspect-ratio: 2/3;
+    width: 100%;
+    border-radius: 25px;
+  }
 
-.checkout-container{
-  color: #141414;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 400px;
-  height: 100px;
-  background: #00FF7F;
-  position: fixed;
-  bottom: 20px;
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 10;
-  opacity: 90%;
-}
+  .main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-.total-price{
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
+  .movie-details-pricing {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0;
+  }
 
-.seat-container{
-  display: flex;
-  flex-direction: row;
-  overflow-x: scroll;
-  width: 400px;
-}
+  .related-movies {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-.accordion{
-  width:320px;
-}
+  .book-now-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #141414;
+    border-radius: 25px;
+    width: 80vw;
+    height: auto;
+    padding: 5vw;
+  }
 
-.accordion button{
-  color: white;
-  background: #141414;
-}
+  .form-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #141414;
+    border-radius: 25px;
+    width: 80vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+  }
 
-.accordion-body p{
-  text-align: left;
-}
+  select {
+    width: 70vw;
+  }
 
-select{
-  width: 320px;
-}
+  input {
+    width: 70vw;
+  }
+  .accordion{
+    width: 70vw;
+  }
 
-input{
-  width: 320px;
+  .checkout-container{
+    top: 11vh;
+    width: 80vw;
+  }
+
+  .seat-container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    width: 70vw;
+  }
+
+  .accordion img{
+    width: 50vw;
+    aspect-ratio: 1/1.3;
+    border-radius: 0;
+  }
 }
 </style>

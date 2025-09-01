@@ -30,6 +30,12 @@ watch([searchQuery, selectedGenre], () => {
 </script>
 
 <template>
+  <div v-if="!movies.length" id="loading-overlay">
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
   <div class="main">
   <div class="main-container">
 
@@ -74,6 +80,19 @@ watch([searchQuery, selectedGenre], () => {
 </template>
 
 <style scoped>
+#loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
