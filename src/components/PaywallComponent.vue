@@ -82,7 +82,7 @@ async function onPayNow(){
   left: 0;
   width: 100vw;
   height: 100vh;
-  backdrop-filter: blur(1px) brightness(95%);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;

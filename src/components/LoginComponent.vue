@@ -38,8 +38,6 @@ async function validateUser() {
 
 function authenticateUser() {
   if (user.value.password === password.value) {
-    localStorage.setItem("authenticatedUserId", user.value.userId);
-    alert(`Welcome, ${user.value.firstName} ${user.value.lastName}`)
     router.push("/user-details");
   } else {
     alert("Invalid password, please try again.");

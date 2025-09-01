@@ -11,7 +11,7 @@ const password = ref("");
 </script>
 
 <template>
-  <div class="signup-page main">
+  <div class="signup-page">
     <div class="signup-container">
       <h2>Create an account</h2>
       <p class="login-link">
@@ -84,6 +84,7 @@ const password = ref("");
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
 }
 
 .signup-container {
