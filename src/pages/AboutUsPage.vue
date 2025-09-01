@@ -2,9 +2,9 @@
 </script>
 
 <template>
-  <div class="about-page">
+  <div class="about-page main">
     <div class="about-container">
-      <h2 class="title">About Us</h2>
+      <h2 class="title"><strong>About Us</strong></h2>
       <p class="group-name"><strong>Group RB12</strong></p>
 
       <p class="intro">
@@ -46,7 +46,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
   padding: 40px 20px;
 }
 

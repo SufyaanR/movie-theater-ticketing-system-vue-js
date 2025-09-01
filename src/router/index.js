@@ -37,4 +37,14 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+    const authenticatedUserId = localStorage.getItem("authenticatedUserId");
+
+    // Redirect to /movies if not authenticated
+    if (!authenticatedUserId && to.path !== "/login" && to.path !== "/signup" && to.path !== "/privacy-policy" && to.path !== "/terms-and-conditions") {
+        next("/login");
+    } else {
+        next();
+    }
+});
 export default router;
