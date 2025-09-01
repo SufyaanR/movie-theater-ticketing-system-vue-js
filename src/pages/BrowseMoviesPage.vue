@@ -3,6 +3,7 @@ import { ref,onBeforeMount, watch } from 'vue';
 import MovieCardComponent from '../components/MovieCardComponent.vue';
 import {getAllMovies, getUserDetails} from "../routes/routes.js";
 import AdminControlsComponent from "../components/AdminControlsComponent.vue";
+import PrimaryTag from "../components/PrimaryTag.vue";
 
 const movies = ref([]);
 const filteredMovies = ref([]);
@@ -41,7 +42,7 @@ watch([searchQuery, selectedGenre], () => {
 
     <div class="results-header">
       <h1 v-if="!selectedGenre">Movies</h1>
-      <h1 v-else>{{ selectedGenre }}</h1>
+      <h1 v-else>Movies: {{ selectedGenre }}</h1>
 
       <p v-if="!filteredMovies.length">No results</p>
       <p v-else >{{filteredMovies.length}} results found</p>
