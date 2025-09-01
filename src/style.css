@@ -10,6 +10,14 @@
 
 body{
     background: #181818;
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.main{
+    min-width: 100%;
+    min-height: 82vh;
 }
 
 header{

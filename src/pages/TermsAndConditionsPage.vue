@@ -10,37 +10,41 @@ function goBack() {
 <template>
   <div class="terms-page main">
     <div class="terms-container">
-      <h2>Terms and Conditions</h2>
+      <h1>
+        <strong>
+        Terms and Conditions
+        </strong>
+      </h1>
       <p>
         These Terms and Conditions govern your use of our platform. By using
         our services, you agree to comply with these terms.
       </p>
 
-      <h3>1. Account Responsibilities</h3>
+      <h5>1. Account Responsibilities</h5>
       <p>
         You are responsible for maintaining the confidentiality of your account
         and password and for all activities under your account.
       </p>
 
-      <h3>2. Acceptable Use</h3>
+      <h5>2. Acceptable Use</h5>
       <p>
         You agree not to misuse our platform or engage in illegal activities
         while using our services.
       </p>
 
-      <h3>3. Payments & Transactions</h3>
+      <h5>3. Payments & Transactions</h5>
       <p>
         Any payments made through the platform must be accurate and authorized
         by you. Refunds and disputes are subject to our policies.
       </p>
 
-      <h3>4. Limitation of Liability</h3>
+      <h5>4. Limitation of Liability</h5>
       <p>
         We are not liable for damages caused by system downtime, unauthorized
         access, or issues beyond our control.
       </p>
 
-      <h3>5. Changes to Terms</h3>
+      <h5>5. Changes to Terms</h5>
       <p>
         We reserve the right to update these terms at any time. Continued use
         of the platform means you accept the updated terms.
@@ -69,12 +73,11 @@ function goBack() {
   color: white;
 }
 
-h2 {
+h1 {
   margin-bottom: 20px;
-  color: #00ff7f;
 }
 
-h3 {
+h5 {
   margin-top: 20px;
   margin-bottom: 10px;
   color: #00ff7f;
