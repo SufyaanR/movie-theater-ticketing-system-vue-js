@@ -13,17 +13,22 @@ const password = ref("");
 <template>
   <div class="signup-page main">
     <div class="signup-container">
-      <h2>Create an account</h2>
+      <h2>
+        <strong>
+        Create an account
+        </strong>
+      </h2>
       <p class="login-link">
         Already have an account? <a href="/login">Log in</a>
       </p>
 
       <form class="signup-form">
         <div class="name-fields">
-          <div class="field">
-            <label for="firstName">First Name</label>
+          <div class="field ">
+            <label for="firstName">First name</label>
             <input
                 id="firstName"
+                class="form-control"
                 v-model="firstName"
                 type="text"
                 placeholder="Enter your first name"
@@ -31,9 +36,10 @@ const password = ref("");
           </div>
 
           <div class="field">
-            <label for="lastName">Last Name</label>
+            <label for="lastName">Last name</label>
             <input
                 id="lastName"
+                class="form-control"
                 v-model="lastName"
                 type="text"
                 placeholder="Enter your last name"
@@ -44,6 +50,7 @@ const password = ref("");
         <label for="username">What should we call you?</label>
         <input
             id="username"
+            class="form-control"
             v-model="username"
             type="text"
             placeholder="Enter a display name"
@@ -52,6 +59,7 @@ const password = ref("");
         <label for="email">What's your email?</label>
         <input
             id="email"
+            class="form-control"
             v-model="email"
             type="email"
             placeholder="Enter your email"
@@ -60,6 +68,7 @@ const password = ref("");
         <label for="password">Create a password</label>
         <input
             id="password"
+            class="form-control"
             v-model="password"
             type="password"
             placeholder="Enter a strong password"
@@ -137,8 +146,6 @@ label {
 }
 
 input {
-  background: white;
-  color: black;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;

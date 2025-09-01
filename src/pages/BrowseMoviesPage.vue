@@ -40,18 +40,21 @@ watch([searchQuery, selectedGenre], () => {
     </div>
 
     <div class="search-bar">
-      <input type="text" 
+      <input
+      type="text"
+      class="form-control"
       v-model="searchQuery" 
       placeholder="Search Movies..." 
       />
 
-      <select v-model="selectedGenre">
+      <select v-model="selectedGenre" class="form-select">
         <option value="">All Genres</option>
         <option v-for="(genre, index) in genres" :key="index" :value="genre">{{ genre }}</option>
       </select>
     </div>
 
     <div class="movies-container">
+      <h1 v-if="!filteredMovies.length">No results</h1>
       <MovieCardComponent v-for="(movie, index) in filteredMovies"
       :key="index"
       :title="movie.title"
@@ -97,7 +100,6 @@ watch([searchQuery, selectedGenre], () => {
 
 .search-bar input[type="text"] {
   padding: 12px 40px;
-  border: 3px solid #00FF7F;
   border-radius: 8px;
   font-size: 16px;
   transition: border 0.2s ease, box-shadow 0.2s ease;
@@ -111,7 +113,6 @@ watch([searchQuery, selectedGenre], () => {
 
 .search-bar select {
   padding: 12px 50px;
-  border: 3px solid #00FF7F;
   border-radius: 8px;
   font-size: 16px;
   transition: border 0.2s ease, box-shadow 0.2s ease;
@@ -121,6 +122,14 @@ watch([searchQuery, selectedGenre], () => {
   border-color: #00FF7F;
   box-shadow: 0 0 5px rgba(0, 255, 127, 0.5);
   outline: none;
+}
+
+input{
+  width: 320px;
+}
+
+select{
+  width: 320px;
 }
 
 </style>

@@ -4,9 +4,11 @@ import {
   getMovieById,
   getAllBranches,
   getAllTheatersByBranchId,
-  getAllSeatsByTheaterRoomId
+  getAllSeatsByTheaterRoomId,
+  getMoviesByGenre,
+  createSchedule
 } from "../routes/routes.js";
-import {onBeforeMount, ref, watch, computed} from "vue";
+import {onBeforeMount, ref, watch} from "vue";
 import PrimaryTag from "../components/PrimaryTag.vue";
 import SecondaryTag from "../components/SecondaryTag.vue";
 import PrimaryButton from "../components/PrimaryButton.vue";
@@ -14,11 +16,13 @@ import SeatComponent from "../components/SeatComponent.vue";
 import AdminControlsComponent from "../components/AdminControlsComponent.vue";
 import PaywallComponent from "../components/PaywallComponent.vue";
 import router from "../router/index.js";
+import MovieCardComponent from "../components/MovieCardComponent.vue";
 
 const route = useRoute(); //gets the route path
 
 const movieId = route.params.id; // gets the id used as a param
 const movie = ref();
+const movies = ref([]);
 const viewSummary= ref(false);
 
 const branches = ref([]);
@@ -37,6 +41,18 @@ const selectedTicketQuantity = ref(null);
 const exceedsTicketLimit = ref(false);
 
 const showPaywall = ref(false);
+
+async function checkout(){
+  const schedule = {
+    movieId: { movieId: movie.value.movieId },
+    theaterRoomId: { theaterRoomId: selectedTheaterId.value },
+    startTime: "14:00",
+    endTime: "16:00",
+    date: "2025-09-01"
+  };
+  const data = await createSchedule(schedule);
+  openPaywall();
+}
 
 function openPaywall(){
   showPaywall.value = true;
@@ -70,6 +86,13 @@ function isSeatSelected(id){
 //makes a request on load
 onBeforeMount(async() => {
    movie.value = await getMovieById(movieId);
+   movies.value = await getMoviesByGenre(movie.value.genre);
+   for(let i = 0; i<movies.value.length;i++){
+     if(movies.value[i].movieId === movie.value.movieId){
+       movies.value.splice(i, 1);
+       break;
+     }
+   }
    branches.value = await getAllBranches();
 });
 
@@ -149,8 +172,9 @@ function redirect(id){
 
     <!--FORM FIELDS-->
     <div class="form-fields">
-    <!--BRANCH-->
     <div v-if="!viewSummary">
+      <!--BRANCH-->
+      <div class="mb-3">
     <h6>Choose a branch
       <PrimaryTag v-if="selectedBranchId!==defaultBranchText" label="✓" />
     </h6>
@@ -159,11 +183,10 @@ function redirect(id){
       <option v-for="branch in branches" :key="branch.branchId" :value="branch.branchId">{{branch.location}}</option>
     </select>
     </div>
-
-    &nbsp;
+    </div>
 
     <!--THEATER ROOM-->
-    <div v-if="selectedBranchId!==defaultBranchText && !viewSummary">
+    <div v-if="selectedBranchId!==defaultBranchText && !viewSummary" class="mb-3">
     <h6>Theater Room
       <PrimaryTag v-if="selectedTheaterId!==defaultTheaterText" label="✓" />
     </h6>
@@ -199,7 +222,7 @@ function redirect(id){
     </div>
 
     <!--TICKET SUMMARY-->
-    <div class="accordion" id="ticketSummary" >
+    <div class="accordion" id="ticketSummary">
       <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" @click="toggleTicketSummary()">
@@ -255,7 +278,7 @@ function redirect(id){
     </div>
 
     <PrimaryButton v-if="!viewSummary" class="checkout-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" @click="toggleTicketSummary()" button-text="Confirm"/>
-    <PrimaryButton v-else class="checkout-button" button-text="Checkout" @click="openPaywall"/>
+    <PrimaryButton v-else class="checkout-button" button-text="Checkout" @click="checkout()"/>
   </div>
   <AdminControlsComponent button-text="Edit Movie" @click="redirect(movieId)"/>
 </div>
@@ -267,6 +290,21 @@ function redirect(id){
       :number-of-tickets="selectedTicketQuantity"
       :movie-title="movie.title"
   />
+
+  <div v-if="movies.length > 0" class="related-movies-container">
+  <p>Movies related by genre: <PrimaryTag :label="movie.genre"/></p>
+  <div class="related-movies">
+  <MovieCardComponent
+      v-for="(movie, index) in movies"
+      :key="index"
+      :id="movie.movieId"
+      :image="movie.image"
+      :title="movie.title"
+      :genre="movie.genre"
+      :view-type="movie.viewType"
+  />
+  </div>
+  </div>
 </template>
 
 <style scoped>
@@ -286,6 +324,11 @@ img{
   display: flex;
   flex-direction: row;
   max-height: 650px;
+}
+
+.related-movies{
+  display: flex;
+  flex-direction: row;
 }
 
 .movie-details{

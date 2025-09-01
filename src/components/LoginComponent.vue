@@ -50,7 +50,11 @@ function authenticateUser() {
 <template>
   <div class="login-page main">
     <div class="login-container">
-      <h2>Login</h2>
+      <h2>
+        <strong>
+        Login
+        </strong>
+      </h2>
 
       <form @submit.prevent="validateUser" class="login-form">
         <label for="userId">User ID</label>
@@ -151,6 +155,7 @@ input::placeholder {
 .terms a {
   color: #00FF7F;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .signup-text {

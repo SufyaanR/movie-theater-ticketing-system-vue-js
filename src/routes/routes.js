@@ -29,7 +29,7 @@ export async function updateMovie(movie) {
     return await res.json();
 }
 
-export async function findByGenre(genre){
+export async function getMoviesByGenre(genre){
     const res = await fetch(`http://localhost:8080/Movie/genre/${genre}`);
     const data = await res.json();
     return data;
@@ -91,6 +91,16 @@ export async function createPayment(payment){
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payment)
+    });
+    return await res.json();
+}
+
+//SCHEDULE
+export async function createSchedule(schedule) {
+    const res = await fetch("http://localhost:8080/Schedule/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(schedule)
     });
     return await res.json();
 }
