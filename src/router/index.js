@@ -19,7 +19,7 @@ import EditProfilePage from "../pages/EditProfilePage.vue";
 const routes = [
     { path: '/', name: 'BrowseMovies', component: BrowseMoviesPage },
     { path: '/movies', name: 'BrowseMoviesPage', component: BrowseMoviesPage },
-    { path: "/profile/edit", name: "EditProfilePage", component: EditProfilePage },
+    // { path: "/profile/edit", name: "EditProfilePage", component: EditProfilePage },
     { path: '/user-details', name: 'UserDetailsPage', component: UserDetailsPage },
     { path: '/movie/:id', name: 'MovieDetailsPage', component: MovieDetailsPage},
     {path: '/login', name: "LoginPage", component: LoginPage},

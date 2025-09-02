@@ -104,32 +104,32 @@ export async function createSchedule(schedule) {
     });
     return await res.json();
 }
-
-// Customer
-export async function getCustomerDetails(userId) {
-    const res = await fetch(`http://localhost:8080/customer/read/${userId}`);
-    return await res.json();
-}
-
-// CUSTOMER
-export async function createCustomer(customer) {
-    const res = await fetch(`http://localhost:8080/customer/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(customer)
-    });
-    return await res.json();
-}
-export async function updateCustomer(customer) {
-    const res = await fetch(`http://localhost:8080/customer/update`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(customer)
-    });
-    return await res.json();
-}
-
-export async function getCustomerByEmailAndPassword(email, password) {
-    const res = await fetch(`http://localhost:8080/customer/getByEmailAndPassword/${email}/${password}`);
-    return await res.json();
-}
+//
+// // Customer
+// export async function getCustomerDetails(userId) {
+//     const res = await fetch(`http://localhost:8080/customer/read/${userId}`);
+//     return await res.json();
+// }
+//
+// // CUSTOMER
+// export async function createCustomer(customer) {
+//     const res = await fetch(`http://localhost:8080/customer/create`, {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(customer)
+//     });
+//     return await res.json();
+// }
+// export async function updateCustomer(customer) {
+//     const res = await fetch(`http://localhost:8080/customer/update`, {
+//         method: "PUT",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(customer)
+//     });
+//     return await res.json();
+// }
+//
+// export async function getCustomerByEmailAndPassword(email, password) {
+//     const res = await fetch(`http://localhost:8080/customer/getByEmailAndPassword/${email}/${password}`);
+//     return await res.json();
+// }
