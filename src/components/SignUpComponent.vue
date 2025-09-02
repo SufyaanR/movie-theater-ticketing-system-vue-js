@@ -1,6 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import PrimaryButton from "../components/PrimaryButton.vue";
+import * as api from "../routes/routes.js";
+
+const router = useRouter();
 
 const firstName = ref("");
 const lastName = ref("");
@@ -8,27 +12,69 @@ const username = ref("");
 const email = ref("");
 const password = ref("");
 
+// you can add more fields like address, cellphoneNumber, gender if needed
+// const address = ref("");
+// const cellphoneNumber = ref("");
+// const gender = ref("");
+
+function validateForm() {
+  if (!firstName.value || !lastName.value || !username.value || !email.value || !password.value) {
+    alert("Please fill in all required fields.");
+    return false;
+  }
+  if (!email.value.includes("@")) {
+    alert("Please enter a valid email.");
+    return false;
+  }
+  if (password.value.length < 8) {
+    alert("Password must be at least 8 characters long.");
+    return false;
+  }
+  return true;
+}
+
+async function createUser() {
+  if (!validateForm()) return;
+
+  const newUser = {
+    // no userId — backend usually generates this
+    username: username.value,
+    password: password.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    email: email.value,
+    address: null,          // or add extra fields if your backend requires them
+    cellphoneNumber: null,
+    gender: null,
+    dateOfBirth: null,
+    cards: []
+  };
+
+  try {
+    await api.createCustomer(newUser);  // calls your backend
+    alert("Account created successfully!");
+    router.push("/login"); // go to login after signup
+  } catch (err) {
+    console.error("Failed to create account:", err);
+    alert("Something went wrong while creating your account.");
+  }
+}
 </script>
 
 <template>
-  <div class="signup-page main">
+  <div class="signup-page">
     <div class="signup-container">
-      <h2>
-        <strong>
-        Create an account
-        </strong>
-      </h2>
+      <h2>Create an account</h2>
       <p class="login-link">
         Already have an account? <a href="/login">Log in</a>
       </p>
 
-      <form class="signup-form">
+      <form class="signup-form" >
         <div class="name-fields">
-          <div class="field ">
-            <label for="firstName">First name</label>
+          <div class="field">
+            <label for="firstName">First Name</label>
             <input
                 id="firstName"
-                class="form-control"
                 v-model="firstName"
                 type="text"
                 placeholder="Enter your first name"
@@ -36,10 +82,9 @@ const password = ref("");
           </div>
 
           <div class="field">
-            <label for="lastName">Last name</label>
+            <label for="lastName">Last Name</label>
             <input
                 id="lastName"
-                class="form-control"
                 v-model="lastName"
                 type="text"
                 placeholder="Enter your last name"
@@ -50,7 +95,6 @@ const password = ref("");
         <label for="username">What should we call you?</label>
         <input
             id="username"
-            class="form-control"
             v-model="username"
             type="text"
             placeholder="Enter a display name"
@@ -59,7 +103,6 @@ const password = ref("");
         <label for="email">What's your email?</label>
         <input
             id="email"
-            class="form-control"
             v-model="email"
             type="email"
             placeholder="Enter your email"
@@ -68,7 +111,6 @@ const password = ref("");
         <label for="password">Create a password</label>
         <input
             id="password"
-            class="form-control"
             v-model="password"
             type="password"
             placeholder="Enter a strong password"
@@ -79,10 +121,10 @@ const password = ref("");
 
         <p class="terms">
           By creating an account, you agree to the
-          <a href="/terms-and-conditions">Terms and Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>.
+          <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
         </p>
 
-        <PrimaryButton button-text="Create an account" />
+        <PrimaryButton button-text="Create an account" type="submit" @click="createUser"/>
       </form>
     </div>
   </div>
@@ -93,6 +135,8 @@ const password = ref("");
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
+
 }
 
 .signup-container {
@@ -146,8 +190,10 @@ label {
 }
 
 input {
+  background: white;
   border: 1px solid #ccc;
   border-radius: 5px;
+  color: black;
   padding: 10px;
   font-size: 1rem;
   outline: none;
@@ -175,3 +221,4 @@ input:focus {
   font-weight: bold;
 }
 </style>
+

@@ -1,48 +1,25 @@
 <script setup>
 import { ref } from 'vue';
 import PrimaryButton from "../components/PrimaryButton.vue";
-import { getUserDetails } from "../routes/routes.js";
-import router from "../router";
+import * as routes from "../routes/routes.js";
+import { useRouter } from "vue-router";
 
-const userId = ref("");
+const email = ref("");
 const password = ref("");
 const user = ref(null);
 
+const router = useRouter();
+
 async function validateUser() {
-  try {
-    if (!userId.value) {
-      alert("Please enter your User ID");
-      return;
-    }
+  user.value = await routes.getCustomerByEmailAndPassword(email.value, password.value);
 
-
-    const id = Number(userId.value);
-    if (isNaN(id)) {
-      alert("User ID must be a number");
-      return;
-    }
-
-    user.value = await getUserDetails(id);
-
-    if (!user.value) {
-      alert("User not found");
-      return;
-    }
-
-    authenticateUser();
-  } catch (err) {
-    console.error("Error validating user:", err);
-    alert("Something went wrong while validating user.");
-  }
-}
-
-function authenticateUser() {
-  if (user.value.password === password.value) {
-    localStorage.setItem("authenticatedUserId", user.value.userId);
-    alert(`Welcome, ${user.value.firstName} ${user.value.lastName}`)
-    router.push("/user-details");
+  if (user.value && user.value.userId) {
+    localStorage.setItem('userId', user.value.userId);
+    console.log(user.value);
+    alert("Login successful!");
+    router.push("/"); //Will navigate if "/" exists
   } else {
-    alert("Invalid password, please try again.");
+    alert("Invalid email or password");
   }
 }
 </script>
@@ -50,41 +27,27 @@ function authenticateUser() {
 <template>
   <div class="login-page main">
     <div class="login-container">
-      <h2>
-        <strong>
-        Login
-        </strong>
-      </h2>
+      <h2>Login</h2>
 
       <form @submit.prevent="validateUser" class="login-form">
-        <label for="userId">User ID</label>
-        <input
-            class="form-control"
-            id="userId"
-            v-model="userId"
-            type="text"
-            placeholder="Enter your User ID"
-        />
+        <label for="email">User ID</label>
+        <input class="form-control" id="email" v-model="email" type="text" placeholder="Enter your email or username" />
 
         <label for="password">Password</label>
-        <input
-            class="form-control"
-            id="password"
-            v-model="password"
-            type="password"
-            placeholder="Enter your password"
-        />
+        <input class="form-control" id="password" v-model="password" type="password"
+               placeholder="Enter your password" />
 
         <p class="terms">
-          By continuing, you agree to the <a href="/terms-and-conditions">Terms and Conditions</a> and
-          <a href="/privacy-policy">Privacy Policy</a>.
+          By continuing, you agree to the <a href="#">Terms of Use</a> and
+          <a href="#">Privacy Policy</a>.
         </p>
+
 
         <PrimaryButton button-text="Login" @click="validateUser" />
 
         <p class="signup-text">
           Don’t have an account?
-          <a href="/signup">Sign up</a>
+          <router-link to="/signup">Sign up</router-link>
         </p>
       </form>
     </div>
@@ -96,6 +59,8 @@ function authenticateUser() {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 100vh;
+  /* Ensure the login page fills the viewport */
 }
 
 .login-container {
@@ -108,6 +73,7 @@ function authenticateUser() {
 }
 
 h2 {
+
   margin-bottom: 20px;
   color: white;
 }
@@ -126,7 +92,6 @@ label {
 
 input {
   background: white;
-  color:black;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
@@ -136,16 +101,8 @@ input {
 
 input:focus {
   border-color: #00FF7F;
-  color: black;
-}
-input:focus {
-  border-color: #00FF7F;
-  color: black;
 }
 
-input::placeholder {
-  color: #666;
-}
 .terms {
   font-size: 0.8rem;
   color: white;
@@ -155,7 +112,6 @@ input::placeholder {
 .terms a {
   color: #00FF7F;
   text-decoration: none;
-  font-weight: bold;
 }
 
 .signup-text {
@@ -170,3 +126,4 @@ input::placeholder {
   text-decoration: none;
 }
 </style>
+
