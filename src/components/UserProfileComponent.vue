@@ -22,7 +22,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="card p-5 shadow-lg mx-auto">
-    <div class="mb-3">
+    <div class="mb-5">
     <h2>
       <strong>
         Profile: {{ user.username}}
