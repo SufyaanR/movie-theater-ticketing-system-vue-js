@@ -9,6 +9,7 @@ defineProps({
 </script>
 <template>
   <LoginComponent />
+  <SpinnerComponent :visible="loading"/>
 </template>
 <style scoped>
 </style>
