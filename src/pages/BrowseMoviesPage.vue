@@ -97,7 +97,7 @@ watch([searchQuery, selectedGenre], () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1050;
+  z-index: 1;
   color: #00FF7F;
 }
 

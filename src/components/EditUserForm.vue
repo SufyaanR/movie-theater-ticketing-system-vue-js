@@ -10,6 +10,7 @@ const lastName = ref();
 const email = ref();
 const dateOfBirth = ref();
 const cellphoneNumber = ref();
+const image = ref();
 
 const isAdmin = localStorage.getItem("isAdmin");
 
@@ -34,17 +35,15 @@ onBeforeMount(async () => {
   email.value = user.value.email;
   dateOfBirth.value = user.value.dateOfBirth;
   cellphoneNumber.value = user.value.cellphoneNumber;
+  image.value = user.value.image;
 });
-
 function onFileChange(e) {
   const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      form.image = e.target.result; // This stores the base64 data
-    };
-    reader.readAsDataURL(file); // Convert to base64
-  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    image.value = reader.result.split(",")[1];
+  };
+  reader.readAsDataURL(file);
 }
 
 function deleteProfilePic() {
@@ -121,6 +120,7 @@ async function saveProfile() {
     cellphoneNumber: cellphoneNumber.value,
     gender: user.value.gender,          // unchanged
     dateOfBirth: dateOfBirth.value,    // unchanged
+    image: image.value
   };
 
   if(isAdmin!=='true'){
@@ -148,17 +148,23 @@ async function saveProfile() {
 </script>
 <template>
   <form class="card p-5 shadow-lg mx-auto">
+    <div class="row align-items-start mb-3">
+      <h2>
+        <strong>
+          Profile: {{ user.username}}
+        </strong>
+      </h2>
+    </div>
     <div class="row align-items-start">
       <!-- Profile Picture Section (Left Side) -->
       <div class="col-auto text-center" style="min-width:200px; margin-right: 30px;">
-        <img
-            v-if="user.image"
-            src="#"
-            class="rounded-circle mb-3"
-            alt="Profile"
-            width="180"
-            height="180"
-            style="object-fit:cover;"
+        <img v-if="image"
+             :src="'data:image/jpeg;base64,' + image"
+             class="rounded-circle mb-3"
+             alt="Profile"
+             width="180"
+             height="180"
+             style="object-fit:cover;"
         />
         <div
             v-else
@@ -169,11 +175,13 @@ async function saveProfile() {
         </div>
         <div class="mb-3">
           <input
+              class="form-control"
+              :class="{ warningField: null }"
+              id="userImage"
               type="file"
-              class="form-control form-control-sm"
+              accept="image/png, image/jpeg"
               @change="onFileChange"
-              accept="image/*"
-              style="font-size:0.9rem;"
+              placeholder="Select the user profile image"
           />
         </div>
         <div v-if="image" class="mb-2">

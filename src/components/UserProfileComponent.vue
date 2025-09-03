@@ -20,17 +20,23 @@ onBeforeMount(async () => {
 
 <template>
   <div class="card p-5 shadow-lg mx-auto">
+    <div class="row align-items-start mb-3">
+    <h2>
+      <strong>
+        Profile: {{ user.username}}
+      </strong>
+    </h2>
+    </div>
     <div class="row align-items-start">
       <!-- Profile Picture Section (Left Side) -->
       <div class="col-auto text-center" style="min-width:200px; margin-right: 30px;">
-        <img
-            v-if="user.image"
-            :src="user.image"
-            class="rounded-circle mb-3"
-            alt="Profile"
-            width="180"
-            height="180"
-            style="object-fit:cover;"
+        <img v-if="user.image"
+             :src="'data:image/jpeg;base64,' + user.image"
+             class="rounded-circle mb-3"
+             alt="Profile"
+             width="180"
+             height="180"
+             style="object-fit:cover;"
         />
         <div
             v-else
