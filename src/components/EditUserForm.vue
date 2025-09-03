@@ -1,33 +1,47 @@
 <script setup>
-import { reactive, watch } from "vue";
-import { useRouter } from "vue-router";
+import {onBeforeMount, reactive, ref} from "vue";
+import router from "../router/index.js";
+import {getAdminDetails, getCustomerDetails, updateAdmin, updateCustomer} from "../routes/routes.js";
+import PrimaryButton from "./PrimaryButton.vue";
+const user = ref({});
 
-const router = useRouter();
+const firstName = ref();
+const lastName = ref();
+const email = ref();
+const dateOfBirth = ref();
+const cellphoneNumber = ref();
 
-const props = defineProps({
-  user: { type: Object, required: true },
+const isAdmin = localStorage.getItem("isAdmin");
+
+const errors = reactive({
+  firstName: "",
+  lastName: "",
+  email: "",
+  cellphoneNumber: "",
+  dateOfBirth: ""
 });
 
-const form = reactive({
-  ...props.user,
-  dateOfBirth: props.user.dateOfBirth || ""
+onBeforeMount(async () => {
+  const savedUserId = localStorage.getItem("authenticatedUserId");
+  if(isAdmin!=='true'){
+    user.value = await getCustomerDetails(savedUserId);
+  }
+  else{
+    user.value = await getAdminDetails(savedUserId);
+  }
+  firstName.value = user.value.firstName;
+  lastName.value = user.value.lastName;
+  email.value = user.value.email;
+  dateOfBirth.value = user.value.dateOfBirth;
+  cellphoneNumber.value = user.value.cellphoneNumber;
 });
-
-// Watch for changes to props.user and update form
-watch(
-    () => props.user,
-    (newUser) => {
-      Object.assign(form, newUser);
-    },
-    { deep: true, immediate: true }
-);
 
 function onFileChange(e) {
   const file = e.target.files[0];
   if (file) {
     const reader = new FileReader();
     reader.onload = function (e) {
-      form.profilePic = e.target.result; // This stores the base64 data
+      form.image = e.target.result; // This stores the base64 data
     };
     reader.readAsDataURL(file); // Convert to base64
   }
@@ -45,48 +59,37 @@ function openDatePicker() {
   }
 }
 
-
-import { ref } from "vue";
-import * as api from "../routes/routes.js";
-const errors = reactive({
-  firstName: "",
-  lastName: "",
-  email: "",
-  cellphoneNumber: "",
-  dateOfBirth: ""
-});
-
 function validateForm() {
   let valid = true;
   // First Name
-  if (!form.firstName) {
+  if (!firstName.value) {
     errors.firstName = "First name is required.";
     valid = false;
   } else {
     errors.firstName = "";
   }
   // Last Name
-  if (!form.lastName) {
+  if (!lastName.value) {
     errors.lastName = "Last name is required.";
     valid = false;
   } else {
     errors.lastName = "";
   }
   // Email
-  if (!form.email) {
+  if (!email.value) {
     errors.email = "Email is required.";
     valid = false;
-  } else if (!form.email.includes("@")) {
+  } else if (!email.value.includes("@")) {
     errors.email = "Email must contain '@'.";
     valid = false;
   } else {
     errors.email = "";
   }
   // Phone (only numbers and special characters)
-  if (!form.cellphoneNumber) {
+  if (!cellphoneNumber.value) {
     errors.cellphoneNumber = "Contact number is required.";
     valid = false;
-  } else if (!/^\d{10}$/.test(form.cellphoneNumber)) {
+  } else if (!/^\d{10}$/.test(cellphoneNumber.value)) {
     errors.cellphoneNumber = "Contact number must be exactly 10 digits.";
     valid = false;
   }
@@ -94,7 +97,7 @@ function validateForm() {
     errors.cellphoneNumber = "";
   }
   // Date of Birth
-  if (!form.dateOfBirth) {
+  if (!dateOfBirth.value) {
     errors.dateOfBirth = "Date of birth is required.";
     valid = false;
   } else {
@@ -102,43 +105,55 @@ function validateForm() {
   }
   return valid;
 }
+
 async function saveProfile() {
   if (!validateForm()) return;
 
   // Build the user object based on backend fields
   const userToUpdate = {
-    userId: props.user.userId,          // keep original ID
-    username: props.user.username,      // unchanged
-    password: props.user.password,      // unchanged (unless you add a field for it)
-    firstName: form.firstName,
-    lastName: form.lastName,
-    email: form.email,
-    address: props.user.address,        // unchanged
-    cellphoneNumber: form.cellphoneNumber,
-    gender: props.user.gender,          // unchanged
-    dateOfBirth: form.dateOfBirth,
-    cards: props.user.cards             // unchanged
+    userId: user.value.userId,          // keep original ID
+    username: user.value.username,      // unchanged
+    password: user.value.password,      // unchanged (unless you add a field for it)
+    firstName: firstName.value,
+    lastName: lastName.value,
+    email: email.value,
+    address: user.value.address,        // unchanged
+    cellphoneNumber: cellphoneNumber.value,
+    gender: user.value.gender,          // unchanged
+    dateOfBirth: dateOfBirth.value,    // unchanged
   };
 
+  if(isAdmin!=='true'){
   try {
-    await api.updateCustomer(userToUpdate);
-    alert("Update Successful")// PUT/POST to backend
+    await updateCustomer(userToUpdate);
+    alert("Update Successful")
     router.push("/user-details");
   } catch (err) {
     console.error("Failed to update profile:", err);
     alert("Something went wrong while updating your profile.");
   }
+  }
+  else{
+    try {
+      await updateAdmin(userToUpdate);
+      alert("Update Successful")
+      router.push("/user-details");
+    } catch (err) {
+      console.error("Failed to update profile:", err);
+      alert("Something went wrong while updating your profile.");
+    }
+  }
 }
 
 </script>
 <template>
-  <form @submit.prevent="saveProfile" class="card p-5 shadow-lg mx-auto" style="max-width: 1400px; min-height: 480px; font-size: 1rem;">
+  <form class="card p-5 shadow-lg mx-auto">
     <div class="row align-items-start">
       <!-- Profile Picture Section (Left Side) -->
       <div class="col-auto text-center" style="min-width:200px; margin-right: 30px;">
         <img
-            v-if="form.profilePic"
-            :src="form.profilePic"
+            v-if="user.image"
+            src="#"
             class="rounded-circle mb-3"
             alt="Profile"
             width="180"
@@ -161,7 +176,7 @@ async function saveProfile() {
               style="font-size:0.9rem;"
           />
         </div>
-        <div v-if="form.profilePic" class="mb-2">
+        <div v-if="image" class="mb-2">
           <button
               type="button"
               class="btn btn-outline-danger btn-sm"
@@ -180,7 +195,7 @@ async function saveProfile() {
           <div class="col-md-6">
             <div class="mb-4">
               <label class="form-label fw-bold" style="font-size:1rem;">First Name</label>
-              <input v-model="form.firstName" type="text" class="form-control" placeholder="e.g John" style="font-size:1rem; color: black; background-color: white;" />
+              <input v-model="firstName" type="text" class="form-control" placeholder="e.g John"/>
               <div v-if="errors.firstName" class="text-danger mt-1" style="font-size:0.95rem;">{{ errors.firstName }}</div>
             </div>
             <div class="mb-4">
@@ -188,12 +203,12 @@ async function saveProfile() {
                 <i class="bi bi-calendar-event-fill" style="color: black; margin-right: 8px; font-size: 1.2rem; cursor: pointer;" @click="openDatePicker" title="Click to open date picker"></i>
                 Date of Birth
               </label>
-              <input v-model="form.dateOfBirth" type="date" class="form-control" style="font-size:1rem; color: black; background-color: white;" />
+              <input v-model="dateOfBirth" type="date" class="form-control" />
               <div v-if="errors.dateOfBirth" class="text-danger mt-1" style="font-size:0.95rem;">{{ errors.dateOfBirth }}</div>
             </div>
             <div class="mb-4">
               <label class="form-label fw-bold" style="font-size:1rem;">Cellphone Number</label>
-              <input v-model="form.cellphoneNumber" type="tel" class="form-control" placeholder="e.g 0635126724" style="font-size:1rem; color: black; background-color: white;" />
+              <input v-model="cellphoneNumber" type="tel" class="form-control" placeholder="e.g 0635126724" />
               <div v-if="errors.cellphoneNumber" class="text-danger mt-1" style="font-size:0.95rem;">{{ errors.cellphoneNumber }}</div>
             </div>
           </div>
@@ -202,12 +217,12 @@ async function saveProfile() {
           <div class="col-md-6">
             <div class="mb-4">
               <label class="form-label fw-bold" style="font-size:1rem;">Last Name</label>
-              <input v-model="form.lastName" type="text" class="form-control" placeholder="e.g Doe" style="font-size:1rem; color: black; background-color: white;" />
+              <input v-model="lastName" type="text" class="form-control" placeholder="e.g Doe" />
               <div v-if="errors.lastName" class="text-danger mt-1" style="font-size:0.95rem;">{{ errors.lastName }}</div>
             </div>
             <div class="mb-4">
               <label class="form-label fw-bold" style="font-size:1rem;">Email Address</label>
-              <input v-model="form.email" type="email" class="form-control" placeholder="e.g john@gmail.com" style="font-size:1rem; color: black; background-color: white;" />
+              <input v-model="email" type="email" class="form-control" placeholder="e.g john@gmail.com"/>
               <div v-if="errors.email" class="text-danger mt-1" style="font-size:0.95rem;">{{ errors.email }}</div>
             </div>
           </div>
@@ -215,9 +230,15 @@ async function saveProfile() {
 
         <!-- Update Button -->
         <div class="mt-5 text-end">
-          <button class="btn btn-success px-5 py-2" style="font-size:1rem;" type="submit">Update Profile</button>
+          <PrimaryButton button-text="Update Profile" @click="saveProfile"/>
         </div>
       </div>
     </div>
   </form>
 </template>
+<style scoped>
+.card{
+width: 80vw;
+background: transparent;
+}
+</style>

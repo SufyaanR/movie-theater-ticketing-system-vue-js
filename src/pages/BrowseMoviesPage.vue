@@ -1,9 +1,8 @@
 <script setup>
-import { ref,onBeforeMount, watch } from 'vue';
+import {ref, onBeforeMount, watch, onMounted} from 'vue';
 import MovieCardComponent from '../components/MovieCardComponent.vue';
-import {getAllMovies, getUserDetails} from "../routes/routes.js";
+import {getAllMovies, getAdminDetails, getCustomerDetails} from "../routes/routes.js";
 import AdminControlsComponent from "../components/AdminControlsComponent.vue";
-import PrimaryTag from "../components/PrimaryTag.vue";
 
 const movies = ref([]);
 const filteredMovies = ref([]);
@@ -12,9 +11,16 @@ const selectedGenre = ref("");
 const genres = ref(["Action", "Comedy", "Drama", "Horror", "Sci-Fi", "Romance", "Sports", "Documentary", "Thriller", "Animation", "Fantasy", "Mystery", "Crime", "Adventure", "Musical"]);
 const authenticatedUserId = localStorage.getItem("authenticatedUserId");
 const user = ref();
+const isAdmin = localStorage.getItem("isAdmin");
+
 //Makes a request on the first load
 onBeforeMount(async () => {
-  user.value = await getUserDetails(authenticatedUserId);
+  if (isAdmin!=='true'){
+    user.value = await getCustomerDetails(authenticatedUserId);
+  }
+  else {
+    user.value = await getAdminDetails(authenticatedUserId);
+  }
   movies.value = await getAllMovies();
   filteredMovies.value = movies.value;
 });
@@ -32,7 +38,7 @@ watch([searchQuery, selectedGenre], () => {
 
 <template>
   <div v-if="!movies.length" id="loading-overlay">
-    <div class="spinner-border text-light" role="status">
+    <div class="spinner-border" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
@@ -76,7 +82,7 @@ watch([searchQuery, selectedGenre], () => {
     </div>
   </div>
 
-    <AdminControlsComponent v-if="user.admin" button-text="Add Movies" button-link="/movie/create"/>
+    <AdminControlsComponent v-if="isAdmin==='true'" button-text="Add Movies" button-link="/movie/create"/>
   </div>
 </template>
 
@@ -92,6 +98,7 @@ watch([searchQuery, selectedGenre], () => {
   align-items: center;
   justify-content: center;
   z-index: 1050;
+  color: #00FF7F;
 }
 
 .main-container {

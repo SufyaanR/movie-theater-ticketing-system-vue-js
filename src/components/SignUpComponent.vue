@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import PrimaryButton from "../components/PrimaryButton.vue";
-import * as api from "../routes/routes.js";
+import { createCustomer, createAdmin} from "../routes/routes.js";
 
 const router = useRouter();
 
@@ -11,11 +11,7 @@ const lastName = ref("");
 const username = ref("");
 const email = ref("");
 const password = ref("");
-
-// you can add more fields like address, cellphoneNumber, gender if needed
-// const address = ref("");
-// const cellphoneNumber = ref("");
-// const gender = ref("");
+const isAdmin = ref(false);
 
 function validateForm() {
   if (!firstName.value || !lastName.value || !username.value || !email.value || !password.value) {
@@ -37,34 +33,49 @@ async function createUser() {
   if (!validateForm()) return;
 
   const newUser = {
-    // no userId — backend usually generates this
     username: username.value,
     password: password.value,
     firstName: firstName.value,
     lastName: lastName.value,
     email: email.value,
-    address: null,          // or add extra fields if your backend requires them
-    cellphoneNumber: null,
-    gender: null,
-    dateOfBirth: null,
-    cards: []
+    admin: isAdmin.value
   };
 
-  try {
-    await api.createCustomer(newUser);  // calls your backend
-    alert("Account created successfully!");
-    router.push("/login"); // go to login after signup
-  } catch (err) {
-    console.error("Failed to create account:", err);
-    alert("Something went wrong while creating your account.");
+  if(isAdmin.value !==true) {
+    try {
+      const data = await createCustomer(newUser);
+      localStorage.setItem("authenticatedUserId", data.userId); // calls your backend
+      localStorage.setItem("isAdmin", isAdmin.value);
+      alert("Customer account created successfully!");
+      await router.push("/movies");
+    } catch (err) {
+      console.error("Failed to create account:", err);
+      alert("Something went wrong while creating your account.");
+    }
+  }
+  else{
+    try {
+      const data = await createAdmin(newUser);
+      localStorage.setItem("authenticatedUserId", data.userId); // calls your backend
+      localStorage.setItem("isAdmin", isAdmin.value); // calls your backend
+      alert("Admin account created successfully!");
+      await router.push("/movies");
+    } catch (err) {
+      console.error("Failed to create account:", err);
+      alert("Something went wrong while creating your account.");
+    }
   }
 }
 </script>
 
 <template>
-  <div class="signup-page">
+  <div class="signup-page main">
     <div class="signup-container">
-      <h2>Create an account</h2>
+      <h2>
+        <strong>
+        Create an account
+        </strong>
+      </h2>
       <p class="login-link">
         Already have an account? <a href="/login">Log in</a>
       </p>
@@ -75,6 +86,7 @@ async function createUser() {
             <label for="firstName">First Name</label>
             <input
                 id="firstName"
+                class="form-control"
                 v-model="firstName"
                 type="text"
                 placeholder="Enter your first name"
@@ -85,6 +97,7 @@ async function createUser() {
             <label for="lastName">Last Name</label>
             <input
                 id="lastName"
+                class="form-control"
                 v-model="lastName"
                 type="text"
                 placeholder="Enter your last name"
@@ -95,6 +108,7 @@ async function createUser() {
         <label for="username">What should we call you?</label>
         <input
             id="username"
+            class="form-control"
             v-model="username"
             type="text"
             placeholder="Enter a display name"
@@ -103,6 +117,7 @@ async function createUser() {
         <label for="email">What's your email?</label>
         <input
             id="email"
+            class="form-control"
             v-model="email"
             type="email"
             placeholder="Enter your email"
@@ -111,6 +126,7 @@ async function createUser() {
         <label for="password">Create a password</label>
         <input
             id="password"
+            class="form-control"
             v-model="password"
             type="password"
             placeholder="Enter a strong password"
@@ -119,9 +135,13 @@ async function createUser() {
           Use 8 or more characters with a mix of letters, numbers & symbols
         </p>
 
+        <label>Sign up as Admin
+          <input id="admin" v-model="isAdmin" type="checkbox" />
+        </label>
+
         <p class="terms">
           By creating an account, you agree to the
-          <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
+          <a href="/terms-and-conditions">Terms & Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>.
         </p>
 
         <PrimaryButton button-text="Create an account" type="submit" @click="createUser"/>
@@ -135,8 +155,6 @@ async function createUser() {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-
 }
 
 .signup-container {
@@ -190,8 +208,6 @@ label {
 }
 
 input {
-  background: white;
-  border: 1px solid #ccc;
   border-radius: 5px;
   color: black;
   padding: 10px;

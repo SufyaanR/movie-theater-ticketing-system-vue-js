@@ -20,6 +20,8 @@ import MovieCardComponent from "../components/MovieCardComponent.vue";
 
 const route = useRoute(); //gets the route path
 
+const isAdmin = localStorage.getItem("isAdmin");
+
 const movieId = route.params.id; // gets the id used as a param
 const movie = ref();
 const movies = ref([]);
@@ -87,7 +89,7 @@ function isSeatSelected(id){
 onBeforeMount(async() => {
    movie.value = await getMovieById(movieId);
    movies.value = await getMoviesByGenre(movie.value.genre);
-   for(let i = 0; i<movies.value.length;i++){
+   for(let i = 0; i < movies.value.length;i++){
      if(movies.value[i].movieId === movie.value.movieId){
        movies.value.splice(i, 1);
        break;
@@ -280,7 +282,7 @@ function redirect(id){
     <PrimaryButton v-if="!viewSummary" class="checkout-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" @click="toggleTicketSummary()" button-text="Confirm"/>
     <PrimaryButton v-else class="checkout-button" button-text="Checkout" @click="checkout()"/>
   </div>
-  <AdminControlsComponent button-text="Edit Movie" @click="redirect(movieId)"/>
+  <AdminControlsComponent v-if="isAdmin==='true'" button-text="Edit Movie" @click="redirect(movieId)"/>
 </div>
 
   <PaywallComponent
@@ -295,7 +297,7 @@ function redirect(id){
   <p>Movies related by genre: <PrimaryTag :label="movie.genre"/></p>
   <div class="related-movies">
   <MovieCardComponent
-      v-for="(movie, index) in movies"
+      v-for="(movie, index) in movies.slice(0, 4)"
       :key="index"
       :id="movie.movieId"
       :image="movie.image"
@@ -308,7 +310,7 @@ function redirect(id){
 </template>
 
 <style scoped>
-@media(min-width:481px) {
+@media(min-width: 1025px) {
   .main {
     display: flex;
     flex-direction: row;
@@ -432,7 +434,7 @@ function redirect(id){
     width: 400px;
   }
 
-@media(max-width: 480px){
+@media(max-width: 1024px){
   img {
     aspect-ratio: 2/3;
     width: 100%;

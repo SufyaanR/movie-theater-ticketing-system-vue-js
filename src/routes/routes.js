@@ -63,18 +63,29 @@ export async function getAllSeatsByTheaterRoomId(id) {
 }
 
 //ADMINS
-export async function getUserDetails(userId) {
+export async function getAdminDetails(userId) {
     const res = await fetch(`http://localhost:8080/admin/read/${userId}`);
     const data = await res.json();
     return data;
 }
 
-export async function getAllUsersByEmail(email) {
-    const res = await fetch(`http://localhost:8080/admin/readByEmail/${encodeURIComponent(email)}`);
-    const data = await res.json();
-    return data;
+export async function createAdmin(admin) {
+    const res = await fetch(`http://localhost:8080/admin/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(admin)
+    });
+    return await res.json();
 }
 
+export async function updateAdmin(admin) {
+    const res = await fetch(`http://localhost:8080/admin/update`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(admin)
+    });
+    return await res.json();
+}
 //Card
 export async function addCard(card) {
     const res = await fetch("http://localhost:8080/Card/create", {
@@ -105,13 +116,13 @@ export async function createSchedule(schedule) {
     return await res.json();
 }
 
-// Customer
+// CUSTOMER
 export async function getCustomerDetails(userId) {
     const res = await fetch(`http://localhost:8080/customer/read/${userId}`);
-    return await res.json();
+    const data = await res.json();
+    return data;
 }
 
-// CUSTOMER
 export async function createCustomer(customer) {
     const res = await fetch(`http://localhost:8080/customer/create`, {
         method: "POST",
@@ -126,10 +137,5 @@ export async function updateCustomer(customer) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(customer)
     });
-    return await res.json();
-}
-
-export async function getCustomerByEmailAndPassword(email, password) {
-    const res = await fetch(`http://localhost:8080/customer/getByEmailAndPassword/${email}/${password}`);
     return await res.json();
 }

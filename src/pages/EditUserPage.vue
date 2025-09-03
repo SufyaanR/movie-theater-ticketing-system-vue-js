@@ -1,10 +1,10 @@
 <script setup>
-import UserProfileComponent from "../components/UserProfileComponent.vue";
+import EditUserForm from "../components/EditUserForm.vue";
 </script>
 
 <template>
   <div class="main">
-        <UserProfileComponent/>
+        <EditUserForm />
   </div>
 </template>
 <style scoped>
@@ -14,4 +14,3 @@ import UserProfileComponent from "../components/UserProfileComponent.vue";
   align-items: center;
 }
 </style>
-

@@ -1,42 +1,31 @@
 <script setup>
-import * as api from "../routes/routes.js";
-import { ref, onMounted } from "vue";
+import {getAdminDetails, getCustomerDetails} from "../routes/routes.js";
+import {ref, onBeforeMount} from "vue";
+import PrimaryButton from "./PrimaryButton.vue";
 
-const user = ref({
-  firstName: "",
-  lastName: "",
-  email: "",
-  cellphoneNumber: "",
-  profilePic: null,
-  dateOfBirth: "",
-});
+const user = ref({});
 
-async function loadUserProfile() {
-  const savedUserId = localStorage.getItem("userId") ; // fallback for demo
-  console.log("Loaded userId from localStorage:", savedUserId);
+onBeforeMount(async () => {
+  const savedUserId = localStorage.getItem("authenticatedUserId") ;
+  const isAdmin = localStorage.getItem("isAdmin");
 
-  try {
-    const data = await api.getCustomerDetails(savedUserId);
-    user.value = data;
-    console.log("Loaded userData:", user.value);
-  } catch (err) {
-    console.error("Failed to fetch user data:", err);
+  if(isAdmin!== 'true') {
+    user.value = await getCustomerDetails(savedUserId);
   }
-}
-
-onMounted(() => {
-  loadUserProfile();
+  else{
+    user.value = await getAdminDetails(savedUserId);
+  }
 });
 </script>
 
 <template>
-  <div class="card p-5 shadow-lg mx-auto" style="max-width: 1400px; min-height: 480px; font-size: 1rem;">
+  <div class="card p-5 shadow-lg mx-auto">
     <div class="row align-items-start">
       <!-- Profile Picture Section (Left Side) -->
       <div class="col-auto text-center" style="min-width:200px; margin-right: 30px;">
         <img
-            v-if="user.profilePic"
-            :src="user.profilePic"
+            v-if="user.image"
+            :src="user.image"
             class="rounded-circle mb-3"
             alt="Profile"
             width="180"
@@ -50,10 +39,8 @@ onMounted(() => {
         >
           <i class="bi bi-person"></i>
         </div>
-        <h4 class="mb-3" style="font-size:1.2rem;">{{ user.firstName }} {{ user.lastName }}</h4>
-        <button class="btn btn-success px-4 py-2" style="font-size:1rem;" @click="$router.push('/profile/edit')">
-          Edit Profile
-        </button>
+        <h4 class="mb-3" style="font-size:1.2rem;">{{ user.username }}</h4>
+        <PrimaryButton button-text="Edit Profile" link="/profile/edit" />
       </div>
 
       <!-- User Details Section (Right Side) -->
@@ -91,3 +78,9 @@ onMounted(() => {
     </div>
   </div>
 </template>
+<style scoped>
+.card{
+  width: 80vw;
+  background: transparent;
+}
+</style>

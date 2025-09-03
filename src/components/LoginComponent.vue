@@ -1,45 +1,69 @@
 <script setup>
 import { ref } from 'vue';
 import PrimaryButton from "../components/PrimaryButton.vue";
-import * as routes from "../routes/routes.js";
-import { useRouter } from "vue-router";
+import {getCustomerDetails, getAdminDetails} from "../routes/routes.js";
+import router from "../router/index.js";
 
-const email = ref("");
+const userId = ref("");
 const password = ref("");
-const user = ref(null);
+const user = ref({});
+const isAdmin = ref(false);
 
-const router = useRouter();
 
 async function validateUser() {
-  user.value = await routes.getCustomerByEmailAndPassword(email.value, password.value);
+  if (isAdmin.value !==true) {
+    user.value = await getCustomerDetails(userId.value);
 
-  if (user.value && user.value.userId) {
-    localStorage.setItem('userId', user.value.userId);
-    console.log(user.value);
-    alert("Login successful!");
-    router.push("/"); //Will navigate if "/" exists
-  } else {
-    alert("Invalid email or password");
+    if (user.value.password === password.value) {
+      localStorage.setItem('authenticatedUserId', user.value.userId);
+      localStorage.setItem('isAdmin', isAdmin.value);
+      console.log(user.value);
+      alert("Login successful!");
+      router.push("/movies"); //Will navigate if "/" exists
+    } else {
+      alert("Login unsuccessful.");
+    }
   }
+else{
+    user.value = await getAdminDetails(userId.value);
+
+    if (user.value.password === password.value) {
+      localStorage.setItem('authenticatedUserId', user.value.userId);
+      localStorage.setItem('isAdmin', isAdmin.value);
+      console.log(user.value);
+      alert("Login successful!");
+      router.push("/movies"); //Will navigate if "/" exists
+    } else {
+      alert("Login unsuccessful.");
+    }
+}
 }
 </script>
 
 <template>
   <div class="login-page main">
     <div class="login-container">
-      <h2>Login</h2>
+      <h2>
+        <strong>
+        Login
+        </strong>
+      </h2>
 
       <form @submit.prevent="validateUser" class="login-form">
-        <label for="email">User ID</label>
-        <input class="form-control" id="email" v-model="email" type="text" placeholder="Enter your email or username" />
+        <label for="userId">User ID</label>
+        <input class="form-control" id="userId" v-model="userId" type="text" placeholder="Enter your User ID" />
 
         <label for="password">Password</label>
         <input class="form-control" id="password" v-model="password" type="password"
                placeholder="Enter your password" />
 
+        <label>Login as Admin
+        <input id="admin" v-model="isAdmin" type="checkbox" />
+        </label>
+
         <p class="terms">
-          By continuing, you agree to the <a href="#">Terms of Use</a> and
-          <a href="#">Privacy Policy</a>.
+          By continuing, you agree to the <a href="/terms-and-conditions">Terms & Conditions</a> and
+          <a href="/privacy-policy">Privacy Policy</a>.
         </p>
 
 
@@ -59,8 +83,6 @@ async function validateUser() {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  /* Ensure the login page fills the viewport */
 }
 
 .login-container {
@@ -91,8 +113,6 @@ label {
 }
 
 input {
-  background: white;
-  border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   font-size: 1rem;
@@ -112,6 +132,7 @@ input:focus {
 .terms a {
   color: #00FF7F;
   text-decoration: none;
+  font-weight: bold;
 }
 
 .signup-text {
