@@ -3,6 +3,8 @@ import {onBeforeMount, reactive, ref} from "vue";
 import router from "../router/index.js";
 import {getAdminDetails, getCustomerDetails, updateAdmin, updateCustomer} from "../routes/routes.js";
 import PrimaryButton from "./PrimaryButton.vue";
+import PrimaryTag from "./PrimaryTag.vue";
+import SecondaryTag from "./SecondaryTag.vue";
 const user = ref({});
 
 const firstName = ref();
@@ -148,12 +150,14 @@ async function saveProfile() {
 </script>
 <template>
   <form class="card p-5 shadow-lg mx-auto">
-    <div class="row align-items-start mb-3">
+    <div class="mb-5">
       <h2>
         <strong>
           Profile: {{ user.username}}
         </strong>
       </h2>
+      <PrimaryTag v-if="isAdmin==='true'" label="Admin"/>
+      <SecondaryTag v-else label="Customer"/>
     </div>
     <div class="row align-items-start">
       <!-- Profile Picture Section (Left Side) -->

@@ -2,12 +2,14 @@
 import {getAdminDetails, getCustomerDetails} from "../routes/routes.js";
 import {ref, onBeforeMount} from "vue";
 import PrimaryButton from "./PrimaryButton.vue";
+import PrimaryTag from "./PrimaryTag.vue";
+import SecondaryTag from "./SecondaryTag.vue";
 
 const user = ref({});
+const isAdmin = localStorage.getItem("isAdmin");
 
 onBeforeMount(async () => {
   const savedUserId = localStorage.getItem("authenticatedUserId") ;
-  const isAdmin = localStorage.getItem("isAdmin");
 
   if(isAdmin!== 'true') {
     user.value = await getCustomerDetails(savedUserId);
@@ -20,12 +22,14 @@ onBeforeMount(async () => {
 
 <template>
   <div class="card p-5 shadow-lg mx-auto">
-    <div class="row align-items-start mb-3">
+    <div class="mb-3">
     <h2>
       <strong>
         Profile: {{ user.username}}
       </strong>
     </h2>
+      <PrimaryTag v-if="isAdmin==='true'" label="Admin"/>
+      <SecondaryTag v-else label="Customer"/>
     </div>
     <div class="row align-items-start">
       <!-- Profile Picture Section (Left Side) -->
