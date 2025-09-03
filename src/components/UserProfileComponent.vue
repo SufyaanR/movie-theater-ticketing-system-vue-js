@@ -42,13 +42,14 @@ onBeforeMount(async () => {
              height="180"
              style="object-fit:cover;"
         />
-        <div
-            v-else
-            class="d-flex align-items-center justify-content-center rounded-circle bg-light mb-3"
-            style="width:180px; height:180px; font-size:4rem;"
-        >
-          <i class="bi bi-person"></i>
-        </div>
+        <img v-else
+             src="../assets/no-profile-pic.jpg"
+             class="rounded-circle mb-3"
+             alt="Profile"
+             width="180"
+             height="180"
+             style="object-fit:cover;"
+        />
         <h4 class="mb-3" style="font-size:1.2rem;">{{ user.username }}</h4>
         <PrimaryButton button-text="Edit Profile" link="/profile/edit" />
       </div>
