@@ -1,14 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background: #181818;
 }
 
 body{
+    font-family: 'Montserrat', sans-serif;
     background: #181818;
     margin: 0;
     width: 100%;
@@ -52,6 +53,7 @@ button:focus-visible {
 #app {
   max-width: 1280px;
   margin: 0 auto;
+  margin-top: 10vh;
   padding: 2rem;
   text-align: center;
 }
@@ -98,6 +100,11 @@ header {
     height: 10vh;
     backdrop-filter: blur(20px) brightness(95%);
     z-index: 1000;
+}
+
+
+.login-sign-up i{
+    margin-left: 25px;
 }
 
 nav {

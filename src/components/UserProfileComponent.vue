@@ -4,20 +4,38 @@ import {ref, onBeforeMount} from "vue";
 import PrimaryButton from "./PrimaryButton.vue";
 import PrimaryTag from "./PrimaryTag.vue";
 import SecondaryTag from "./SecondaryTag.vue";
+import AdminControlPanelComponent from "./AdminControlPanelComponent.vue";
 
 const user = ref({});
-const isAdmin = localStorage.getItem("isAdmin");
+const isAdmin = ref(localStorage.getItem("isAdmin")==='true');
 
 onBeforeMount(async () => {
   const savedUserId = localStorage.getItem("authenticatedUserId") ;
 
-  if(isAdmin!== 'true') {
+  if(!isAdmin.value) {
     user.value = await getCustomerDetails(savedUserId);
   }
   else{
     user.value = await getAdminDetails(savedUserId);
   }
 });
+
+const manageYourDataOptions = [
+    {label: "Movies", value: "/movies"},
+    {label: "Branches", value: "#"},
+    {label: "Theaters", value: "#"},
+    {label: "Seats", value: "#"},
+];
+
+const manageYourUsersOptions = [
+    {label: "Customers", value: "#"},
+    {label: "Administrators", value: "#"},
+];
+
+const manageBookingsOptions = [
+    {label: "Tickets", value: "#"},
+    {label: "Schedule", value: "#"},
+];
 </script>
 
 <template>
@@ -25,10 +43,11 @@ onBeforeMount(async () => {
     <div class="mb-5">
     <h2>
       <strong>
-        Profile: {{ user.username}}
+        Profile:
       </strong>
+      {{ user.username}}
     </h2>
-      <PrimaryTag v-if="isAdmin==='true'" label="Admin"/>
+      <PrimaryTag v-if="isAdmin" label="Admin"/>
       <SecondaryTag v-else label="Customer"/>
     </div>
     <div class="row align-items-start">
@@ -87,6 +106,20 @@ onBeforeMount(async () => {
         </div>
       </div>
     </div>
+
+    <div v-if="isAdmin">
+        <p>
+          <strong>
+            Administrative Controls:
+          </strong>
+        </p>
+
+      <div class="admin-controls">
+        <AdminControlPanelComponent label="Manage Your Data" :options="manageYourDataOptions"/>
+        <AdminControlPanelComponent label="Manage Your Users" :options="manageYourUsersOptions"/>
+        <AdminControlPanelComponent label="Manage Bookings" :options="manageBookingsOptions"/>
+      </div>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -94,4 +127,10 @@ onBeforeMount(async () => {
   width: 80vw;
   background: transparent;
 }
+
+ .admin-controls{
+  display: flex;
+   flex-direction: row;
+   gap: 10px;
+ }
 </style>

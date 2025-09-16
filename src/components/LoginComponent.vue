@@ -17,6 +17,7 @@ async function validateUser() {
     if (user.value.password === password.value) {
       localStorage.setItem('authenticatedUserId', user.value.userId);
       localStorage.setItem('isAdmin', isAdmin.value);
+      localStorage.setItem('username', user.value.username);
       console.log(user.value);
       alert("Login successful!");
       router.push("/movies"); //Will navigate if "/" exists
@@ -30,6 +31,7 @@ else{
     if (user.value.password === password.value) {
       localStorage.setItem('authenticatedUserId', user.value.userId);
       localStorage.setItem('isAdmin', isAdmin.value);
+      localStorage.setItem('username', user.value.username);
       console.log(user.value);
       alert("Login successful!");
       router.push("/movies"); //Will navigate if "/" exists

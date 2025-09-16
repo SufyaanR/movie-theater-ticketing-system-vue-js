@@ -153,8 +153,9 @@ async function saveProfile() {
     <div class="mb-5">
       <h2>
         <strong>
-          Profile: {{ user.username}}
+          Profile:
         </strong>
+        {{ user.username}}
       </h2>
       <PrimaryTag v-if="isAdmin==='true'" label="Admin"/>
       <SecondaryTag v-else label="Customer"/>

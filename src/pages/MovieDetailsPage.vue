@@ -8,7 +8,7 @@ import {
   getMoviesByGenre,
   createSchedule
 } from "../routes/routes.js";
-import {onBeforeMount, ref, watch} from "vue";
+import {onBeforeMount, onMounted, ref, watch} from "vue";
 import PrimaryTag from "../components/PrimaryTag.vue";
 import SecondaryTag from "../components/SecondaryTag.vue";
 import PrimaryButton from "../components/PrimaryButton.vue";
@@ -97,6 +97,10 @@ onBeforeMount(async() => {
    }
    branches.value = await getAllBranches();
 });
+
+onMounted(async() =>{
+  window.scrollTo({ top: 0, behavior: 'auto' });
+})
 
 watch(selectedBranchId, async (newBranchId) => {
 
@@ -251,7 +255,7 @@ function redirect(id){
             </p>
 
             <p v-if="seatsSelected.length">
-              <strong>Selected seats</strong>: {{ seatsSelected }}
+              <strong>Seats</strong>: {{ seatsSelected }}
             </p>
           </div>
 
@@ -294,18 +298,18 @@ function redirect(id){
   />
 
   <div v-if="movies.length > 0" class="related-movies-container">
-  <p>Movies related by genre: <PrimaryTag :label="movie.genre"/></p>
-  <div class="related-movies">
-  <MovieCardComponent
-      v-for="(movie, index) in movies.slice(0, 4)"
-      :key="index"
-      :id="movie.movieId"
-      :image="movie.image"
-      :title="movie.title"
-      :genre="movie.genre"
-      :view-type="movie.viewType"
-  />
-  </div>
+      <p>Movies related by genre: <PrimaryTag :label="movie.genre"/></p>
+        <div class="related-movies">
+          <MovieCardComponent
+              v-for="(movie, index) in movies.slice(0, 4)"
+              :key="index"
+              :id="movie.movieId"
+              :image="movie.image"
+              :title="movie.title"
+              :genre="movie.genre"
+              :view-type="movie.viewType"
+          />
+        </div>
   </div>
 </template>
 

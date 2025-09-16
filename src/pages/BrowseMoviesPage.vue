@@ -47,8 +47,15 @@ watch([searchQuery, selectedGenre], () => {
   <div class="main-container">
 
     <div class="results-header">
-      <h1 v-if="!selectedGenre">Movies</h1>
-      <h1 v-else>Movies: {{ selectedGenre }}</h1>
+      <h1 v-if="!selectedGenre">
+        <strong>Movies</strong>
+      </h1>
+      <h1 v-else>
+        <strong>
+        Movies:
+        </strong>
+        {{ selectedGenre }}
+      </h1>
 
       <p v-if="!filteredMovies.length">No results</p>
       <p v-else >{{filteredMovies.length}} results found</p>
