@@ -53,7 +53,7 @@
         </strong>
       </h6>
     </div>
-    <div style="width: 40%; padding-left: 10px; background: #00FF7F; align-self: flex-end; color: #141414; text-align: left; font-size: x-small;">
+    <div style="width: 40%; padding: 10px; background: #00FF7F; align-self: flex-end; color: #141414; text-align: left; font-size: x-small;">
       {{quantity}} ticket(s)
     </div>
   </div>
