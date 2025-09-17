@@ -265,7 +265,7 @@ function redirect(id){
             <p><strong>R{{selectedTicketQuantity * movie.price}}</strong> @ <strong>R{{movie.price}}</strong> per ticket</p>
           </div>
 
-          <OrderPDF :movie-name="movie.title" :total="selectedTicketQuantity * movie.price" :quantity="selectedTicketQuantity" :price="movie.price" :image="movie.image"/>
+          <OrderPDF v-if="seatsSelected.length===selectedTicketQuantity" :movie-name="movie.title" :total="selectedTicketQuantity * movie.price" :quantity="selectedTicketQuantity" :price="movie.price" :image="movie.image" :showPDF="true"/>
         </div>
       </div>
     </div>

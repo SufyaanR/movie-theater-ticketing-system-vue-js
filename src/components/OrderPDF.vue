@@ -1,6 +1,7 @@
 <template>
-  <div style="display: none;">
+  <div style="display: none" :class="{ displayPDF : showPDF}">
   <div id="pdf" style="width:794px; height:1120px; background: white; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; overflow:hidden;">
+    <!--header-->
     <div style="width: 100%; padding:10px;  background: #141414; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
       <h6>
         <strong>
@@ -13,6 +14,7 @@
       </div>
     </div>
 
+    <!--sub-header-->
     <div style="width: 100%; padding:10px;  background: #282828; display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
       <h6>
         <strong>
@@ -27,6 +29,7 @@
     </div>
 
 
+    <!--body-->
     <div style="width: 100%; padding:10px; display: flex; flex-direction: row; justify-content: flex-start; gap: 50px; align-items: center; color: #141414; text-align: left">
       <img :src= "'data:image/jpeg;base64,'+ image" style="height: 100px; width: auto;"/>
 
@@ -46,6 +49,7 @@
       </div>
     </div>
 
+    <!--total-->
     <div style="width: 40%; padding:10px;  background: #141414; display: flex; flex-direction: row; justify-content: space-between; align-items: center; align-self: flex-end;">
       <h6>
         <strong>
@@ -53,7 +57,7 @@
         </strong>
       </h6>
     </div>
-    <div style="width: 40%; padding: 10px; background: #00FF7F; align-self: flex-end; color: #141414; text-align: left; font-size: x-small;">
+    <div style="width: 40%; padding-left: 10px; padding-bottom: 2px; background: #00FF7F; align-self: flex-end; color: #141414; text-align: left; font-size: x-small;">
       {{quantity}} ticket(s)
     </div>
   </div>
@@ -65,6 +69,7 @@ import PrimaryButton from "./PrimaryButton.vue";
 import helper from "../util/helper";
 
 defineProps({
+  showPDF: Boolean,
   movieName: String,
   total: Number,
   quantity: Number,
@@ -74,3 +79,8 @@ defineProps({
 
 const username=localStorage.getItem('username');
 </script>
+<style>
+.displayPDF{
+  display: flex;
+}
+</style>
