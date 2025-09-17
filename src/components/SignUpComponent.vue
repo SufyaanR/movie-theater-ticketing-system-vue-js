@@ -46,6 +46,7 @@ async function createUser() {
       const data = await createCustomer(newUser);
       localStorage.setItem("authenticatedUserId", data.userId); // calls your backend
       localStorage.setItem("isAdmin", isAdmin.value);
+      localStorage.setItem('username', data.username);
       alert("Customer account created successfully!");
       await router.push("/movies");
     } catch (err) {
@@ -58,6 +59,7 @@ async function createUser() {
       const data = await createAdmin(newUser);
       localStorage.setItem("authenticatedUserId", data.userId); // calls your backend
       localStorage.setItem("isAdmin", isAdmin.value); // calls your backend
+      localStorage.setItem('username', data.username);
       alert("Admin account created successfully!");
       await router.push("/movies");
     } catch (err) {
