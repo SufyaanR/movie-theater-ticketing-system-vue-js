@@ -79,7 +79,7 @@ async function createUser() {
         </strong>
       </h2>
       <p class="login-link">
-        Already have an account? <a href="/login">Log in</a>
+        Already have an account? <router-link to="/login">Log in</router-link>
       </p>
 
       <form class="signup-form" >
@@ -143,7 +143,8 @@ async function createUser() {
 
         <p class="terms">
           By creating an account, you agree to the
-          <a href="/terms-and-conditions">Terms & Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>.
+          <a @click="router.push('/terms-and-conditions')">Terms & Conditions</a> and
+          <a @click="router.push('/privacy-policy')">Privacy Policy</a>.
         </p>
 
         <PrimaryButton button-text="Create an account" type="submit" @click="createUser"/>

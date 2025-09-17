@@ -1,12 +1,15 @@
 <script setup>
+import router from "../router/index.js";
+
 defineProps({
     buttonText: String,
-  link: String
+    link: String
 })
 </script>
 
 <template>
-  <a :href= link class="btn btn-primary">{{ buttonText }} <slot/></a>
+  <a v-if="link" @click="router.push(link)" class="btn btn-primary">{{ buttonText }} <slot/></a>
+  <a v-else class="btn btn-primary">{{ buttonText }} <slot/></a>
 </template>
 
 <style scoped>

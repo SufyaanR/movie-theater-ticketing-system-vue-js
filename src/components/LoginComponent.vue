@@ -64,12 +64,12 @@ else{
         </label>
 
         <p class="terms">
-          By continuing, you agree to the <a href="/terms-and-conditions">Terms & Conditions</a> and
-          <a href="/privacy-policy">Privacy Policy</a>.
+          By continuing, you agree to the <a @click="router.push('/terms-and-conditions')">Terms & Conditions</a> and
+          <a @click="router.push('/privacy-policy')">Privacy Policy</a>.
         </p>
 
 
-        <PrimaryButton button-text="Login" @click="validateUser" />
+        <PrimaryButton button-text="Login" @click="validateUser"/>
 
         <p class="signup-text">
           Don’t have an account?

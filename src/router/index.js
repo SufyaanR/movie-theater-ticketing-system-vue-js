@@ -6,7 +6,6 @@ import LoginPage from "../pages/LoginPage.vue";
 import PageNotFound from "../pages/PageNotFound.vue";
 import CreateMoviePage from "../pages/CreateMoviePage.vue";
 import EditMoviePage from "../pages/EditMoviePage.vue";
-import PaywallPage from "../pages/PaywallPage.vue";
 import SignUpPage from "../pages/SignUpPage.vue";
 import PrivacyPolicyPage from "../pages/PrivacyPolicyPage.vue";
 import TermsAndConditionsPage from "../pages/TermsAndConditionsPage.vue";
@@ -25,7 +24,6 @@ const routes = [
     {path: '/login', name: "LoginPage", component: LoginPage},
     {path: '/movie/create', name: "CreateMoviePage", component: CreateMoviePage},
     {path: '/movie/edit/:id', name: "EditMoviePage", component: EditMoviePage},
-    {path: '/paywall', name: "PaywallPage", component: PaywallPage},
     { path: '/signup', name: "SignUpPage", component: SignUpPage },
     { path: '/privacy-policy', name: "PrivacyPolicyPage", component: PrivacyPolicyPage },
     { path: '/terms-and-conditions', name: "TermsAndConditionsPage", component: TermsAndConditionsPage },

@@ -5,7 +5,7 @@
     </div>
 
     <nav>
-      <a class="nav-elem" href="/movies">Browse Movies</a> | <a class="nav-elem" href="/about-us">About Us</a>
+      <a class="nav-elem" @click="router.push('/movies')">Browse Movies</a> | <a class="nav-elem" @click="router.push('/about-us')">About Us</a>
     </nav>
 
     <div class="login-sign-up">
@@ -13,12 +13,12 @@
       <PrimaryButton v-if="userId===null" link="/login" button-text="Login" />
       <PrimaryButton v-if="userId===null" link="/signup" button-text="Sign Up" />
 
-      <a v-if="userId!==null" href="/user-details">
+      <a v-if="userId!==null" @click="router.push('/user-details')">
         <i class="fas fa-user"></i>
         <PrimaryTag v-if="userId" :label="username"/>
       </a>
 
-      <PrimaryButton v-if="userId!==null" link="/login" button-text="Log Out"  @click="setUserDetails(false)"/>
+      <PrimaryButton v-if="userId!==null" button-text="Log Out" @click="logOut()"/>
 
     </div>
   </header>
@@ -27,11 +27,15 @@
 <script setup lang="ts">
 import PrimaryButton from "./PrimaryButton.vue";
 import PrimaryTag from "./PrimaryTag.vue";
-import {onMounted, onUnmounted, ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
+import router from "../router";
+import {useRoute} from "vue-router";
 
 const userId = ref();
 const isAdmin = ref();
 const username = ref();
+
+const route = useRoute();
 
 function setUserDetails(loggedIn = true){
   if(loggedIn){
@@ -43,27 +47,27 @@ function setUserDetails(loggedIn = true){
     localStorage.removeItem('username');
     localStorage.removeItem('isAdmin');
     localStorage.removeItem('authenticatedUserId');
-    userId.value = '';
-    username.value = '';
+    userId.value = null;
+    username.value = null;
     isAdmin.value = undefined;
-  }
-
-  if(userId.value!==null) {
-    clearTimeout(intervalId);
   }
 }
 
-let intervalId;
+function logOut(){
+  setUserDetails(false);
+  router.push("/login");
+}
+
+watch(
+    () => route.fullPath,
+    () => {
+      setUserDetails();
+    },
+    { immediate: true } // also call it once on initial load
+);
 
 onMounted(() => {
   setUserDetails();
-
-  intervalId = setInterval(() => {
-    setUserDetails();
-  }, 2000);
 });
 
-onUnmounted(() => {
-  clearInterval(intervalId);
-});
 </script>
