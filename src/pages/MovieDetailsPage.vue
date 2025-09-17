@@ -17,6 +17,7 @@ import AdminControlsComponent from "../components/AdminControlsComponent.vue";
 import PaywallComponent from "../components/PaywallComponent.vue";
 import router from "../router/index.js";
 import MovieCardComponent from "../components/MovieCardComponent.vue";
+import OrderPDF from "../components/OrderPDF.vue";
 
 const route = useRoute(); //gets the route path
 
@@ -263,6 +264,8 @@ function redirect(id){
             <h5><strong>Total:</strong></h5>
             <p><strong>R{{selectedTicketQuantity * movie.price}}</strong> @ <strong>R{{movie.price}}</strong> per ticket</p>
           </div>
+
+          <OrderPDF :movie-name="movie.title" :total="selectedTicketQuantity * movie.price" :quantity="selectedTicketQuantity" :price="movie.price" :image="movie.image"/>
         </div>
       </div>
     </div>
