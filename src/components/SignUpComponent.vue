@@ -48,6 +48,8 @@ async function createUser() {
       localStorage.setItem("isAdmin", isAdmin.value);
       localStorage.setItem('username', data.username);
       alert("Customer account created successfully!");
+      //TODO: A cart needs to be created and assigned to a user on sign up, store the cartid in local storage
+
       await router.push("/movies");
     } catch (err) {
       console.error("Failed to create account:", err);

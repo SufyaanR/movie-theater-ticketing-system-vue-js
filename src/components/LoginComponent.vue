@@ -13,6 +13,7 @@ const isAdmin = ref(false);
 async function validateUser() {
   if (isAdmin.value !==true) {
     user.value = await getCustomerDetails(userId.value);
+    //TODO: The assigned cart needs to be called when the user logs in, store the cartid in local storage
 
     if (user.value.password === password.value) {
       localStorage.setItem('authenticatedUserId', user.value.userId);
