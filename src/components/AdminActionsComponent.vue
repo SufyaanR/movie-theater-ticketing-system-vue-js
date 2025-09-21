@@ -3,7 +3,10 @@
     <p>{{label}}</p>
       <div class="buttons">
         <PrimaryButton button-text="Edit" :link="`/${domain}/edit/${id}`"/>
-        <PrimaryButton style="background: crimson" @click="deleteObject(domain, id)"><i class="fa fa-trash"></i></PrimaryButton>
+        <PrimaryButton style="background: crimson" data-bs-toggle="modal" data-bs-target="#dialogPopup">
+          <i class="fa fa-trash"></i>
+        </PrimaryButton>
+        <DialogComponent @confirm="deleteObject(domain, id)" title="Deletion" :message="`Do you want to delete this ${domain}?`"/>
       </div>
   </div>
 </template>
@@ -12,6 +15,7 @@ import PrimaryButton from "./PrimaryButton.vue";
 import {
   deleteMovie,
 } from "../routes/routes.js";
+import DialogComponent from "./DialogComponent.vue";
 
 defineProps({
   id: String,
