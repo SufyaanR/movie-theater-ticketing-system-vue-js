@@ -6,7 +6,7 @@
         <PrimaryButton style="background: crimson" data-bs-toggle="modal" data-bs-target="#dialogPopup">
           <i class="fa fa-trash"></i>
         </PrimaryButton>
-        <DialogComponent @confirm="deleteObject(domain, id)" title="Deletion" :message="`Do you want to delete this ${domain}?`"/>
+        <DialogComponent @confirm="deleteObject(domain, id)" title="Deletion" :message="`Do you want to delete this ${domain}?`" primary-text="Delete" secondary-text="Cancel"/>
       </div>
   </div>
 </template>

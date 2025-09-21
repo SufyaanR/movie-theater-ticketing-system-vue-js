@@ -10,8 +10,8 @@
           {{ message }}
         </div>
         <div class="modal-footer">
-          <PrimaryButton button-text="Cancel" data-bs-dismiss="modal"/>
-          <PrimaryButton button-text="Proceed" @click="$emit('confirm')" data-bs-dismiss="modal"/>
+          <SecondaryButton :button-text="secondaryText" data-bs-dismiss="modal"/>
+          <PrimaryButton :button-text="primaryText" @click="$emit('confirm')" data-bs-dismiss="modal"/>
         </div>
       </div>
     </div>
@@ -19,10 +19,13 @@
 </template>
 <script setup lang="ts">
 import PrimaryButton from "./PrimaryButton.vue";
+import SecondaryButton from "./SecondaryButton.vue";
 
 defineProps({
   title: String,
   message: String,
+  primaryText: String,
+  secondaryText: String,
 })
 </script>
 <style scoped>
