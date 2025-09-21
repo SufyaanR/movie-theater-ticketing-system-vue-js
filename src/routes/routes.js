@@ -29,6 +29,13 @@ export async function updateMovie(movie) {
     return await res.json();
 }
 
+export async function deleteMovie(id) {
+    await fetch(`http://localhost:8080/Movie/delete/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+    });
+}
+
 export async function getMoviesByGenre(genre){
     const res = await fetch(`http://localhost:8080/Movie/genre/${genre}`);
     const data = await res.json();
@@ -49,6 +56,12 @@ export async function getAllBranches() {
 }
 
 //THEATERS
+export async function getAllTheaters() {
+    const res = await fetch("http://localhost:8080/theaterRoom/getAll");
+    const data = await res.json();
+    return data;
+}
+
 export async function getAllTheatersByBranchId(id) {
     const res = await fetch(`http://localhost:8080/theaterRoom/getAll/${id}`);
     const data = await res.json();
@@ -56,6 +69,12 @@ export async function getAllTheatersByBranchId(id) {
 }
 
 //SEATS
+export async function getAllSeats() {
+    const res = await fetch("http://localhost:8080/seat/getAll");
+    const data = await res.json();
+    return data;
+}
+
 export async function getAllSeatsByTheaterRoomId(id) {
     const res = await fetch(`http://localhost:8080/seat/getAll/${id}`);
     const data = await res.json();
@@ -63,6 +82,12 @@ export async function getAllSeatsByTheaterRoomId(id) {
 }
 
 //ADMINS
+export async function getAllAdmins() {
+    const res = await fetch("http://localhost:8080/admin/getAll");
+    const data = await res.json();
+    return data;
+}
+
 export async function getAdminDetails(userId) {
     const res = await fetch(`http://localhost:8080/admin/read/${userId}`);
     const data = await res.json();
@@ -117,6 +142,12 @@ export async function createSchedule(schedule) {
 }
 
 // CUSTOMER
+export async function getAllCustomers() {
+    const res = await fetch("http://localhost:8080/customer/getAll");
+    const data = await res.json();
+    return data;
+}
+
 export async function getCustomerDetails(userId) {
     const res = await fetch(`http://localhost:8080/customer/read/${userId}`);
     const data = await res.json();

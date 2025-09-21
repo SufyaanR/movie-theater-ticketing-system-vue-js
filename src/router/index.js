@@ -11,6 +11,7 @@ import PrivacyPolicyPage from "../pages/PrivacyPolicyPage.vue";
 import TermsAndConditionsPage from "../pages/TermsAndConditionsPage.vue";
 import AboutUsPage from "../pages/AboutUsPage.vue";
 import EditUserPage from "../pages/EditUserPage.vue";
+import AdminActionsPage from "../pages/AdminActionsPage.vue";
 
 
 
@@ -28,6 +29,7 @@ const routes = [
     { path: '/privacy-policy', name: "PrivacyPolicyPage", component: PrivacyPolicyPage },
     { path: '/terms-and-conditions', name: "TermsAndConditionsPage", component: TermsAndConditionsPage },
     {path: '/about-us',name:"AboutUsPage",component: AboutUsPage},
+    {path: '/admin-actions/:id',name:"AdminActionsPage",component: AdminActionsPage},
     { path: '/:catchAll(.*)*', name: "PageNotFound", component: PageNotFound}, //This catches our error page not found
 
 ];

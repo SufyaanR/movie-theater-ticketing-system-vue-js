@@ -1,4 +1,8 @@
 <script setup>
+import {useRouter} from "vue-router";
+
+const router = useRouter();
+
 defineProps({
   options: [],
   label: String,
@@ -15,7 +19,7 @@ defineProps({
       </h4>
 
       <p>
-        <a v-for="option in options" :href="option.value">{{ option.label }}</a>
+        <a v-for="option in options" @click="router.push(`/admin-actions${option.value}`)">{{ option.label }}</a>
       </p>
     </div>
   </div>

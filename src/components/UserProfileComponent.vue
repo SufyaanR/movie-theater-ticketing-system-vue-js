@@ -21,20 +21,20 @@ onBeforeMount(async () => {
 });
 
 const manageYourDataOptions = [
-    {label: "Movies", value: "/movies"},
-    {label: "Branches", value: "#"},
-    {label: "Theaters", value: "#"},
-    {label: "Seats", value: "#"},
+    {label: "Movies", value: "/movie"},
+    {label: "Branches", value: "/branch"},
+    {label: "Theaters", value: "/theater"},
+    {label: "Seats", value: "/seat"},
 ];
 
 const manageYourUsersOptions = [
-    {label: "Customers", value: "#"},
-    {label: "Administrators", value: "#"},
+    {label: "Customers", value: "/customer"},
+    {label: "Administrators", value: "/admin"},
 ];
 
 const manageBookingsOptions = [
-    {label: "Tickets", value: "#"},
-    {label: "Schedule", value: "#"},
+    {label: "Tickets", value: "/ticket"},
+    {label: "Schedule", value: "/schedule"},
 ];
 </script>
 
