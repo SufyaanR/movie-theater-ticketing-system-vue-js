@@ -19,7 +19,7 @@ defineProps({
       </h4>
 
       <p>
-        <a v-for="option in options" @click="router.push(`/admin-actions${option.value}`)">{{ option.label }}</a>
+        <a v-for="option in options" @click="router.push(`/edit${option.value}`)">{{ option.label }}</a>
       </p>
     </div>
   </div>
