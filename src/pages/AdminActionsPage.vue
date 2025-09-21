@@ -2,8 +2,9 @@
   <div class="main">
     <h1>
       <strong>
-        {{ domain.charAt(0).toUpperCase() + domain.slice(1) }} CRUD
+        {{ domain.charAt(0).toUpperCase() + domain.slice(1) }}:
       </strong>
+      CRUD
     </h1>
 
     <p v-if="!objects.length">No results</p>
