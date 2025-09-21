@@ -16,6 +16,9 @@ import {
   deleteMovie,
 } from "../routes/routes.js";
 import DialogComponent from "./DialogComponent.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 defineProps({
   id: String,
@@ -53,8 +56,8 @@ async function deleteObject(domain, id){
       //alert('Delete successful');
       alert('In development');
       break;
-
   }
+  window.location.reload();
 }
 </script>
 <style scoped>
