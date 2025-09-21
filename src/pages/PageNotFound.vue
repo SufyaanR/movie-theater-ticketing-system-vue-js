@@ -6,7 +6,7 @@
     </strong>
   </h1>
   <p>Page Not Found</p>
-    <PrimaryButton button-text="Go To 'Browse Movies'" link="/movies"/>
+    <PrimaryButton button-text="Back" @click="router.back()"/>
   </div>
 </template>
 <style scoped>
@@ -25,4 +25,7 @@
 </style>
 <script setup lang="ts">
 import PrimaryButton from "../components/PrimaryButton.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 </script>

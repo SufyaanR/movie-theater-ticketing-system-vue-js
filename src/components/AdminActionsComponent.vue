@@ -1,63 +1,68 @@
 <template>
   <div class="component">
-    <p>{{label}}</p>
+    <p v-if="!disabledActions">{{label}}</p>
+    <p v-else>
+      <strong>
+      {{label}}
+      </strong>
+      <PrimaryTag label="You"/>
+    </p>
       <div class="buttons">
-        <PrimaryButton button-text="Edit" :link="`/${domain}/edit/${id}`"/>
-        <PrimaryButton style="background: crimson" data-bs-toggle="modal" data-bs-target="#dialogPopup">
+        <PrimaryButton v-if="!disabledActions" button-text="Edit" :link="`/${domain}/edit/${id}`"/>
+        <PrimaryButton v-if="!disabledActions" style="background: crimson" data-bs-toggle="modal" :data-bs-target="`#dialog-${id}`">
           <i class="fa fa-trash"></i>
         </PrimaryButton>
-        <DialogComponent @confirm="deleteObject(domain, id)" title="Deletion" :message="`Do you want to delete this ${domain}?`" primary-text="Delete" secondary-text="Cancel"/>
+        <PrimaryButton v-if="disabledActions" button-text="View Profile" link="/user-details"/>
+        <DialogComponent :id="`dialog-${id}`" @confirm="deleteObject(id)" title="Deletion" :message="`Do you want to delete this ${domain}: ${label}?`" primary-text="Delete" secondary-text="Cancel"/>
       </div>
   </div>
 </template>
 <script setup>
 import PrimaryButton from "./PrimaryButton.vue";
 import {
-  deleteMovie,
+  deleteAdmin,
+  deleteBranch, deleteCustomer,
+  deleteMovie, deleteSeat, deleteTheater,
 } from "../routes/routes.js";
 import DialogComponent from "./DialogComponent.vue";
 import {useRouter} from "vue-router";
+import PrimaryTag from "./PrimaryTag.vue";
 
 const router = useRouter();
 
-defineProps({
-  id: String,
+const { id, label, domain } = defineProps({
+  id: Number,
   label: String,
   domain: String,
+  disabledActions: Boolean,
 })
 
-async function deleteObject(domain, id){
+
+async function deleteObject(id){
   switch (domain){
     case 'movie':
       await deleteMovie(id);
       break;
     case 'branch':
-      //await deleteBranch(id);
-      //alert('Delete successful');
-      alert('In development');
+      await deleteBranch(id);
       break;
     case 'theater':
-      //await deleteTheater(id);
-      //alert('Delete successful');
-      alert('In development');
+      await deleteTheater(id);
       break;
     case 'seat':
-      //await deleteSeat(id);
-      //alert('Delete successful');
-      alert('In development');
+      await deleteSeat(id);
       break;
     case 'admin':
-      //await deleteAdmin(id);
-      //alert('Delete successful');
-      alert('In development');
+      await deleteAdmin(id);
       break;
     case 'customer':
-      //await deleteCustomer(id);
-      //alert('Delete successful');
-      alert('In development');
+      await deleteCustomer(id);
       break;
   }
-  window.location.reload();
+  router.replace({
+    path: router.currentRoute.value.fullPath,
+    query: { t: Date.now() }
+  });
 }
 </script>
 <style scoped>

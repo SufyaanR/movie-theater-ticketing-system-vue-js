@@ -5,6 +5,7 @@ import {getAdminDetails, getCustomerDetails, updateAdmin, updateCustomer} from "
 import PrimaryButton from "./PrimaryButton.vue";
 import PrimaryTag from "./PrimaryTag.vue";
 import SecondaryTag from "./SecondaryTag.vue";
+import DialogComponent from "./DialogComponent.vue";
 const user = ref({});
 
 const firstName = ref();
@@ -244,8 +245,9 @@ async function saveProfile() {
 
         <!-- Update Button -->
         <div class="mt-5 text-end">
-          <PrimaryButton button-text="Update Profile" @click="saveProfile"/>
+          <PrimaryButton button-text="Update Profile" data-bs-toggle="modal" data-bs-target="#dialogPopup"/>
         </div>
+        <DialogComponent title="Update" message="Are you sure you want to update this profile?" primary-text="Update" secondary-text="Cancel" @confirm="saveProfile()"/>
       </div>
     </div>
   </form>

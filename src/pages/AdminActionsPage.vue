@@ -1,20 +1,26 @@
 <template>
   <div class="main">
-    <h1>
-      <strong>
-        {{ domain.charAt(0).toUpperCase() + domain.slice(1) }}:
-      </strong>
-      CRUD
-    </h1>
+    <div class="page-header">
+      <div >
+        <h1>
+          <strong>
+            {{ domain.charAt(0).toUpperCase() + domain.slice(1) }}:
+          </strong>
+          CRUD
+        </h1>
 
-    <p v-if="!objects.length">No results</p>
-    <p v-else>{{objects.length}} results</p>
+        <p v-if="!objects.length">No results</p>
+        <p v-else>{{objects.length}} results</p>
+      </div>
+
+    <PrimaryButton button-text="Go Back" @click="router.back()"/>
+    </div>
 
     <AdminActionsComponent v-if="domain==='movie'" :domain="domain" :id="object.movieId" v-for="(object, index) in objects" :label="object.title" :key="index"/>
     <AdminActionsComponent v-if="domain==='branch'" :domain="domain" :id="object.branchId" v-for="(object, index) in objects" :label="object.location" :key="index"/>
     <AdminActionsComponent v-if="domain==='theater'" :domain="domain" :id="object.theaterRoomId" v-for="(object, index) in objects" :label="`Theater Room #${object.theaterRoomId}: RM${object.roomNumber} ${object.branch.location}`" :key="index"/>
     <AdminActionsComponent v-if="domain==='seat'" :domain="domain" :id="object.seatId" v-for="(object, index) in objects" :label="`Seat #${object.seatId}: ${object.seatNumber} @ RM${object.theaterRoom.roomNumber} ${object.theaterRoom.branch.location}`" :key="index"/>
-    <AdminActionsComponent v-if="domain==='admin'" :domain="domain" :id="object.userId" v-for="(object, index) in objects" :label="object.username" :key="index"/>
+    <AdminActionsComponent v-if="domain==='admin'" :domain="domain" :id="object.userId" v-for="(object, index) in objects" :label="object.username" :key="index" :disabledActions="+object.userId === +loggedInUser"/>
     <AdminActionsComponent v-if="domain==='customer'" :domain="domain" :id="object.userId" v-for="(object, index) in objects" :label="object.username" :key="index"/>
 
 
@@ -24,11 +30,12 @@
       </div>
     </div>
 
-    <AdminControlsComponent :button-text="`Add A ${domain.charAt(0).toUpperCase() + domain.slice(1)}`" :button-link="`/${domain}/create`"/>
+    <AdminControlsComponent v-if="domain!=='admin'" :button-text="`Add A ${domain.charAt(0).toUpperCase() + domain.slice(1)}`" :button-link="`/${domain}/create`"/>
+    <AdminControlsComponent v-else :button-text="`Add An ${domain.charAt(0).toUpperCase() + domain.slice(1)}`" :button-link="`/${domain}/create`"/>
   </div>
 </template>
 <script setup>
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import AdminActionsComponent from "../components/AdminActionsComponent.vue";
 import {onBeforeMount, ref} from "vue";
 import {
@@ -40,8 +47,12 @@ import {
   getAllTheaters
 } from "../routes/routes.js";
 import AdminControlsComponent from "../components/AdminControlsComponent.vue";
+import PrimaryButton from "../components/PrimaryButton.vue";
 const route = useRoute();
+const router = useRouter();
 const domain = route.params.id;
+
+const loggedInUser = localStorage.getItem('authenticatedUserId');
 
 let objects = ref([]);
 
@@ -76,5 +87,19 @@ onBeforeMount(async()=>{
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+}
+
+.page-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 80vw;
+}
+
+.page-header div{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 </style>

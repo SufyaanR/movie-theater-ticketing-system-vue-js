@@ -12,6 +12,9 @@ import TermsAndConditionsPage from "../pages/TermsAndConditionsPage.vue";
 import AboutUsPage from "../pages/AboutUsPage.vue";
 import EditUserPage from "../pages/EditUserPage.vue";
 import AdminActionsPage from "../pages/AdminActionsPage.vue";
+import CreateBranchPage from "../pages/CreateBranchPage.vue";
+import CreateTheaterPage from "../pages/CreateTheaterPage.vue";
+import CreateSeatPage from "../pages/CreateSeatPage.vue";
 
 
 
@@ -25,6 +28,9 @@ const routes = [
     {path: '/login', name: "LoginPage", component: LoginPage},
     {path: '/movie/create', name: "CreateMoviePage", component: CreateMoviePage},
     {path: '/movie/edit/:id', name: "EditMoviePage", component: EditMoviePage},
+    {path: '/branch/create', name: "CreateBranchPage", component: CreateBranchPage},
+    {path: '/theater/create', name: "CreateTheaterPage", component: CreateTheaterPage},
+    {path: '/seat/create', name: "CreateSeatPage", component: CreateSeatPage},
     { path: '/signup', name: "SignUpPage", component: SignUpPage },
     { path: '/privacy-policy', name: "PrivacyPolicyPage", component: PrivacyPolicyPage },
     { path: '/terms-and-conditions', name: "TermsAndConditionsPage", component: TermsAndConditionsPage },

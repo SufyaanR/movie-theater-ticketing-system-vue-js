@@ -200,7 +200,7 @@ function redirect(id){
 
       <select class="form-select" v-model="selectedTheaterId">
       <option selected>{{ defaultTheaterText }}</option>
-      <option v-for="theater in theaters" :key="theater.theaterRoomId" :value="theater.theaterRoomId">{{theater.theaterRoomId}}</option>
+      <option v-for="theater in theaters" :key="theater.theaterRoomId" :value="theater.theaterRoomId">RM{{theater.roomNumber}}</option>
     </select>
 
       <p v-if="selectedTheaterId===defaultTheaterText && !viewSummary">No Theater Selected</p>
