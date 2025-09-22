@@ -18,8 +18,8 @@
 
     <AdminActionsComponent v-if="domain==='movie'" :domain="domain" :image="object.image" :id="object.movieId" v-for="(object, index) in objects" :label="object.title" :key="index"/>
     <AdminActionsComponent v-if="domain==='branch'" :domain="domain" :id="object.branchId" v-for="(object, index) in objects" :label="object.location" :key="index"/>
-    <AdminActionsComponent v-if="domain==='theater'" :domain="domain" :id="object.theaterRoomId" v-for="(object, index) in objects" :label="`Theater Room #${object.theaterRoomId}: RM${object.roomNumber} - ${object.branch.location}`" :key="index"/>
-    <AdminActionsComponent v-if="domain==='seat'" :domain="domain" :id="object.seatId" v-for="(object, index) in objects" :label="`Seat #${object.seatId}: ${object.seatNumber} @ RM${object.theaterRoom.roomNumber} - ${object.theaterRoom.branch.location}`" :key="index"/>
+    <AdminActionsComponent v-if="domain==='theater'" :domain="domain" :id="object.theaterRoomId" v-for="(object, index) in objects" :label="`Theater Room: RM${object.roomNumber} - ${object.branch.location}`" :key="index"/>
+    <AdminActionsComponent v-if="domain==='seat'" :domain="domain" :id="object.seatId" v-for="(object, index) in objects" :label="`Seat: ${object.seatNumber} @ RM${object.theaterRoom.roomNumber} - ${object.theaterRoom.branch.location}`" :key="index"/>
     <AdminActionsComponent v-if="domain==='admin'" :domain="domain" :image="object.image" :id="object.userId" v-for="(object, index) in objects" :label="object.username" :key="index" :disabledActions="+object.userId === +loggedInUser"/>
     <AdminActionsComponent v-if="domain==='customer'" :domain="domain" :image="object.image" :id="object.userId" v-for="(object, index) in objects" :label="object.username" :key="index"/>
 

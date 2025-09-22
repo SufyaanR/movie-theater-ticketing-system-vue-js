@@ -1,9 +1,9 @@
 <template>
   <div class="component">
-    <div class="label">
+    <div class="title-message">
         <img v-if="image && domain!=='movie'"
              :src="'data:image/jpeg;base64,' + image"
-             class="rounded-circle mb-3"
+             class="rounded-circle"
              alt="Profile"
              width="50"
              height="50"
@@ -11,7 +11,6 @@
         />
         <img v-if="image && domain==='movie'"
              :src="'data:image/jpeg;base64,' + image"
-             class="mb-3"
              alt="Profile"
              width="90"
              height="120"
@@ -96,11 +95,12 @@ async function deleteObject(id){
    padding: 10px;
  }
 
- .label{
+ .title-message{
    display: flex;
    flex-direction: row;
+   justify-content: center;
    align-items: center;
-   gap: 5px;
+   gap: 10px;
  }
 
  p{

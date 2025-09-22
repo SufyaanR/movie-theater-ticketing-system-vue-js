@@ -87,7 +87,7 @@ watch([searchQuery, selectedGenre], () => {
     </div>
   </div>
 
-    <AdminControlsComponent v-if="isAdmin==='true'" button-text="Add Movies" button-link="/movie/create"/>
+    <AdminControlsComponent v-if="isAdmin==='true'" button-text="Add A Movie" button-link="/movie/create"/>
   </div>
 </template>
 

@@ -16,7 +16,9 @@ defineProps({
 })
 
 function redirect(id){
-  router.push(`/movie/${id}`);
+  if (id!==undefined) {
+    router.push(`/movie/${id}`);
+  }
 }
 </script>
 
