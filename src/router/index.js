@@ -35,7 +35,7 @@ const routes = [
     { path: '/privacy-policy', name: "PrivacyPolicyPage", component: PrivacyPolicyPage },
     { path: '/terms-and-conditions', name: "TermsAndConditionsPage", component: TermsAndConditionsPage },
     {path: '/about-us',name:"AboutUsPage",component: AboutUsPage},
-    {path: '/edit/:id',name:"AdminActionsPage",component: AdminActionsPage},
+    {path: '/CRUD/:id',name:"AdminActionsPage",component: AdminActionsPage},
     { path: '/:catchAll(.*)*', name: "PageNotFound", component: PageNotFound}, //This catches our error page not found
 
 ];
