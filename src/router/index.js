@@ -15,6 +15,7 @@ import AdminActionsPage from "../pages/AdminActionsPage.vue";
 import CreateBranchPage from "../pages/CreateBranchPage.vue";
 import CreateTheaterPage from "../pages/CreateTheaterPage.vue";
 import CreateSeatPage from "../pages/CreateSeatPage.vue";
+import {ref} from "vue";
 
 
 
@@ -47,11 +48,16 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const authenticatedUserId = localStorage.getItem("authenticatedUserId");
+    const isAdmin = ref(localStorage.getItem("isAdmin") === 'true');
 
     // Redirect to /movies if not authenticated
     if (!authenticatedUserId && to.path !== "/login" && to.path !== "/signup" && to.path !== "/privacy-policy" && to.path !== "/terms-and-conditions") {
         next("/login");
-    } else {
+    }
+    else if (!isAdmin.value && to.path.includes("/CRUD")) {
+        next("/:catchAll(.*)*"); // redirect back
+    }
+    else {
         next();
     }
 });
