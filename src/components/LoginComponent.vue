@@ -58,7 +58,7 @@ else{
       </h2>
 
       <form @submit.prevent="validateUser" class="login-form">
-        <label for="username">User ID</label>
+        <label for="username">Username</label>
         <input class="form-control" id="username" v-model="username" type="text" placeholder="Enter your username" />
 
         <label for="password">Password</label>
