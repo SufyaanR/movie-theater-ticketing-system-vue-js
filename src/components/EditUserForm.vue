@@ -50,7 +50,7 @@ function onFileChange(e) {
 }
 
 function deleteProfilePic() {
-  form.profilePic = null;
+  image.value = null;
 }
 
 function openDatePicker() {
@@ -192,7 +192,7 @@ async function saveProfile() {
           />
         </div>
         <div v-if="image" class="mb-2">
-          <PrimaryButton style="background: crimson" button-text="Remove Image" @click="deleteProfilePic">
+          <PrimaryButton style="background: crimson" button-text="Remove Image" @click="deleteProfilePic()">
             <i class="fa fa-trash"></i>
           </PrimaryButton>
         </div>
