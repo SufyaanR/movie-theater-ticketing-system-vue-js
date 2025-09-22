@@ -22,6 +22,7 @@ function redirect(id){
 
 <template>
   <div class="card">
+    <a @click="redirect(id)">
 
     <img v-if="image" :src="'data:image/jpeg;base64,' + image" class="card-img-top" alt="...">
     <img v-else src="/src/assets/no-photo.jpg" class="card-img-top" alt="...">
@@ -34,6 +35,7 @@ function redirect(id){
       <p>{{ genre }}</p>
       <PrimaryButton v-if="!disableButton" buttonText="View Now" @click="redirect(id)"/>
     </div>
+    </a>
   </div>
 </template>
 

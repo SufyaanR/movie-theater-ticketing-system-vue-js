@@ -437,8 +437,10 @@ function redirect(id){
   .seat-container {
     display: flex;
     flex-direction: row;
-    overflow-x: scroll;
-    width: 400px;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    width: 320px;
+    max-height: 75px;
   }
 
 @media(max-width: 1024px){

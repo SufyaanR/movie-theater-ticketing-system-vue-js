@@ -192,14 +192,9 @@ async function saveProfile() {
           />
         </div>
         <div v-if="image" class="mb-2">
-          <button
-              type="button"
-              class="btn btn-outline-danger btn-sm"
-              @click="deleteProfilePic"
-              style="font-size:0.8rem;"
-          >
-            Remove Picture
-          </button>
+          <PrimaryButton style="background: crimson" button-text="Remove Image" @click="deleteProfilePic">
+            <i class="fa fa-trash"></i>
+          </PrimaryButton>
         </div>
       </div>
 

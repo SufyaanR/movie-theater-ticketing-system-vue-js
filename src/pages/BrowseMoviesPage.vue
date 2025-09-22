@@ -80,10 +80,8 @@ watch([searchQuery, selectedGenre], () => {
       <MovieCardComponent v-for="(movie, index) in filteredMovies"
       :key="index"
       :title="movie.title"
-      :description="movie.description"
       :id="movie.movieId"
       :genre="movie.genre"
-      :age-restriction="movie.ageRestriction"
       :view-type="movie.viewType"
       :image="movie.image"/>
     </div>

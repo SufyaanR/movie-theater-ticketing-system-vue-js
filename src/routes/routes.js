@@ -154,6 +154,12 @@ export async function getAdminDetails(userId) {
     return data;
 }
 
+export async function getAdminDetailsByUsername(username) {
+    const res = await fetch(`http://localhost:8080/admin/readByUsername/${username}`);
+    const data = await res.json();
+    return data;
+}
+
 export async function createAdmin(admin) {
     const res = await fetch(`http://localhost:8080/admin/create`, {
         method: "POST",
@@ -218,6 +224,12 @@ export async function getAllCustomers() {
 
 export async function getCustomerDetails(userId) {
     const res = await fetch(`http://localhost:8080/customer/read/${userId}`);
+    const data = await res.json();
+    return data;
+}
+
+export async function getCustomerDetailsByUsername(username) {
+    const res = await fetch(`http://localhost:8080/customer/readByUsername/${username}`);
     const data = await res.json();
     return data;
 }

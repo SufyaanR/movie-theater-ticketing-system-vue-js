@@ -23,7 +23,9 @@
       <input class="form-control" v-model="seatNumber" :class="{warningField: null}" id="seatNumber" placeholder="E.g 1">
 
     </div>
+
       <PrimaryButton v-if="seatNumber" :button-text="'Save seat #' + seatNumber" @click="onSubmit()"/>
+      <SecondaryButton v-else button-text="Cancel" @click="router.back()"/>
   </div>
 </template>
 <script setup lang="ts">
@@ -31,6 +33,7 @@ import {onBeforeMount, ref, watch} from "vue";
 import PrimaryButton from "../components/PrimaryButton.vue";
 import {createSeat, getAllBranches, getAllTheatersByBranchId, getBranchById, getTheaterById} from "../routes/routes";
 import router from "../router";
+import SecondaryButton from "../components/SecondaryButton.vue";
 
 const branches = ref();
 

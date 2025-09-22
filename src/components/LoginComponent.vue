@@ -1,10 +1,15 @@
 <script setup>
 import { ref } from 'vue';
 import PrimaryButton from "../components/PrimaryButton.vue";
-import {getCustomerDetails, getAdminDetails} from "../routes/routes.js";
+import {
+  getCustomerDetails,
+  getAdminDetails,
+  getCustomerDetailsByUsername,
+  getAdminDetailsByUsername
+} from "../routes/routes.js";
 import router from "../router/index.js";
 
-const userId = ref("");
+const username = ref("");
 const password = ref("");
 const user = ref({});
 const isAdmin = ref(false);
@@ -12,7 +17,7 @@ const isAdmin = ref(false);
 
 async function validateUser() {
   if (isAdmin.value !==true) {
-    user.value = await getCustomerDetails(userId.value);
+    user.value = await getCustomerDetailsByUsername(username.value);
     //TODO: The assigned cart needs to be called when the user logs in, store the cartid in local storage
 
     if (user.value.password === password.value) {
@@ -27,7 +32,7 @@ async function validateUser() {
     }
   }
 else{
-    user.value = await getAdminDetails(userId.value);
+    user.value = await getAdminDetailsByUsername(username.value);
 
     if (user.value.password === password.value) {
       localStorage.setItem('authenticatedUserId', user.value.userId);
@@ -53,8 +58,8 @@ else{
       </h2>
 
       <form @submit.prevent="validateUser" class="login-form">
-        <label for="userId">User ID</label>
-        <input class="form-control" id="userId" v-model="userId" type="text" placeholder="Enter your User ID" />
+        <label for="username">User ID</label>
+        <input class="form-control" id="username" v-model="username" type="text" placeholder="Enter your username" />
 
         <label for="password">Password</label>
         <input class="form-control" id="password" v-model="password" type="password"

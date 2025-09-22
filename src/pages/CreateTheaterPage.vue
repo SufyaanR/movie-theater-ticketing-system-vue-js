@@ -53,6 +53,7 @@
 
       <PrimaryButton v-if="roomCapacity" :button-text="'Create RM' + roomNumber " @click="onSubmit()"/>
     </div>
+      <SecondaryButton v-else button-text="Cancel" @click="router.back()"/>
   </div>
 </template>
 <script setup lang="ts">
@@ -61,6 +62,7 @@ import {createTheater, getAllBranches, getBranchById} from "../routes/routes";
 import PrimaryButton from "../components/PrimaryButton.vue";
 import PrimaryTag from "../components/PrimaryTag.vue";
 import {useRouter} from "vue-router";
+import SecondaryButton from "../components/SecondaryButton.vue";
 
 const router = useRouter();
 
