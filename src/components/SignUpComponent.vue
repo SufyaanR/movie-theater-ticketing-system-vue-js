@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import PrimaryButton from "../components/PrimaryButton.vue";
-import { createCustomer, createAdmin} from "../routes/routes.js";
+import { createCustomer, createAdmin, createCart } from "../routes/routes.js";
 
 const router = useRouter();
 
@@ -41,27 +41,29 @@ async function createUser() {
     admin: isAdmin.value
   };
 
-  if(isAdmin.value !==true) {
+  if (isAdmin.value !== true) {
     try {
       const data = await createCustomer(newUser);
-      localStorage.setItem("authenticatedUserId", data.userId); // calls your backend
+      localStorage.setItem("authenticatedUserId", data.userId);
       localStorage.setItem("isAdmin", isAdmin.value);
-      localStorage.setItem('username', data.username);
-      alert("Customer account created successfully!");
-      //TODO: A cart needs to be created and assigned to a user on sign up, store the cartid in local storage
+      localStorage.setItem("username", data.username);
 
+      // Create a cart
+      const cart = await createCart(data.userId);
+      localStorage.setItem("cartId", cart.cartId);
+
+      alert("Customer account created successfully!");
       await router.push("/movies");
     } catch (err) {
       console.error("Failed to create account:", err);
       alert("Something went wrong while creating your account.");
     }
-  }
-  else{
+  } else {
     try {
       const data = await createAdmin(newUser);
-      localStorage.setItem("authenticatedUserId", data.userId); // calls your backend
-      localStorage.setItem("isAdmin", isAdmin.value); // calls your backend
-      localStorage.setItem('username', data.username);
+      localStorage.setItem("authenticatedUserId", data.userId);
+      localStorage.setItem("isAdmin", isAdmin.value);
+      localStorage.setItem("username", data.username);
       alert("Admin account created successfully!");
       await router.push("/movies");
     } catch (err) {
@@ -77,7 +79,7 @@ async function createUser() {
     <div class="signup-container">
       <h2>
         <strong>
-        Create an account
+          Create an account
         </strong>
       </h2>
       <p class="login-link">

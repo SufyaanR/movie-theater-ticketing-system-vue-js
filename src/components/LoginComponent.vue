@@ -1,10 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import PrimaryButton from "../components/PrimaryButton.vue";
-import {
-  getCustomerDetailsByUsername,
-  getAdminDetailsByUsername
-} from "../routes/routes.js";
+import {getCustomerDetailsByUsername, getAdminDetailsByUsername, getCartByUserId } from "../routes/routes.js";
 import router from "../router/index.js";
 
 const username = ref("");
@@ -12,24 +9,28 @@ const password = ref("");
 const user = ref({});
 const isAdmin = ref(false);
 
-
 async function validateUser() {
-  if (isAdmin.value !==true) {
+  if (isAdmin.value !== true) {
     user.value = await getCustomerDetailsByUsername(username.value);
-    //TODO: The assigned cart needs to be called when the user logs in, store the cartid in local storage
 
     if (user.value.password === password.value) {
       localStorage.setItem('authenticatedUserId', user.value.userId);
       localStorage.setItem('isAdmin', isAdmin.value);
       localStorage.setItem('username', user.value.username);
+
+      //Fetch cart
+      const cart = await getCartByUserId(user.value.userId);
+      if (cart) {
+        localStorage.setItem("cartId", cart.cartId);
+      }
+
       console.log(user.value);
       alert("Login successful!");
-      router.push("/movies"); //Will navigate if "/" exists
+      router.push("/movies");
     } else {
       alert("Login unsuccessful.");
     }
-  }
-else{
+  } else {
     user.value = await getAdminDetailsByUsername(username.value);
 
     if (user.value.password === password.value) {
@@ -38,20 +39,21 @@ else{
       localStorage.setItem('username', user.value.username);
       console.log(user.value);
       alert("Login successful!");
-      router.push("/movies"); //Will navigate if "/" exists
+      router.push("/movies");
     } else {
       alert("Login unsuccessful.");
     }
-}
+  }
 }
 </script>
+
 
 <template>
   <div class="login-page main">
     <div class="login-container">
       <h2>
         <strong>
-        Login
+          Login
         </strong>
       </h2>
 
@@ -64,7 +66,7 @@ else{
                placeholder="Enter your password" />
 
         <label>Login as Admin
-        <input id="admin" v-model="isAdmin" type="checkbox" />
+          <input id="admin" v-model="isAdmin" type="checkbox" />
         </label>
 
         <p class="terms">
