@@ -252,6 +252,12 @@ export async function updateCustomer(customer) {
 }
 
 export async function deleteCustomer(id) {
+    const cart = await getCartByUserId(id);
+
+    if(cart) {
+       await deleteCart(cart.cartId);
+    }
+
     await fetch(`http://localhost:8080/customer/delete/${id}`, {
         method: "DELETE",
         headers: {"Content-Type": "application/json"},
@@ -272,5 +278,12 @@ export async function getCartByUserId(userId) {
     const res = await fetch(`http://localhost:8080/cart/readByUserId/${userId}`);
     const data = await res.json();
     return data; // expects the cart object
+}
+
+export async function deleteCart(id) {
+    await fetch(`http://localhost:8080/cart/delete/${id}`, {
+        method: "DELETE",
+        headers: {"Content-Type": "application/json"},
+    });
 }
 

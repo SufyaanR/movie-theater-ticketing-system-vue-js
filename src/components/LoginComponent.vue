@@ -2,7 +2,9 @@
 import { ref } from 'vue';
 import PrimaryButton from "../components/PrimaryButton.vue";
 import {getCustomerDetailsByUsername, getAdminDetailsByUsername, getCartByUserId } from "../routes/routes.js";
-import router from "../router/index.js";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 const username = ref("");
 const password = ref("");
