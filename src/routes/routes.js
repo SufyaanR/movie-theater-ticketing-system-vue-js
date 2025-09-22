@@ -257,3 +257,20 @@ export async function deleteCustomer(id) {
         headers: {"Content-Type": "application/json"},
     });
 }
+
+// CART
+export async function createCart(userId) {
+    const res = await fetch(`http://localhost:8080/cart/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: userId })
+    });
+    return await res.json(); // expects the created cart object with cartId
+}
+
+export async function getCartByUserId(userId) {
+    const res = await fetch(`http://localhost:8080/cart/readByUser/${userId}`);
+    const data = await res.json();
+    return data; // expects the cart object
+}
+

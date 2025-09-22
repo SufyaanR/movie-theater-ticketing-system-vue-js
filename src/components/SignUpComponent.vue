@@ -48,7 +48,7 @@ async function createUser() {
       localStorage.setItem("isAdmin", isAdmin.value);
       localStorage.setItem("username", data.username);
 
-      // Create a cart 
+      // Create a cart
       const cart = await createCart(data.userId);
       localStorage.setItem("cartId", cart.cartId);
 
@@ -79,7 +79,7 @@ async function createUser() {
     <div class="signup-container">
       <h2>
         <strong>
-        Create an account
+          Create an account
         </strong>
       </h2>
       <p class="login-link">
