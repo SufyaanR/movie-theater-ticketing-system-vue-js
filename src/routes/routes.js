@@ -269,7 +269,7 @@ export async function createCart(userId) {
 }
 
 export async function getCartByUserId(userId) {
-    const res = await fetch(`http://localhost:8080/cart/readByUser/${userId}`);
+    const res = await fetch(`http://localhost:8080/cart/readByUserId/${userId}`);
     const data = await res.json();
     return data; // expects the cart object
 }
