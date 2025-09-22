@@ -2,8 +2,6 @@
 import { ref } from 'vue';
 import PrimaryButton from "../components/PrimaryButton.vue";
 import {
-  getCustomerDetails,
-  getAdminDetails,
   getCustomerDetailsByUsername,
   getAdminDetailsByUsername
 } from "../routes/routes.js";

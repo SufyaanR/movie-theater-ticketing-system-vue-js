@@ -1,12 +1,22 @@
 <template>
   <div class="component">
-    <p v-if="!disabledActions">{{label}}</p>
-    <p v-else>
-      <strong>
-      {{label}}
-      </strong>
-      <PrimaryTag label="You"/>
-    </p>
+    <div class="label">
+        <img v-if="image"
+             :src="'data:image/jpeg;base64,' + image"
+             class="rounded-circle mb-3"
+             alt="Profile"
+             width="50"
+             height="50"
+             style="object-fit:cover;"
+        />
+        <p v-if="!disabledActions">{{label}}</p>
+        <p v-else>
+          <strong>
+          {{label}}
+          </strong>
+          <PrimaryTag label="You"/>
+        </p>
+    </div>
       <div class="buttons">
         <PrimaryButton v-if="!disabledActions" button-text="Edit" :link="`/${domain}/edit/${id}`"/>
         <PrimaryButton v-if="!disabledActions" style="background: crimson" data-bs-toggle="modal" :data-bs-target="`#dialog-${id}`">
@@ -35,6 +45,7 @@ const { id, label, domain } = defineProps({
   label: String,
   domain: String,
   disabledActions: Boolean,
+  image: String,
 })
 
 
@@ -75,6 +86,13 @@ async function deleteObject(id){
    height: auto;
    border: 1px solid #282828;
    padding: 10px;
+ }
+
+ .label{
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   gap: 5px;
  }
 
  p{
