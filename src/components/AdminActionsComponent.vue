@@ -1,12 +1,20 @@
 <template>
   <div class="component">
     <div class="label">
-        <img v-if="image"
+        <img v-if="image && domain!=='movie'"
              :src="'data:image/jpeg;base64,' + image"
              class="rounded-circle mb-3"
              alt="Profile"
              width="50"
              height="50"
+             style="object-fit:cover;"
+        />
+        <img v-if="image && domain==='movie'"
+             :src="'data:image/jpeg;base64,' + image"
+             class="mb-3"
+             alt="Profile"
+             width="90"
+             height="120"
              style="object-fit:cover;"
         />
         <p v-if="!disabledActions">{{label}}</p>
