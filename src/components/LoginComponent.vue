@@ -19,7 +19,7 @@ async function validateUser() {
       localStorage.setItem('username', user.value.username);
 
       //Fetch cart
-      const cart = await getCartByUserId(user.value.userId);
+      const cart = await getCartByUserId(+user.value.userId);
       if (cart) {
         localStorage.setItem("cartId", cart.cartId);
       }

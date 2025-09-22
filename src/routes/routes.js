@@ -259,11 +259,11 @@ export async function deleteCustomer(id) {
 }
 
 // CART
-export async function createCart(userId) {
+export async function createCart(cart) {
     const res = await fetch(`http://localhost:8080/cart/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: userId })
+        body: JSON.stringify(cart)
     });
     return await res.json(); // expects the created cart object with cartId
 }

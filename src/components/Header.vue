@@ -47,6 +47,7 @@ function setUserDetails(loggedIn = true){
     localStorage.removeItem('username');
     localStorage.removeItem('isAdmin');
     localStorage.removeItem('authenticatedUserId');
+    localStorage.removeItem('cartId');
     userId.value = null;
     username.value = null;
     isAdmin.value = undefined;

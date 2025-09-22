@@ -49,7 +49,11 @@ async function createUser() {
       localStorage.setItem("username", data.username);
 
       // Create a cart
-      const cart = await createCart(data.userId);
+      const cartObject = {
+        quantity: 0,
+        customer: { userId: data.userId},
+      }
+      const cart = await createCart(cartObject);
       localStorage.setItem("cartId", cart.cartId);
 
       alert("Customer account created successfully!");
