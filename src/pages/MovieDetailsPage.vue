@@ -397,6 +397,10 @@ function redirect(id){
     background: #141414;
   }
 
+  .collapse {
+    background: #282828;
+  }
+
   .accordion-body p {
     text-align: left;
   }

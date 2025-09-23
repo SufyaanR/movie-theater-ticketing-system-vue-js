@@ -5,7 +5,7 @@
     </div>
 
     <nav>
-      <a class="nav-elem" @click="router.push('/movies')">Browse Movies</a> | <a class="nav-elem" @click="router.push('/about-us')">About Us</a>
+      <a class="nav-elem" :class="{active : router.currentRoute.value.path === '/movies'}" @click="router.push('/movies')">Browse Movies</a> | <a class="nav-elem" :class="{active : router.currentRoute.value.path === '/about-us'}" @click="router.push('/about-us')">About Us</a>
     </nav>
 
     <div class="login-sign-up">
@@ -24,7 +24,7 @@
   </header>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import PrimaryButton from "./PrimaryButton.vue";
 import PrimaryTag from "./PrimaryTag.vue";
 import {onMounted, ref, watch} from "vue";
@@ -72,3 +72,9 @@ onMounted(() => {
 });
 
 </script>
+
+<style scoped>
+.active{
+  color: #00FF7F;
+}
+</style>
