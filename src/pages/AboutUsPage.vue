@@ -3,9 +3,13 @@
 
 <template>
   <div class="about-page main">
-    <div class="about-container">
-      <h2 class="title"><strong>About Us</strong></h2>
-      <p class="group-name"><strong>Group RB12</strong></p>
+    <div class="card">
+      <h1>
+        <strong>
+          About Us
+        </strong>
+      </h1>
+      <p><strong>Group RB12</strong></p>
 
       <p class="intro">
         Members of our group:
@@ -49,22 +53,11 @@
   padding: 40px 20px;
 }
 
-.about-container {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 40px;
-  border-radius: 15px;
-  max-width: 1400px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 255, 127, 0.2);
-}
 
-.title {
-  font-size: 2rem;
-  margin-bottom: 15px;
-  color: #00FF7F;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+.card{
+  width: 80vw;
+  background: transparent;
+  padding: 50px;
 }
 
 .group-name {
@@ -74,7 +67,6 @@
 }
 
 .intro {
-  color: #ccc;
   font-size: 1rem;
   margin-bottom: 30px;
   line-height: 1.6;
@@ -87,11 +79,11 @@
 }
 
 .member-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: transparent;
   border: 2px solid transparent;
   padding: 20px;
   border-radius: 12px;
-  cursor: default;
+  transition: ease-in-out 0.3s;
 }
 
 .member-card h3 {

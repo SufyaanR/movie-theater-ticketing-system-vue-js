@@ -17,21 +17,23 @@
              style="object-fit:cover;"
         />
         <p v-if="!disabledActions">{{label}}</p>
-        <p v-else>
+        <p v-else-if="disabledActions && domain==='admin'">
           <strong>
           {{label}}
           </strong>
           <PrimaryTag label="You"/>
         </p>
     </div>
+
       <div class="buttons">
         <PrimaryButton v-if="!disabledActions" button-text="Edit" :link="`/${domain}/edit/${id}`"/>
         <PrimaryButton v-if="!disabledActions" style="background: crimson" data-bs-toggle="modal" :data-bs-target="`#dialog-${id}`">
           <i class="fa fa-trash"></i>
         </PrimaryButton>
-        <PrimaryButton v-if="disabledActions" button-text="View Profile" link="/user-details"/>
+        <PrimaryButton v-if="disabledActions && domain==='admin'" button-text="View Profile" link="/user-details"/>
         <DialogComponent :id="`dialog-${id}`" @confirm="deleteObject(id)" title="Deletion" :message="`Do you want to delete this ${domain}: ${label}?`" primary-text="Delete" secondary-text="Cancel"/>
       </div>
+
   </div>
 </template>
 <script setup>

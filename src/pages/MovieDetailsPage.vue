@@ -174,7 +174,7 @@ function redirect(id){
     </div>
 
   <!--BOOK NOW-->
-  <div class="book-now-container">
+  <div class="book-now-container card">
     <h1 style="margin: 40px;"><strong>Book Now</strong></h1>
 
     <!--FORM FIELDS-->
@@ -363,7 +363,7 @@ function redirect(id){
     flex-direction: column;
     align-items: center;
     aspect-ratio: 1/1.3;
-    background: #141414;
+    background: transparent;
     border-radius: 25px;
     height: 650px;
     min-width: 500px;
@@ -374,7 +374,6 @@ function redirect(id){
     flex-direction: column;
     align-items: center;
     aspect-ratio: 1/1.3;
-    background: #141414;
     border-radius: 25px;
     min-width: 500px;
     overflow-y: auto;
