@@ -48,11 +48,10 @@ async function onPayNow(){
     alert("Something went wrong with payment.");
   }
 
-  // Schedule seat reset after 1 minute (60000 ms)
   setTimeout(async () => {
     for (let seatId of props.selectedSeats) {
       try {
-        await updateSeatAvailability(seatId, true); // Reset seat to available
+        await updateSeatAvailability(seatId, true);
         console.log(`Seat ${seatId} reset to available`);
 
       } catch (err) {
