@@ -1,13 +1,14 @@
 <script setup>
 import primaryButton from "../components/PrimaryButton.vue";
 import {ref} from "vue";
-import { addCard, createPayment } from "../routes/routes.js";
+import { addCard, createPayment, updateSeatAvailability } from "../routes/routes.js";
 import router from "../router/index.js";
 
 const props = defineProps({
   totalAmount: Number,
   numberOfTickets: Number,
-  movieTitle: String
+  movieTitle: String,
+  selectedSeats: Array
 });
 
 const cardHolderName = ref();
@@ -35,12 +36,30 @@ async function onPayNow(){
     const savedPayment = await createPayment(payload.payment);
     console.log("Payment created:", savedPayment);
 
+    for (let seatId of props.selectedSeats) {
+      await updateSeatAvailability(seatId, false);
+    }
+
     alert("Payment processed successfully!");
     router.push("/movies");
+
   } catch (err) {
     console.error("Error:", err);
     alert("Something went wrong with payment.");
   }
+
+  // Schedule seat reset after 1 minute (60000 ms)
+  setTimeout(async () => {
+    for (let seatId of props.selectedSeats) {
+      try {
+        await updateSeatAvailability(seatId, true); // Reset seat to available
+        console.log(`Seat ${seatId} reset to available`);
+
+      } catch (err) {
+        console.error(`Error resetting seat ${seatId}:`, err);
+      }
+    }
+  }, 30000);
 }
 
 </script>

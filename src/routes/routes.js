@@ -135,8 +135,16 @@ export async function getAllSeats() {
     return data;
 }
 
-export async function getAllSeatsByTheaterRoomId(id) {
-    const res = await fetch(`http://localhost:8080/seat/getAll/${id}`);
+export async function updateSeatAvailability(seatId, isAvailable) {
+    const res = await fetch(`http://localhost:8080/seat/updateSeats/${seatId}/${isAvailable}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+    });
+    return await res.json();
+}
+
+export async function getAllSeatsByTheaterRoomIdAndAvailability(id, isAvailable) {
+    const res = await fetch(`http://localhost:8080/seat/getAllByAvailability/${id}/${isAvailable}`);
     const data = await res.json();
     return data;
 }
