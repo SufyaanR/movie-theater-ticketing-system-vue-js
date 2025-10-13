@@ -4,9 +4,9 @@ import {
   getMovieById,
   getAllBranches,
   getAllTheatersByBranchId,
-  getAllSeatsByTheaterRoomId,
   getMoviesByGenre,
-  createSchedule
+  createSchedule,
+  getAllSeatsByTheaterRoomIdAndAvailability
 } from "../routes/routes.js";
 import {onBeforeMount, onMounted, ref, watch} from "vue";
 import PrimaryTag from "../components/PrimaryTag.vue";
@@ -123,7 +123,7 @@ watch(selectedBranchId, async (newBranchId) => {
 
 watch(selectedTheaterId, async(newTheaterId)=>{
     selectedTicketQuantity.value = null;
-    seats.value = await getAllSeatsByTheaterRoomId(newTheaterId);
+    seats.value = await getAllSeatsByTheaterRoomIdAndAvailability(newTheaterId, true);
 })
 
 watch(selectedTicketQuantity, async(ticketQuantity)=>{
@@ -298,6 +298,7 @@ function redirect(id){
       :total-amount="selectedTicketQuantity * movie.price"
       :number-of-tickets="selectedTicketQuantity"
       :movie-title="movie.title"
+      :selected-seats="seatsSelected"
   />
 
   <div v-if="movies.length > 0" class="related-movies-container">
