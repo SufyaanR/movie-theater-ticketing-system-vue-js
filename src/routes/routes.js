@@ -157,8 +157,10 @@ export async function getAllAdmins() {
 }
 
 export async function getAdminDetails(userId) {
+    console.log("getAdminDetails called with userId:",userId);// siya
     const res = await fetch(`http://localhost:8080/admin/read/${userId}`);
     const data = await res.json();
+    console.log("getAdminDetails response:", data);//sia
     return data;
 }
 
@@ -178,6 +180,7 @@ export async function createAdmin(admin) {
 }
 
 export async function updateAdmin(admin) {
+    console.log("updateAdmin called with:", admin);//siya
     const res = await fetch(`http://localhost:8080/admin/update`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

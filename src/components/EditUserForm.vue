@@ -12,7 +12,16 @@ const firstName = ref();
 const lastName = ref();
 const email = ref();
 const dateOfBirth = ref();
+const gender = ref();
 const cellphoneNumber = ref();
+const address = reactive({
+  streetName: "",
+  streetNumber: "",
+  suburb: "",
+  city: "",
+  country: "",
+  postalCode: ""
+});
 const image = ref();
 
 const isAdmin = localStorage.getItem("isAdmin");
@@ -22,24 +31,36 @@ const errors = reactive({
   lastName: "",
   email: "",
   cellphoneNumber: "",
-  dateOfBirth: ""
+  dateOfBirth: "",
+  gender: "",
+  address: ""
 });
 
 onBeforeMount(async () => {
   const savedUserId = localStorage.getItem("authenticatedUserId");
-  if(isAdmin!=='true'){
+  if (isAdmin !== 'true') {
     user.value = await getCustomerDetails(savedUserId);
-  }
-  else{
+  } else {
     user.value = await getAdminDetails(savedUserId);
   }
   firstName.value = user.value.firstName;
   lastName.value = user.value.lastName;
   email.value = user.value.email;
   dateOfBirth.value = user.value.dateOfBirth;
+  gender.value = user.value.gender;
   cellphoneNumber.value = user.value.cellphoneNumber;
+
+  if (user.value.address) {
+    address.streetName = user.value.address.streetName;
+    address.streetNumber = user.value.address.streetNumber;
+    address.suburb = user.value.address.suburb;
+    address.city = user.value.address.city;
+    address.country = user.value.address.country;
+    address.postalCode = user.value.address.postalCode;
+  }
   image.value = user.value.image;
 });
+
 function onFileChange(e) {
   const file = e.target.files[0];
   const reader = new FileReader();
@@ -54,7 +75,6 @@ function deleteProfilePic() {
 }
 
 function openDatePicker() {
-  // Trigger the date input to open
   const dateInput = document.querySelector('input[type="date"]');
   if (dateInput) {
     dateInput.showPicker();
@@ -63,21 +83,18 @@ function openDatePicker() {
 
 function validateForm() {
   let valid = true;
-  // First Name
   if (!firstName.value) {
     errors.firstName = "First name is required.";
     valid = false;
   } else {
     errors.firstName = "";
   }
-  // Last Name
   if (!lastName.value) {
     errors.lastName = "Last name is required.";
     valid = false;
   } else {
     errors.lastName = "";
   }
-  // Email
   if (!email.value) {
     errors.email = "Email is required.";
     valid = false;
@@ -87,82 +104,93 @@ function validateForm() {
   } else {
     errors.email = "";
   }
-  // Phone (only numbers and special characters)
   if (!cellphoneNumber.value) {
     errors.cellphoneNumber = "Contact number is required.";
     valid = false;
   } else if (!/^\d{10}$/.test(cellphoneNumber.value)) {
     errors.cellphoneNumber = "Contact number must be exactly 10 digits.";
     valid = false;
-  }
-  else {
+  } else {
     errors.cellphoneNumber = "";
   }
-  // Date of Birth
   if (!dateOfBirth.value) {
     errors.dateOfBirth = "Date of birth is required.";
     valid = false;
   } else {
     errors.dateOfBirth = "";
   }
+  if (!gender.value) {
+    errors.gender = "Gender is required.";
+    valid = false;
+  } else {
+    errors.gender = "";
+  }
+
+  // Basic address validation
+  if (!address.streetName || !address.city || !address.country) {
+    errors.address = "All address fields are required.";
+    valid = false;
+  } else {
+    errors.address = "";
+  }
+
   return valid;
 }
 
 async function saveProfile() {
   if (!validateForm()) return;
 
-  // Build the user object based on backend fields
   const userToUpdate = {
-    userId: user.value.userId,          // keep original ID
-    username: user.value.username,      // unchanged
-    password: user.value.password,      // unchanged (unless you add a field for it)
+    userId: user.value.userId,
+    username: user.value.username,
+    password: user.value.password,
     firstName: firstName.value,
     lastName: lastName.value,
     email: email.value,
-    address: user.value.address,        // unchanged
+    address: {
+      addressId: user.value.address?.addressId || null,
+      streetName: address.streetName,
+      streetNumber: address.streetNumber,
+      suburb: address.suburb,
+      city: address.city,
+      country: address.country,
+      postalCode: address.postalCode,
+    },
     cellphoneNumber: cellphoneNumber.value,
-    gender: user.value.gender,          // unchanged
-    dateOfBirth: dateOfBirth.value,    // unchanged
+    gender: gender.value,
+    dateOfBirth: dateOfBirth.value,
     image: image.value
   };
+  console.log("Data being sent to update:", JSON.stringify(userToUpdate, null, 2));
+  console.log("Address object being sent:", userToUpdate.address);
 
-  if(isAdmin!=='true'){
   try {
-    await updateCustomer(userToUpdate);
-    alert("Update Successful")
+    if (isAdmin !== 'true') {
+      await updateCustomer(userToUpdate);
+    } else {
+      await updateAdmin(userToUpdate);
+    }
+    alert("Update Successful");
     router.push("/user-details");
   } catch (err) {
     console.error("Failed to update profile:", err);
     alert("Something went wrong while updating your profile.");
   }
-  }
-  else{
-    try {
-      await updateAdmin(userToUpdate);
-      alert("Update Successful")
-      router.push("/user-details");
-    } catch (err) {
-      console.error("Failed to update profile:", err);
-      alert("Something went wrong while updating your profile.");
-    }
-  }
 }
-
 </script>
+
 <template>
   <form class="card p-5 shadow-lg mx-auto">
     <div class="mb-5">
       <h2>
-        <strong>
-          Profile:
-        </strong>
-        {{ user.username}}
+        <strong>Profile:</strong> {{ user.username }}
       </h2>
-      <PrimaryTag v-if="isAdmin==='true'" label="Admin"/>
-      <SecondaryTag v-else label="Customer"/>
+      <PrimaryTag v-if="isAdmin === 'true'" label="Admin" />
+      <SecondaryTag v-else label="Customer" />
     </div>
+
     <div class="row align-items-start">
-      <!-- Profile Picture Section (Left Side) -->
+      <!-- Profile Picture Section -->
       <div class="col-auto text-center" style="min-width:200px; margin-right: 30px;">
         <img v-if="image"
              :src="'data:image/jpeg;base64,' + image"
@@ -181,75 +209,116 @@ async function saveProfile() {
              style="object-fit:cover;"
         />
         <div class="mb-3">
-          <input
-              class="form-control"
-              :class="{ warningField: null }"
-              id="userImage"
-              type="file"
-              accept="image/png, image/jpeg"
-              @change="onFileChange"
-              placeholder="Select the user profile image"
-          />
+          <input class="form-control" id="userImage" type="file" accept="image/png, image/jpeg" @change="onFileChange" />
         </div>
         <div v-if="image" class="mb-2">
-          <PrimaryButton style="background: crimson" button-text="Remove Image" @click="deleteProfilePic()">
-            <i class="fa fa-trash"></i>
-          </PrimaryButton>
+          <PrimaryButton style="background: crimson" button-text="Remove Image" @click="deleteProfilePic()" />
         </div>
       </div>
 
-      <!-- Form Fields Section (Right Side) -->
+      <!-- Form Fields -->
       <div class="col">
         <div class="row">
           <!-- Left Column -->
           <div class="col-md-6">
             <div class="mb-4">
-              <label class="form-label fw-bold" style="font-size:1rem;">First Name</label>
-              <input v-model="firstName" type="text" class="form-control" placeholder="e.g John"/>
-              <div v-if="errors.firstName" class="text-danger mt-1" style="font-size:0.95rem;">{{ errors.firstName }}</div>
+              <label class="form-label fw-bold">First Name</label>
+              <input v-model="firstName" type="text" class="form-control" placeholder="e.g John" />
+              <div v-if="errors.firstName" class="text-danger mt-1">{{ errors.firstName }}</div>
             </div>
+
             <div class="mb-4">
-              <label class="form-label fw-bold" style="font-size:1rem;">
-                <i class="bi bi-calendar-event-fill" style="color: black; margin-right: 8px; font-size: 1.2rem; cursor: pointer;" @click="openDatePicker" title="Click to open date picker"></i>
-                Date of Birth
+              <label class="form-label fw-bold">
+                <i class="bi bi-calendar-event-fill" @click="openDatePicker" style="cursor:pointer;"></i> Date of Birth
               </label>
               <input v-model="dateOfBirth" type="date" class="form-control" />
-              <div v-if="errors.dateOfBirth" class="text-danger mt-1" style="font-size:0.95rem;">{{ errors.dateOfBirth }}</div>
+              <div v-if="errors.dateOfBirth" class="text-danger mt-1">{{ errors.dateOfBirth }}</div>
             </div>
+
             <div class="mb-4">
-              <label class="form-label fw-bold" style="font-size:1rem;">Cellphone Number</label>
-              <input v-model="cellphoneNumber" type="tel" class="form-control" placeholder="e.g 0635126724" />
-              <div v-if="errors.cellphoneNumber" class="text-danger mt-1" style="font-size:0.95rem;">{{ errors.cellphoneNumber }}</div>
+              <label class="form-label fw-bold">Email Address</label>
+              <input v-model="email" type="email" class="form-control" placeholder="e.g john@gmail.com" />
+              <div v-if="errors.email" class="text-danger mt-1">{{ errors.email }}</div>
             </div>
           </div>
 
           <!-- Right Column -->
           <div class="col-md-6">
             <div class="mb-4">
-              <label class="form-label fw-bold" style="font-size:1rem;">Last Name</label>
+              <label class="form-label fw-bold">Last Name</label>
               <input v-model="lastName" type="text" class="form-control" placeholder="e.g Doe" />
-              <div v-if="errors.lastName" class="text-danger mt-1" style="font-size:0.95rem;">{{ errors.lastName }}</div>
+              <div v-if="errors.lastName" class="text-danger mt-1">{{ errors.lastName }}</div>
             </div>
+
             <div class="mb-4">
-              <label class="form-label fw-bold" style="font-size:1rem;">Email Address</label>
-              <input v-model="email" type="email" class="form-control" placeholder="e.g john@gmail.com"/>
-              <div v-if="errors.email" class="text-danger mt-1" style="font-size:0.95rem;">{{ errors.email }}</div>
+              <label class="form-label fw-bold">Gender</label>
+              <select v-model="gender" class="form-control">
+                <option value="">-- Select Gender --</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Other">Other</option>
+              </select>
+              <div v-if="errors.gender" class="text-danger mt-1">{{ errors.gender }}</div>
             </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold">Cellphone Number</label>
+              <input v-model="cellphoneNumber" type="tel" class="form-control" placeholder="e.g 0635126724" />
+              <div v-if="errors.cellphoneNumber" class="text-danger mt-1">{{ errors.cellphoneNumber }}</div>
+            </div>
+          </div>
+
+          <!--  Address Section Full Width -->
+          <div class="col-12 mt-4">
+            <h5 class="text-center fw-bold mb-3">Address</h5>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Street Name</label>
+                <input v-model="address.streetName" type="text" class="form-control" placeholder="e.g Main Street" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Street Number</label>
+                <input v-model="address.streetNumber" type="text" class="form-control" placeholder="e.g 123" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Suburb</label>
+                <input v-model="address.suburb" type="text" class="form-control" placeholder="e.g Woodstock" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">City</label>
+                <input v-model="address.city" type="text" class="form-control" placeholder="e.g Cape Town" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Country</label>
+                <input v-model="address.country" type="text" class="form-control" placeholder="e.g South Africa" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Postal Code</label>
+                <input v-model="address.postalCode" type="text" class="form-control" placeholder="e.g 8000" />
+              </div>
+            </div>
+            <div v-if="errors.address" class="text-danger mt-2">{{ errors.address }}</div>
           </div>
         </div>
 
-        <!-- Update Button -->
         <div class="mt-5 text-end">
-          <PrimaryButton button-text="Update Profile" data-bs-toggle="modal" data-bs-target="#dialogPopup"/>
+          <PrimaryButton button-text="Update Profile" data-bs-toggle="modal" data-bs-target="#dialogPopup" />
         </div>
-        <DialogComponent title="Update" message="Are you sure you want to update this profile?" primary-text="Update" secondary-text="Cancel" @confirm="saveProfile()"/>
+        <DialogComponent
+            title="Update"
+            message="Are you sure you want to update this profile?"
+            primary-text="Update"
+            secondary-text="Cancel"
+            @confirm="saveProfile()"
+        />
       </div>
     </div>
   </form>
 </template>
+
 <style scoped>
-.card{
-width: 80vw;
-background: transparent;
+.card {
+  width: 80vw;
+  background: transparent;
 }
 </style>
