@@ -18,6 +18,7 @@ onBeforeMount(async () => {
   else{
     user.value = await getAdminDetails(savedUserId);
   }
+  console.log("Fetched user details:", user.value);
 });
 
 const manageYourDataOptions = [
@@ -87,9 +88,20 @@ const manageBookingsOptions = [
               <p class="mb-0" style="font-size:1.1rem; font-weight: 500;">{{ user.dateOfBirth || 'Not specified' }}</p>
             </div>
             <div class="mb-4">
-              <h6 class="text-muted mb-2" style="font-size:0.9rem;">Cellphone Number</h6>
-              <p class="mb-0" style="font-size:1.1rem; font-weight: 500;">{{ user.cellphoneNumber|| 'Not specified' }}</p>
+              <h6 class="text-muted mb-2" style="font-size:0.9rem;">Email Address</h6>
+              <p class="mb-0" style="font-size:1.1rem; font-weight: 500;">{{ user.email || 'Not specified' }}</p>
             </div>
+            <div class="mb-4">
+              <h6 class="text-muted mb-2" style="font-size:0.9rem;">Address</h6>
+              <div v-if="user.address" style="font-size:1.1rem; font-weight: 500;">
+                <p class="mb-1">{{ user.address.streetNumber }} {{ user.address.streetName }}</p>
+                <p class="mb-1">{{ user.address.suburb }}</p>
+                <p class="mb-1">{{ user.address.city }}</p>
+                <p class="mb-1">{{ user.address.country }}</p>
+                <p class="mb-0">{{ user.address.postalCode }}</p>
+              </div>
+            </div>
+
           </div>
 
           <!-- Right Column -->
@@ -99,8 +111,14 @@ const manageBookingsOptions = [
               <p class="mb-0" style="font-size:1.1rem; font-weight: 500;">{{ user.lastName || 'Not specified' }}</p>
             </div>
             <div class="mb-4">
-              <h6 class="text-muted mb-2" style="font-size:0.9rem;">Email Address</h6>
-              <p class="mb-0" style="font-size:1.1rem; font-weight: 500;">{{ user.email || 'Not specified' }}</p>
+              <h6 class="text-muted mb-2" style="font-size:0.9rem;">Gender</h6>
+              <p class="mb-0" style="font-size:1.1rem; font-weight: 500;">
+                {{ user.gender || 'Not specified' }}
+              </p>
+            </div>
+            <div class="mb-4">
+              <h6 class="text-muted mb-2" style="font-size:0.9rem;">Cellphone Number</h6>
+              <p class="mb-0" style="font-size:1.1rem; font-weight: 500;">{{ user.cellphoneNumber|| 'Not specified' }}</p>
             </div>
           </div>
         </div>
