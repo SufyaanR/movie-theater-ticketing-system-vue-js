@@ -17,6 +17,9 @@ import CreateTheaterPage from "../pages/CreateTheaterPage.vue";
 import CreateSeatPage from "../pages/CreateSeatPage.vue";
 import CartPage from '../pages/CartPage.vue';
 import CheckoutPage from '../pages/CheckoutPage.vue';
+import EditBranchPage from "../pages/EditBranchPage.vue";
+import EditTheaterPage from "../pages/EditTheaterPage.vue";
+import EditSeatPage from "../pages/EditSeatPage.vue";
 import {ref} from "vue";
 
 
@@ -31,6 +34,9 @@ const routes = [
     {path: '/login', name: "LoginPage", component: LoginPage},
     {path: '/movie/create', name: "CreateMoviePage", component: CreateMoviePage},
     {path: '/movie/edit/:id', name: "EditMoviePage", component: EditMoviePage},
+    {path: '/branch/edit/:id', name: "EditBranchPage", component: EditBranchPage},
+    {path: '/theater/edit/:id', name: "EditTheaterPage", component: EditTheaterPage},
+    {path: '/seat/edit/:id', name: "EditSeatPage", component: EditSeatPage},
     {path: '/branch/create', name: "CreateBranchPage", component: CreateBranchPage},
     {path: '/theater/create', name: "CreateTheaterPage", component: CreateTheaterPage},
     {path: '/seat/create', name: "CreateSeatPage", component: CreateSeatPage},
@@ -52,13 +58,13 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const authenticatedUserId = localStorage.getItem("authenticatedUserId");
-    const isAdmin = ref(localStorage.getItem("isAdmin") === 'true');
+    const isAdmin = ref(localStorage.getItem("role") === 'ADMIN');
 
     // Redirect to /movies if not authenticated
     if (!authenticatedUserId && to.path !== "/login" && to.path !== "/signup" && to.path !== "/privacy-policy" && to.path !== "/terms-and-conditions") {
         next("/login");
     }
-    else if (!isAdmin.value && to.path.includes("/CRUD")) {
+    else if (isAdmin.value && to.path.includes("/CRUD")) {
         next("/:catchAll(.*)*"); // redirect back
     }
     else {

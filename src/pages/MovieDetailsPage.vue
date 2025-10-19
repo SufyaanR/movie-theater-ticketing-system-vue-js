@@ -22,7 +22,7 @@ import {createCartItem} from "../routes/routes.js";
 
 const route = useRoute(); //gets the route path
 
-const isAdmin = localStorage.getItem("isAdmin");
+const isAdmin = localStorage.getItem("role");
 
 const movieId = route.params.id; // gets the id used as a param
 const movie = ref();
@@ -366,7 +366,7 @@ function redirect(id){
     <!--<PrimaryButton v-else class="checkout-button" button-text="Checkout" @click="checkout()"/>-->
 
   </div>
-  <AdminControlsComponent v-if="isAdmin==='true'" button-text="Edit Movie" @click="redirect(movieId)"/>
+  <AdminControlsComponent v-if="isAdmin==='ADMIN'" button-text="Edit Movie" @click="redirect(movieId)"/>
 </div>
 
   <PaywallComponent
