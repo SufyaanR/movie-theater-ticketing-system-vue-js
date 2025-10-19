@@ -114,7 +114,8 @@ export async function createBranch(branch) {
 export async function updateBranch(branch) {
     const res = await fetch("http://localhost:8080/branch/update", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(branch)
     });
     return await res.json();
@@ -162,7 +163,8 @@ export async function createTheater(theater) {
 export async function updateTheater(theater) {
     const res = await fetch("http://localhost:8080/theaterRoom/update", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(theater)
     });
     return await res.json();
@@ -216,7 +218,8 @@ export async function createSeat(seat) {
 export async function updateSeat(seat) {
     const res = await fetch("http://localhost:8080/seat/update", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(seat)
     });
     return await res.json();
@@ -422,7 +425,8 @@ export async function deleteCustomer(id) {
 export async function createAddress(address) {
     const res = await fetch(`http://localhost:8080/house/create`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(address)
     });
     return await res.json();
@@ -461,14 +465,19 @@ export async function deleteCart(id) {
 export async function createCartItem(cartItem) {
     const res = await fetch("http://localhost:8080/cartItem/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(cartItem)
     });
     return await res.json();
 }
 
 export async function getAllCartItemsByCartId(cartId) {
-    const res = await fetch(`http://localhost:8080/cartItem/getAll/${cartId}`);
+    const res = await fetch(`http://localhost:8080/cartItem/getAll/${cartId}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
@@ -476,7 +485,8 @@ export async function getAllCartItemsByCartId(cartId) {
 export async function deleteCartItem(id) {
     await fetch(`http://localhost:8080/cartItem/delete/${id}`, {
         method: "DELETE",
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`},
     });
 }
 
