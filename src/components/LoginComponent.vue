@@ -1,53 +1,42 @@
 <script setup>
 import { ref } from 'vue';
 import PrimaryButton from "../components/PrimaryButton.vue";
-import {getCustomerDetailsByUsername, getAdminDetailsByUsername, getCartByUserId } from "../routes/routes.js";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
+import {authenticateUser, getCartByUserId} from "../routes/routes.js";
 
 const router = useRouter();
 
 const username = ref("");
 const password = ref("");
-const user = ref({});
 const isAdmin = ref(false);
+const user = ref({});
 
 async function validateUser() {
-  if (isAdmin.value !== true) {
-    user.value = await getCustomerDetailsByUsername(username.value);
+  try {
+    const response = await authenticateUser(username, password);
 
-    if (user.value.password === password.value) {
-      localStorage.setItem('authenticatedUserId', user.value.userId);
-      localStorage.setItem('isAdmin', isAdmin.value);
-      localStorage.setItem('username', user.value.username);
+    localStorage.setItem("authenticatedUserId", response.userId);
+    localStorage.setItem("username", response.username);
+    localStorage.setItem("role", response.role);
+    localStorage.setItem("token", response.token);
 
-      //Fetch cart
-      const cart = await getCartByUserId(+user.value.userId);
-      if (cart) {
-        localStorage.setItem("cartId", cart.cartId);
-      }
+    alert("Login successful!");
 
-      console.log(user.value);
-      alert("Login successful!");
+    if (response.role === "ADMIN") {
       router.push("/movies");
     } else {
-      alert("Login unsuccessful.");
-    }
-  } else {
-    user.value = await getAdminDetailsByUsername(username.value);
-
-    if (user.value.password === password.value) {
-      localStorage.setItem('authenticatedUserId', user.value.userId);
-      localStorage.setItem('isAdmin', isAdmin.value);
-      localStorage.setItem('username', user.value.username);
-      console.log(user.value);
-      alert("Login successful!");
+      const cart = await getCartByUserId(response.userId)
+      if (cart) localStorage.setItem("cartId", cart.cartId);
       router.push("/movies");
-    } else {
-      alert("Login unsuccessful.");
     }
+
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong while logging in.");
   }
 }
 </script>
+
 
 
 <template>
