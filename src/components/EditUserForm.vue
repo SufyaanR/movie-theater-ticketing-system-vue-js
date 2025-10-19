@@ -1,7 +1,14 @@
 <script setup>
 import {onBeforeMount, reactive, ref} from "vue";
 import router from "../router/index.js";
-import {getAdminDetails, getCustomerDetails, updateAdmin, updateCustomer} from "../routes/routes.js";
+import {
+  createAddress,
+  createAdmin,
+  getAdminDetails,
+  getCustomerDetails,
+  updateAdmin,
+  updateCustomer
+} from "../routes/routes.js";
 import PrimaryButton from "./PrimaryButton.vue";
 import PrimaryTag from "./PrimaryTag.vue";
 import SecondaryTag from "./SecondaryTag.vue";
@@ -22,6 +29,8 @@ const address = reactive({
   country: "",
   postalCode: ""
 });
+
+const userAddress = ref();
 const image = ref();
 
 const isAdmin = localStorage.getItem("isAdmin");
@@ -140,6 +149,8 @@ function validateForm() {
 async function saveProfile() {
   if (!validateForm()) return;
 
+  userAddress.value = await createAddress(address);
+
   const userToUpdate = {
     userId: user.value.userId,
     username: user.value.username,
@@ -148,21 +159,20 @@ async function saveProfile() {
     lastName: lastName.value,
     email: email.value,
     address: {
-      addressId: user.value.address?.addressId || null,
-      streetName: address.streetName,
-      streetNumber: address.streetNumber,
-      suburb: address.suburb,
-      city: address.city,
-      country: address.country,
-      postalCode: address.postalCode,
+      addressId: userAddress.value.addressId,
+      streetNumber: userAddress.value.streetNumber,
+      streetName: userAddress.value.streetName,
+      suburb: userAddress.value.suburb,
+      city: userAddress.value.city,
+      country: userAddress.value.country,
+      postalCode: userAddress.value.postalCode
     },
     cellphoneNumber: cellphoneNumber.value,
     gender: gender.value,
     dateOfBirth: dateOfBirth.value,
     image: image.value
   };
-  console.log("Data being sent to update:", JSON.stringify(userToUpdate, null, 2));
-  console.log("Address object being sent:", userToUpdate.address);
+
 
   try {
     if (isAdmin !== 'true') {

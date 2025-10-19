@@ -1,21 +1,22 @@
 <template>
   <div class="main">
-    <div class="form mb-5">
-      <h1><strong>Select A Branch</strong></h1>
-      <select class="form-select" v-model="selectedBranchId">
+    <div class="form mb-3">
+      <h1><strong>Edit Seat</strong>: Seat {{seatNumber}}</h1>
+
+      <label for="branchId" class="form-label">
+        Select a branch
+      </label>
+      <select class="form-select mb-3" v-model="selectedBranchId">
         <option v-for="branch in branches" :key="branch.branchId" :value="branch.branchId">{{branch.location}}</option>
       </select>
-    </div>
 
-    <div class="form mb-5" v-if="selectedBranchId">
-      <h1><strong>Select A Theater</strong></h1>
-      <select class="form-select" v-model="selectedTheaterId">
+      <label for="theaterRoomId" class="form-label">
+        Select a theater
+      </label>
+      <select class="form-select mb-3" v-model="selectedTheaterId">
         <option v-for="theater in theaters" :key="theater.theaterRoomId" :value="theater.theaterRoomId">RM{{theater.roomNumber}}</option>
       </select>
-    </div>
 
-    <div class="form mb-3" v-if="selectedTheaterId">
-      <h1><strong>Create A Seat</strong></h1>
 
       <label for="seatNumber" class="form-label">
         Enter the seat number
@@ -24,21 +25,33 @@
 
     </div>
 
-      <PrimaryButton v-if="seatNumber" :button-text="'Create Seat #' + seatNumber" @click="onSubmit()"/>
-      <SecondaryButton v-else button-text="Cancel" @click="router.back()"/>
+      <PrimaryButton v-if="seatNumber" :button-text="'Update Seat #' + seatNumber" @click="onSubmit()"/>
+      <SecondaryButton button-text="Cancel" @click="router.back()"/>
   </div>
 </template>
 <script setup lang="ts">
 import {onBeforeMount, ref, watch} from "vue";
 import PrimaryButton from "../components/PrimaryButton.vue";
-import {createSeat, getAllBranches, getAllTheatersByBranchId, getBranchById, getTheaterById} from "../routes/routes";
+import {
+  createSeat,
+  getAllBranches,
+  getAllTheatersByBranchId,
+  getBranchById,
+  getSeatById,
+  getTheaterById, updateSeat
+} from "../routes/routes";
 import router from "../router";
 import SecondaryButton from "../components/SecondaryButton.vue";
+import {useRoute} from "vue-router";
+
+const route = useRoute();
+const seatId = route.params.id;
 
 const branches = ref();
 
 const theaters = ref();
 
+const seat = ref();
 const seatNumber = ref();
 
 const selectedBranchId = ref();
@@ -46,6 +59,11 @@ const selectedTheaterId = ref();
 
 onBeforeMount( async()=>{
   branches.value = await getAllBranches();
+
+  seat.value = await getSeatById(seatId);
+  seatNumber.value = seat.value.seatNumber;
+  selectedBranchId.value = seat.value.theaterRoom.branch.branchId;
+  selectedTheaterId.value = seat.value.theaterRoom.theaterRoomId;
 })
 
 watch(selectedBranchId, async (newBranchId) => {
@@ -66,7 +84,7 @@ async function onSubmit() {
   };
 
   try {
-    await createSeat(seat);
+    await updateSeat(seat);
     alert("Seat created successfully");
     router.back();
   } catch (e) {

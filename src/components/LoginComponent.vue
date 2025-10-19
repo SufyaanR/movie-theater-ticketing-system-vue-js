@@ -53,8 +53,7 @@ async function validateUser() {
         <input class="form-control" id="username" v-model="username" type="text" placeholder="Enter your username" />
 
         <label for="password">Password</label>
-        <input class="form-control" id="password" v-model="password" type="password"
-               placeholder="Enter your password" />
+        <input class="form-control" id="password" v-model="password" type="password" placeholder="Enter your password" />
 
         <label>Login as Admin
           <input id="admin" v-model="isAdmin" type="checkbox" />

@@ -44,10 +44,7 @@ function setUserDetails(loggedIn = true){
   isAdmin.value = localStorage.getItem('isAdmin') === 'true';
   }
   else{
-    localStorage.removeItem('username');
-    localStorage.removeItem('isAdmin');
-    localStorage.removeItem('authenticatedUserId');
-    localStorage.removeItem('cartId');
+    localStorage.clear();
     userId.value = null;
     username.value = null;
     isAdmin.value = undefined;

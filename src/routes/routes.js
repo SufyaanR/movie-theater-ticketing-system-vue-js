@@ -111,6 +111,15 @@ export async function createBranch(branch) {
     return await res.json();
 }
 
+export async function updateBranch(branch) {
+    const res = await fetch("http://localhost:8080/branch/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(branch)
+    });
+    return await res.json();
+}
+
 export async function deleteBranch(id) {
     await fetch(`http://localhost:8080/branch/delete/${id}`, {
         method: "DELETE",
@@ -150,6 +159,15 @@ export async function createTheater(theater) {
     return await res.json();
 }
 
+export async function updateTheater(theater) {
+    const res = await fetch("http://localhost:8080/theaterRoom/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(theater)
+    });
+    return await res.json();
+}
+
 export async function deleteTheater(id) {
     await fetch(`http://localhost:8080/theaterRoom/delete/${id}`, {
         method: "DELETE",
@@ -179,11 +197,26 @@ export async function getAllTheatersByBranchId(id) {
 }
 
 //SEATS
+export async function getSeatById(id) {
+    const res = await fetch(`http://localhost:8080/seat/read/${id}`);
+    const data = await res.json();
+    return data;
+}
+
 export async function createSeat(seat) {
     const res = await fetch("http://localhost:8080/seat/create", {
         method: "POST",
         headers: { "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}` },
+        body: JSON.stringify(seat)
+    });
+    return await res.json();
+}
+
+export async function updateSeat(seat) {
+    const res = await fetch("http://localhost:8080/seat/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(seat)
     });
     return await res.json();
@@ -263,7 +296,7 @@ export async function createAdmin(admin) {
     const res = await fetch(`http://localhost:8080/admin/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` },
+                    /*"Authorization": `Bearer ${token}`*/ },
         body: JSON.stringify(admin)
     });
     return await res.json();
@@ -356,7 +389,7 @@ export async function createCustomer(customer) {
     const res = await fetch(`http://localhost:8080/customer/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` },
+                    /*"Authorization": `Bearer ${token}`*/ },
         body: JSON.stringify(customer)
     });
     return await res.json();
@@ -383,6 +416,16 @@ export async function deleteCustomer(id) {
         headers: {"Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`},
     });
+}
+
+//ADDRESS
+export async function createAddress(address) {
+    const res = await fetch(`http://localhost:8080/house/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(address)
+    });
+    return await res.json();
 }
 
 // CART
