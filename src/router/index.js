@@ -48,7 +48,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const authenticatedUserId = localStorage.getItem("authenticatedUserId");
-    const isAdmin = ref(localStorage.getItem("isAdmin") === 'true');
+    const isAdmin = ref(localStorage.getItem("role") === 'ADMIN');
 
     // Redirect to /movies if not authenticated
     if (!authenticatedUserId && to.path !== "/login" && to.path !== "/signup" && to.path !== "/privacy-policy" && to.path !== "/terms-and-conditions") {

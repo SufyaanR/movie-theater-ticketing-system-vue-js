@@ -1,12 +1,43 @@
+//Auth
+const token = localStorage.getItem("token");
+export async function authenticateUser(username, password) {
+    const res = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            username: username.value,
+            password: password.value,
+        }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+        alert("Invalid username or password.");
+        throw new Error(data.message || "Invalid username or password");
+    }
+
+    return data;
+}
+
+
 //MOVIES
 export async function getAllMovies() {
-  const res = await fetch('http://localhost:8080/Movie/getAll');
+  const res = await fetch('http://localhost:8080/Movie/getAll', {
+      headers: {
+          "Authorization": `Bearer ${token}`
+      }
+  });
   const data = await res.json();
   return data;
 }
 
 export async function getMovieById(id) {
-  const res = await fetch(`http://localhost:8080/Movie/read/${id}`);
+  const res = await fetch(`http://localhost:8080/Movie/read/${id}`, {
+      headers: {
+          "Authorization": `Bearer ${token}`
+      }
+  });
   const data = await res.json();
   return data;
 }
@@ -14,7 +45,8 @@ export async function getMovieById(id) {
 export async function createMovie(movie) {
     const res = await fetch("http://localhost:8080/Movie/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(movie)
     });
     return await res.json();
@@ -23,7 +55,8 @@ export async function createMovie(movie) {
 export async function updateMovie(movie) {
     const res = await fetch("http://localhost:8080/Movie/update", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(movie)
     });
     return await res.json();
@@ -32,25 +65,38 @@ export async function updateMovie(movie) {
 export async function deleteMovie(id) {
     await fetch(`http://localhost:8080/Movie/delete/${id}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
     });
 }
 
 export async function getMoviesByGenre(genre){
-    const res = await fetch(`http://localhost:8080/Movie/genre/${genre}`);
+    const res = await fetch(`http://localhost:8080/Movie/genre/${genre}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
 
 export async function findByTitle(title){
-    const res = await fetch(`http://localhost:8080/Movie/title/${title}`);
+    const res = await fetch(`http://localhost:8080/Movie/title/${title}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
 
 //BRANCHES
 export async function getBranchById(id) {
-    const res = await fetch(`http://localhost:8080/branch/read/${id}`);
+    const res = await fetch(`http://localhost:8080/branch/read/${id}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
@@ -58,7 +104,8 @@ export async function getBranchById(id) {
 export async function createBranch(branch) {
     const res = await fetch("http://localhost:8080/branch/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(branch)
     });
     return await res.json();
@@ -67,19 +114,28 @@ export async function createBranch(branch) {
 export async function deleteBranch(id) {
     await fetch(`http://localhost:8080/branch/delete/${id}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
     });
 }
 
 export async function getAllBranches() {
-    const res = await fetch('http://localhost:8080/branch/getAll');
+    const res = await fetch('http://localhost:8080/branch/getAll', {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
 
 //THEATERS
 export async function getTheaterById(id) {
-    const res = await fetch(`http://localhost:8080/theaterRoom/read/${id}`);
+    const res = await fetch(`http://localhost:8080/theaterRoom/read/${id}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
@@ -87,7 +143,8 @@ export async function getTheaterById(id) {
 export async function createTheater(theater) {
     const res = await fetch("http://localhost:8080/theaterRoom/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(theater)
     });
     return await res.json();
@@ -96,18 +153,27 @@ export async function createTheater(theater) {
 export async function deleteTheater(id) {
     await fetch(`http://localhost:8080/theaterRoom/delete/${id}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
     });
 }
 
 export async function getAllTheaters() {
-    const res = await fetch("http://localhost:8080/theaterRoom/getAll");
+    const res = await fetch("http://localhost:8080/theaterRoom/getAll", {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
 
 export async function getAllTheatersByBranchId(id) {
-    const res = await fetch(`http://localhost:8080/theaterRoom/getAll/${id}`);
+    const res = await fetch(`http://localhost:8080/theaterRoom/getAll/${id}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
@@ -116,7 +182,8 @@ export async function getAllTheatersByBranchId(id) {
 export async function createSeat(seat) {
     const res = await fetch("http://localhost:8080/seat/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(seat)
     });
     return await res.json();
@@ -125,12 +192,17 @@ export async function createSeat(seat) {
 export async function deleteSeat(id) {
     await fetch(`http://localhost:8080/seat/delete/${id}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
     });
 }
 
 export async function getAllSeats() {
-    const res = await fetch("http://localhost:8080/seat/getAll");
+    const res = await fetch("http://localhost:8080/seat/getAll", {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
@@ -138,34 +210,51 @@ export async function getAllSeats() {
 export async function updateSeatAvailability(seatId, isAvailable) {
     const res = await fetch(`http://localhost:8080/seat/updateSeats/${seatId}/${isAvailable}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
     });
     return await res.json();
 }
 
 export async function getAllSeatsByTheaterRoomIdAndAvailability(id, isAvailable) {
-    const res = await fetch(`http://localhost:8080/seat/getAllByAvailability/${id}/${isAvailable}`);
+    const res = await fetch(`http://localhost:8080/seat/getAllByAvailability/${id}/${isAvailable}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
 
 //ADMINS
 export async function getAllAdmins() {
-    const res = await fetch("http://localhost:8080/admin/getAll");
+    const res = await fetch("http://localhost:8080/admin/getAll", {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
 
 export async function getAdminDetails(userId) {
     console.log("getAdminDetails called with userId:",userId);// siya
-    const res = await fetch(`http://localhost:8080/admin/read/${userId}`);
+    const res = await fetch(`http://localhost:8080/admin/read/${userId}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     console.log("getAdminDetails response:", data);//sia
     return data;
 }
 
 export async function getAdminDetailsByUsername(username) {
-    const res = await fetch(`http://localhost:8080/admin/readByUsername/${username}`);
+    const res = await fetch(`http://localhost:8080/admin/readByUsername/${username}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
@@ -173,7 +262,8 @@ export async function getAdminDetailsByUsername(username) {
 export async function createAdmin(admin) {
     const res = await fetch(`http://localhost:8080/admin/create`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(admin)
     });
     return await res.json();
@@ -183,7 +273,8 @@ export async function updateAdmin(admin) {
     console.log("updateAdmin called with:", admin);//siya
     const res = await fetch(`http://localhost:8080/admin/update`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(admin)
     });
     return await res.json();
@@ -192,7 +283,8 @@ export async function updateAdmin(admin) {
 export async function deleteAdmin(id) {
     await fetch(`http://localhost:8080/admin/delete/${id}`, {
         method: "DELETE",
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`},
     });
 }
 
@@ -200,7 +292,8 @@ export async function deleteAdmin(id) {
 export async function addCard(card) {
     const res = await fetch("http://localhost:8080/Card/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(card)
     });
     return await res.json();
@@ -210,7 +303,8 @@ export async function addCard(card) {
 export async function createPayment(payment){
     const res = await fetch("http://localhost:8080/payment/create", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`},
         body: JSON.stringify(payment)
     });
     return await res.json();
@@ -220,7 +314,8 @@ export async function createPayment(payment){
 export async function createSchedule(schedule) {
     const res = await fetch("http://localhost:8080/Schedule/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(schedule)
     });
     return await res.json();
@@ -228,19 +323,31 @@ export async function createSchedule(schedule) {
 
 // CUSTOMER
 export async function getAllCustomers() {
-    const res = await fetch("http://localhost:8080/customer/getAll");
+    const res = await fetch("http://localhost:8080/customer/getAll", {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
 
 export async function getCustomerDetails(userId) {
-    const res = await fetch(`http://localhost:8080/customer/read/${userId}`);
+    const res = await fetch(`http://localhost:8080/customer/read/${userId}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
 
 export async function getCustomerDetailsByUsername(username) {
-    const res = await fetch(`http://localhost:8080/customer/readByUsername/${username}`);
+    const res = await fetch(`http://localhost:8080/customer/readByUsername/${username}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
     const data = await res.json();
     return data;
 }
@@ -248,7 +355,8 @@ export async function getCustomerDetailsByUsername(username) {
 export async function createCustomer(customer) {
     const res = await fetch(`http://localhost:8080/customer/create`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(customer)
     });
     return await res.json();
@@ -256,7 +364,8 @@ export async function createCustomer(customer) {
 export async function updateCustomer(customer) {
     const res = await fetch(`http://localhost:8080/customer/update`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(customer)
     });
     return await res.json();
@@ -271,7 +380,8 @@ export async function deleteCustomer(id) {
 
     await fetch(`http://localhost:8080/customer/delete/${id}`, {
         method: "DELETE",
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`},
     });
 }
 
@@ -279,14 +389,20 @@ export async function deleteCustomer(id) {
 export async function createCart(cart) {
     const res = await fetch(`http://localhost:8080/cart/create`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` },
         body: JSON.stringify(cart)
     });
     return await res.json(); // expects the created cart object with cartId
 }
 
 export async function getCartByUserId(userId) {
-    const res = await fetch(`http://localhost:8080/cart/readByUserId/${userId}`);
+    const res = await fetch(`http://localhost:8080/cart/readByUserId/${userId}`, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    if (!res.ok) throw new Error("Failed to fetch cart");
     const data = await res.json();
     return data; // expects the cart object
 }
@@ -294,7 +410,8 @@ export async function getCartByUserId(userId) {
 export async function deleteCart(id) {
     await fetch(`http://localhost:8080/cart/delete/${id}`, {
         method: "DELETE",
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`},
     });
 }
 
